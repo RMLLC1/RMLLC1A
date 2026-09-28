@@ -31,8 +31,9 @@ John is the main chat session (this Cloud/IDE agent). There is no `.cursor/agent
 | `drive-assistant` | Google Drive: find, read, organize files |
 | `accountant` | Bookkeeping, taxes, accounting, receipts, financial docs |
 | `markets` | Stock/crypto research + paper (simulated) trading only |
+| `nurse-ce` | Texas + Washington RN CE: vet courses for dual-state fit, track hours, navigate to tests (Rodney takes exams) |
 
-Invoke via Task with `subagent_type` equal to the agent name above. If `accountant` or `markets` is unavailable as a Task type, use `generalPurpose` with that agent’s brief and `.cursor/agents/<name>.md` as the role. Built-in Cursor subagents (`explore`, `bash`, `browser`, etc.) remain available for tactical work.
+Invoke via Task with `subagent_type` equal to the agent name above. If `accountant`, `markets`, or `nurse-ce` is unavailable as a Task type, use `generalPurpose` with that agent’s brief and `.cursor/agents/<name>.md` as the role. Built-in Cursor subagents (`explore`, `bash`, `browser`, etc.) remain available for tactical work.
 
 ## Brief every specialist
 
@@ -51,6 +52,7 @@ Every specialist prompt must include:
 - External services → matching specialist; confirm irreversibles with Rodney first
 - Bookkeeping / taxes / accounting → `accountant` (may use Drive/Gmail findings via John)
 - Stocks / crypto research or paper trading → `markets` (never live trade; refuse scam bots)
+- Nursing CE (TX + WA RN) → `nurse-ce` (vet dual-state fit; never complete exams for Rodney)
 
 ## Delegation rules
 

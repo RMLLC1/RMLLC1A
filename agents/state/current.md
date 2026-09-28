@@ -45,6 +45,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Outlook Calendar auth when Rodney needs Outlook.
 - Accountant specialist ready; Rodney will try a finance task later.
 - Markets specialist ready; UXRP research delivered; paper UXRP 10% buy placed; GDXU research delivered.
+- **Nursing CE specialist (`nurse-ce`) added** for Texas + Washington RN dual-state course vetting (2026-09-28). Awaiting CE website URL and renewal dates.
 - Awaiting Rodney's next task.
 
 ## Standing preferences
