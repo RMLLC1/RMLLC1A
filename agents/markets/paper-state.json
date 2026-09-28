@@ -1,7 +1,7 @@
 {
   "starting_cash": 100000.0,
   "cash": 40000.0,
-  "updated": "2026-09-28T12:07:13Z",
+  "updated": "2026-09-28T12:08:18Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -56,6 +56,8 @@
     "2026-09-28T12:06:16Z UXRP STALE_QUOTE age=1597s mark=17.4 \u2014 stop logic skipped",
     "2026-09-28T12:06:16Z GDXU mark=110.7500 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
     "2026-09-28T12:07:13Z UXRP STALE_QUOTE age=1654s mark=17.4 \u2014 stop logic skipped",
-    "2026-09-28T12:07:13Z GDXU mark=111.0000 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}"
+    "2026-09-28T12:07:13Z GDXU mark=111.0000 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-09-28T12:08:18Z UXRP STALE_QUOTE age=1719s mark=17.4 \u2014 stop logic skipped",
+    "2026-09-28T12:08:18Z GDXU mark=111.0000 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}"
   ]
 }
