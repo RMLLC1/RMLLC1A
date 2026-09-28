@@ -45,8 +45,9 @@
 
 | UTC time | Side | Symbol | Qty | Price | Cash after | Rationale |
 | --- | --- | --- | ---: | ---: | ---: | --- |
-| 2026-09-28T11:34:38Z | ADJUST | GDXU | 272.7273 | 110.00 | 40,000.00 | Rodney: reprice GDXU fill to **~$110**. Same $30,000 notional; TS-GDXU-1 arm → $112.20. |
-| 2026-09-28T11:34:04Z | BUY | GDXU | 275.5580 | 108.87 | 40,000.00 | SUPERSEDED — Yahoo pre-market ~$108.87; corrected to ~$110 per Rodney. |
+| 2026-09-28T11:37:59Z | ADJUST | GDXU | 275.5580 | 108.87 | 40,000.00 | Rodney: best price is **$108.87** — restore that fill (undo ~$110). Same $30k; arm → $111.0474. |
+| 2026-09-28T11:34:38Z | ADJUST | GDXU | 272.7273 | 110.00 | 40,000.00 | SUPERSEDED — interim ~$110; replaced by best-price $108.87. |
+| 2026-09-28T11:34:04Z | BUY | GDXU | 275.5580 | 108.87 | 40,000.00 | Original best pre-market fill (restored). |
 | 2026-09-28T11:31:23Z | BUY | UXRP | 1159.4203 | 17.25 | 70,000.00 | Rodney: +20% of portfolio pre-market. Best buy quote ~$17.25. PAPER. |
 | 2026-09-28T11:29:30Z | ADJUST | UXRP | 579.7101 | 17.25 | 90,000.00 | Reprice prior buy to best pre-market ~$17.25. |
 | 2026-09-28T11:20:55Z | BUY | UXRP | 521.1058 | 19.19 | 90,000.00 | SUPERSEDED — stale close. |
@@ -57,7 +58,7 @@
 | Symbol | Notes |
 | --- | --- |
 | UXRP | ~30%. TS-UXRP-1 pending arm $17.595; limit exit. |
-| GDXU | ~30% U.S. 3× miners ETN @ **$110**. TS-GDXU-1 pending arm **$112.20**; limit exit. |
+| GDXU | ~30% U.S. 3× miners ETN @ **$108.87**. TS-GDXU-1 pending arm **$111.0474**; limit exit. |
 
 ## Rules
 
