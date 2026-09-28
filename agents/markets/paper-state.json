@@ -1,21 +1,21 @@
 {
   "starting_cash": 100000.0,
   "cash": 40000.0,
-  "updated": "2026-09-28T12:19:18Z",
+  "updated": "2026-09-28T12:20:30Z",
   "positions": [
     {
       "symbol": "UXRP",
       "qty": 1739.1304,
       "avg_cost": 17.25,
       "cost_basis": 30000.0,
-      "last_upl_pct": 0.87
+      "last_upl_pct": 2.33
     },
     {
       "symbol": "GDXU",
       "qty": 275.558,
       "avg_cost": 108.87,
       "cost_basis": 30000.0,
-      "last_upl_pct": 1.7
+      "last_upl_pct": 2.41
     }
   ],
   "orders": [
@@ -23,19 +23,23 @@
       "id": "TS-UXRP-1",
       "symbol": "UXRP",
       "type": "TRAILING_STOP_LIMIT_SELL",
-      "status": "PENDING_ARM",
+      "status": "ARMED",
       "arm_price": 17.595,
       "trail_pct": 0.02,
-      "params_text": "Arm +2% \u2192 $17.595. Trail 2%. LIMIT sell at stop."
+      "params_text": "Arm +2% \u2192 $17.595. Trail 2%. LIMIT sell at stop.",
+      "high_water": 17.6521,
+      "stop": 17.2991
     },
     {
       "id": "TS-GDXU-1",
       "symbol": "GDXU",
       "type": "TRAILING_STOP_LIMIT_SELL",
-      "status": "PENDING_ARM",
+      "status": "ARMED",
       "arm_price": 111.0474,
       "trail_pct": 0.02,
-      "params_text": "Arm +2% \u2192 $111.0474. Trail 2%. LIMIT sell at stop."
+      "params_text": "Arm +2% \u2192 $111.0474. Trail 2%. LIMIT sell at stop.",
+      "high_water": 111.49,
+      "stop": 109.2602
     }
   ],
   "trade_log": [
@@ -97,7 +101,9 @@
     "2026-09-28T12:18:30Z UXRP STALE_QUOTE age=2371s mark=17.4 \u2014 order logic skipped",
     "2026-09-28T12:18:30Z GDXU mark=110.7200 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
     "2026-09-28T12:19:18Z UXRP STALE_QUOTE age=2418s mark=17.4 \u2014 order logic skipped",
-    "2026-09-28T12:19:18Z GDXU mark=110.7200 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}"
+    "2026-09-28T12:19:18Z GDXU mark=110.7200 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-09-28T12:20:30Z UXRP mark=17.6521 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED', 'high_water': 17.6521, 'stop': 17.2991}",
+    "2026-09-28T12:20:30Z GDXU mark=111.4900 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'ARMED', 'high_water': 111.49, 'stop': 109.2602}"
   ],
   "auto_execute": true
 }
