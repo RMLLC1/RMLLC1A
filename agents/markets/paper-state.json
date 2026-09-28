@@ -1,14 +1,14 @@
 {
   "starting_cash": 100000.0,
-  "cash": 0.0,
-  "updated": "2026-09-28T14:54:15Z",
+  "cash": 100000.0,
+  "updated": "2026-09-28T17:20:40Z",
   "positions": [
     {
       "symbol": "UXRP",
-      "qty": 5863.327758277689,
+      "qty": 0.0,
       "avg_cost": 17.055161,
-      "cost_basis": 100000.0,
-      "last_upl_pct": -0.48
+      "cost_basis": 0.0,
+      "last_upl_pct": 0.79
     },
     {
       "symbol": "GDXU",
@@ -19,12 +19,12 @@
     },
     {
       "symbol": "SATA",
-      "qty": 13.005394419684311,
-      "avg_cost": 99.991585,
-      "cost_basis": 1300.43,
+      "qty": 44.49644464194068,
+      "avg_cost": 100.004619,
+      "cost_basis": 4449.85,
       "hold_for_dividends": true,
       "no_sell": true,
-      "last_upl_pct": 0.0
+      "last_upl_pct": 0.01
     }
   ],
   "orders": [
@@ -122,10 +122,26 @@
       "id": "TS-UXRP-2",
       "symbol": "UXRP",
       "type": "TRAILING_STOP_LIMIT_SELL",
-      "status": "PENDING_ARM",
+      "status": "FILLED",
       "arm_price": 17.3125,
       "trail_pct": 0.01,
-      "params_text": "Arm +2% \u2192 $17.3125. Trail 1%. LIMIT sell at stop."
+      "params_text": "Arm +2% \u2192 $17.3125. Trail 1%. LIMIT sell at stop.",
+      "high_water": 17.770000457763672,
+      "stop": 17.5923,
+      "limit_price": 17.5923,
+      "fill_price": 17.5923
+    },
+    {
+      "id": "PB-SATA-3",
+      "symbol": "SATA",
+      "type": "BUY_BEST",
+      "status": "FILLED",
+      "notional": 3149.42,
+      "attach_trailing_stop": false,
+      "purpose": "PROFIT_TO_SATA",
+      "params_text": "Buy $3149.42 SATA with trading profit. HOLD for daily dividends \u2014 do not sell.",
+      "fill_price": 100.01000213623047,
+      "fill_qty": 31.491050222256366
     }
   ],
   "trade_log": [
@@ -200,26 +216,27 @@
       "price": 16.972999572753906,
       "cash_after": 0.0,
       "rationale": "LIMIT_BUY LB-UXRP-2 auto-filled at best available"
+    },
+    {
+      "time": "2026-09-28T17:20:40Z",
+      "side": "SELL_LIMIT",
+      "symbol": "UXRP",
+      "qty": 5863.327758277689,
+      "price": 17.5923,
+      "cash_after": 103149.42,
+      "rationale": "Trailing stop-limit TS-UXRP-2 auto-filled"
+    },
+    {
+      "time": "2026-09-28T17:20:40Z",
+      "side": "BUY",
+      "symbol": "SATA",
+      "qty": 31.491050222256366,
+      "price": 100.01000213623047,
+      "cash_after": 100000.0,
+      "rationale": "BUY_BEST PB-SATA-3 auto-filled at best available"
     }
   ],
   "events": [
-    "2026-09-28T13:18:24Z UXRP STALE_QUOTE age=1328s mark=18.08 \u2014 order logic skipped",
-    "2026-09-28T13:18:24Z GDXU mark=108.4900 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T13:19:18Z UXRP STALE_QUOTE age=1382s mark=18.08 \u2014 order logic skipped",
-    "2026-09-28T13:19:18Z GDXU mark=108.4900 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T13:20:12Z UXRP STALE_QUOTE age=1436s mark=18.08 \u2014 order logic skipped",
-    "2026-09-28T13:20:12Z GDXU mark=107.7500 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T13:21:17Z UXRP STALE_QUOTE age=1501s mark=18.08 \u2014 order logic skipped",
-    "2026-09-28T13:21:17Z GDXU mark=108.0000 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T13:23:52Z UXRP STALE_QUOTE age=1657s mark=18.08 \u2014 order logic skipped",
-    "2026-09-28T13:23:52Z GDXU mark=107.8800 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T13:24:15Z UXRP STALE_QUOTE age=1679s mark=18.08 \u2014 order logic skipped",
-    "2026-09-28T13:24:15Z GDXU mark=107.8800 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T13:25:38Z UXRP STALE_QUOTE age=1763s mark=18.08 \u2014 order logic skipped",
-    "2026-09-28T13:25:38Z GDXU mark=108.0900 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T13:26:48Z UXRP STALE_QUOTE age=1832s mark=18.08 \u2014 order logic skipped",
-    "2026-09-28T13:26:48Z GDXU mark=107.9925 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T13:27:13Z UXRP STALE_QUOTE age=1857s mark=18.08 \u2014 order logic skipped",
     "2026-09-28T13:27:13Z GDXU mark=107.9925 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
     "2026-09-28T13:28:48Z UXRP STALE_QUOTE age=1952s mark=18.08 \u2014 order logic skipped",
     "2026-09-28T13:28:48Z GDXU mark=107.7830 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
@@ -252,7 +269,24 @@
     "2026-09-28T14:50:31Z UXRP mark=17.0501 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.9388}",
     "2026-09-28T14:54:15Z UXRP mark=16.9730 {'id': 'LB-UXRP-2', 'symbol': 'UXRP', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 4124.197358277689, 'price': 16.972999572753906, 'cost': 70000.0, 'limit': 17.05}",
     "2026-09-28T14:54:15Z UXRP attached TS-UXRP-2 PENDING_ARM arm=17.3125",
-    "2026-09-28T14:54:15Z UXRP mark=16.9730 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}"
+    "2026-09-28T14:54:15Z UXRP mark=16.9730 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}",
+    "2026-09-28T15:00:24Z UXRP mark=17.0500 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}",
+    "2026-09-28T15:10:23Z UXRP mark=17.0350 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}",
+    "2026-09-28T15:20:25Z UXRP mark=16.9200 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}",
+    "2026-09-28T15:30:27Z UXRP mark=17.1620 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}",
+    "2026-09-28T15:40:14Z UXRP mark=17.2210 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}",
+    "2026-09-28T15:50:19Z UXRP mark=17.2121 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}",
+    "2026-09-28T16:00:14Z UXRP mark=17.2121 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}",
+    "2026-09-28T16:10:22Z UXRP mark=17.3899 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'ARMED', 'high_water': 17.38990020751953, 'stop': 17.216}",
+    "2026-09-28T16:20:31Z UXRP mark=17.3200 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'ARMED_HOLD', 'stop': 17.216}",
+    "2026-09-28T16:30:43Z UXRP mark=17.7700 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'TRAILED', 'high_water': 17.770000457763672, 'stop': 17.5923}",
+    "2026-09-28T16:40:25Z UXRP mark=17.5000 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.5923, 'mark': 17.5}",
+    "2026-09-28T16:50:22Z UXRP mark=17.5000 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.5923}",
+    "2026-09-28T17:00:20Z UXRP mark=17.4056 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.5923}",
+    "2026-09-28T17:10:21Z UXRP mark=17.1900 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.5923}",
+    "2026-09-28T17:20:40Z UXRP mark=17.6100 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'FILLED_LIMIT', 'side': 'SELL', 'limit': 17.5923, 'qty': 5863.327758277689, 'proceeds': 103149.42}",
+    "2026-09-28T17:20:40Z queued PB-SATA-3 notional=$3149.42",
+    "2026-09-28T17:20:40Z SATA mark=100.0100 {'id': 'PB-SATA-3', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 31.491050222256366, 'price': 100.01000213623047, 'cost': 3149.42}"
   ],
   "auto_execute": true,
   "standing_rules": {

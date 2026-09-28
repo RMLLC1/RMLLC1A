@@ -1,9 +1,9 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-09-28T14:54:15Z  
+**Updated:** 2026-09-28T17:20:40Z  
 **Base currency:** USD  
 **Starting cash:** 100,000.00  
-**Cash:** 0.00  
+**Cash:** 100,000.00  
 **Dividend cash (SATA collected):** 0.0917  
 **Mode:** PAPER only — **auto-execute** open buy/sell orders on each poll  
 **Price feed:** Yahoo Finance v8 1m chart (near-live poll; premarket + regular; may lag)  
@@ -18,24 +18,22 @@
 - **Profits → SATA:** realized trading profit buys **SATA** at best price; **hold for daily dividends — do not sell**.
 
 **Marks:**
-- UXRP: **$16.9730** (yahoo_v8_chart_1m)
-- GDXU: **$108.3509** (yahoo_v8_chart_1m)
-- SATA: **$99.9950** (yahoo_v8_chart_1m)
-- BTC-USD: **$82858.4297** (yahoo_v8_chart_1m)
-- XRP-USD: **$1.4854** (yahoo_v8_chart_1m)
+- UXRP: **$17.6100** (yahoo_v8_chart_1m)
+- GDXU: **$109.7728** (yahoo_v8_chart_1m)
+- SATA: **$100.0100** (yahoo_v8_chart_1m)
+- BTC-USD: **$83980.2109** (yahoo_v8_chart_1m)
+- XRP-USD: **$1.5081** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| UXRP | 5863.3278 | 17.0552 | 100,000.00 | 16.9730 | -481.74 |
-| SATA | 13.0054 | 99.9916 | 1,300.43 | 99.9950 | 0.04 |
+| SATA | 44.4964 | 100.0046 | 4,449.85 | 100.0100 | 0.24 |
 
 ## Open orders (PAPER)
 
 | ID | Symbol | Type | Status | Params |
 | --- | --- | --- | --- | --- |
-| TS-UXRP-2 | UXRP | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +2% → $17.3125. Trail 1%. LIMIT sell at stop. |
 
 ## Trade log (buys/sells)
 
@@ -47,21 +45,23 @@
 - 2026-09-28T14:30:19Z **SELL_LIMIT** GDXU qty=639.0575544362919 @ $111.2931 → cash $71122.7
 - 2026-09-28T14:31:03Z **BUY** SATA qty=11.22756106967931 @ $99.99500274658203 → cash $70000.0
 - 2026-09-28T14:54:15Z **BUY** UXRP qty=4124.197358277689 @ $16.972999572753906 → cash $0.0
+- 2026-09-28T17:20:40Z **SELL_LIMIT** UXRP qty=5863.327758277689 @ $17.5923 → cash $103149.42
+- 2026-09-28T17:20:40Z **BUY** SATA qty=31.491050222256366 @ $100.01000213623047 → cash $100000.0
 
 ## Recent events
 
-- 2026-09-28T14:30:19Z UXRP mark=17.2170 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.9388}
-- 2026-09-28T14:30:19Z GDXU mark=111.9195 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'FILLED_LIMIT', 'side': 'SELL', 'limit': 111.2931, 'qty': 639.0575544362919, 'proceeds': 71122.7}
-- 2026-09-28T14:30:19Z queued PB-SATA-2 notional=$1122.70
-- 2026-09-28T14:30:19Z SATA SELL blocked — hold for dividends
-- 2026-09-28T14:30:39Z UXRP mark=17.2170 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.9388}
-- 2026-09-28T14:31:03Z UXRP mark=17.2170 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.9388}
-- 2026-09-28T14:31:03Z SATA mark=99.9950 {'id': 'PB-SATA-2', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 11.22756106967931, 'price': 99.99500274658203, 'cost': 1122.7}
-- 2026-09-28T14:40:25Z UXRP mark=17.4450 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.9388}
-- 2026-09-28T14:50:31Z UXRP mark=17.0501 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.9388}
-- 2026-09-28T14:54:15Z UXRP mark=16.9730 {'id': 'LB-UXRP-2', 'symbol': 'UXRP', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 4124.197358277689, 'price': 16.972999572753906, 'cost': 70000.0, 'limit': 17.05}
-- 2026-09-28T14:54:15Z UXRP attached TS-UXRP-2 PENDING_ARM arm=17.3125
-- 2026-09-28T14:54:15Z UXRP mark=16.9730 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}
+- 2026-09-28T15:50:19Z UXRP mark=17.2121 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}
+- 2026-09-28T16:00:14Z UXRP mark=17.2121 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'PENDING_ARM'}
+- 2026-09-28T16:10:22Z UXRP mark=17.3899 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'ARMED', 'high_water': 17.38990020751953, 'stop': 17.216}
+- 2026-09-28T16:20:31Z UXRP mark=17.3200 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'ARMED_HOLD', 'stop': 17.216}
+- 2026-09-28T16:30:43Z UXRP mark=17.7700 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'TRAILED', 'high_water': 17.770000457763672, 'stop': 17.5923}
+- 2026-09-28T16:40:25Z UXRP mark=17.5000 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.5923, 'mark': 17.5}
+- 2026-09-28T16:50:22Z UXRP mark=17.5000 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.5923}
+- 2026-09-28T17:00:20Z UXRP mark=17.4056 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.5923}
+- 2026-09-28T17:10:21Z UXRP mark=17.1900 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.5923}
+- 2026-09-28T17:20:40Z UXRP mark=17.6100 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'FILLED_LIMIT', 'side': 'SELL', 'limit': 17.5923, 'qty': 5863.327758277689, 'proceeds': 103149.42}
+- 2026-09-28T17:20:40Z queued PB-SATA-3 notional=$3149.42
+- 2026-09-28T17:20:40Z SATA mark=100.0100 {'id': 'PB-SATA-3', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 31.491050222256366, 'price': 100.01000213623047, 'cost': 3149.42}
 
 ## Rules
 
