@@ -45,7 +45,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Outlook Calendar auth when Rodney needs Outlook.
 - Accountant specialist ready; Rodney will try a finance task later.
 - Markets specialist ready; UXRP research delivered; paper UXRP 10% buy placed; GDXU research delivered.
-- **Nursing CE specialist (`nurse-ce`) added** for Texas + Washington RN dual-state course vetting (2026-09-28). **Both licenses renew in October.** Awaiting CE website URL.
+- **Nursing CE specialist (`nurse-ce`)** — TX + WA RN dual-state; renewals **October**. CE site: **https://careceus.com** (CA BRN CEP #16375; likely OK both for general hours). Vet courses on request; Rodney takes all tests.
 - Awaiting Rodney's next task.
 
 ## Standing preferences

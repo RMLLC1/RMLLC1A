@@ -37,6 +37,7 @@ Always state: **Likely OK for TX**, **Likely OK for WA**, **OK for both**, or **
 
 - `agents/nursing/requirements-tx-wa.md` — standing requirements summary
 - `agents/nursing/ce-log.md` — Rodney’s course log (edit only if authorized)
+- Rodney’s CE portal: **https://careceus.com** (nurses: `/ceus-for-nurses.php`; CA BRN CEP #16375)
 - Official sources beat third-party blogs; prefer bon.texas.gov and nursing.wa.gov
 
 ## Tools

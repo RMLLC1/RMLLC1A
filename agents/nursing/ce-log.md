@@ -16,6 +16,19 @@
 
 ## Portal notes
 
-- CE website: _(Rodney to provide URL)_  
+- **CE website:** [https://careceus.com](https://careceus.com) (CareCEUs / EdCompass) — nurses: [ceus-for-nurses.php](https://www.careceus.com/ceus-for-nurses.php)
+- Provider approval: **California BRN CEP #16375** (also NAB for NHAs — ignore NHA track for RN CE)
+- Pricing (site, 2026-09-28): ~$16/contact hour or ~$199/yr unlimited
 - Texas Nurse Portal CE upload: required for renewals beginning **2026-09-01**
 - Both licenses renew in **October** (Rodney, 2026-09-28)
+
+## Provider dual-state fit — CareCEUs (2026-09-28)
+
+| Check | Texas | Washington |
+| --- | --- | --- |
+| Hours | Contact hours stated per course | Hours count toward 8/yr if nursing-related |
+| Accreditation | **CA BRN CEP #16375** — TX BON lists **Other State Boards of Nursing** as recognized; likely OK | Formal CNE not required; nursing-practice CE OK |
+| Dual-count? | **Likely OK** if course is nursing / area of practice | **Likely OK** for general hours |
+| Gaps | Still need TX targeted (jurisprudence/ethics, HHSC trafficking, geriatric if applicable) — verify each course | Still need **2 hr health equity**/renewal; suicide prevention must be **DOH model-list** (CareCEUs may not qualify for that one-time) |
+
+**Verdict:** Provider is **OK for both** for general RN CE hours. Vet each course for topic + mandatory tags before Rodney starts.

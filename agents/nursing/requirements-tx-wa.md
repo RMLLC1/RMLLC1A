@@ -50,6 +50,14 @@
 
 ---
 
+## Rodney’s CE website
+
+**CareCEUs** — [https://careceus.com](https://careceus.com)  
+Nurse courses: [https://www.careceus.com/ceus-for-nurses.php](https://www.careceus.com/ceus-for-nurses.php)  
+**Accreditor on file:** California Board of Registered Nursing **CEP #16375**  
+**TX:** Acceptable under BON “Other State Boards of Nursing” (confirm certificate lists provider # + contact hours).  
+**WA:** Acceptable for general nursing CE hours; not a substitute for DOH-listed suicide prevention unless that course is on the model list.
+
 ## When reviewing a course from Rodney’s CE website
 
 Collect: title, provider, accreditor, contact hours, completion date, topics, certificate text.  
