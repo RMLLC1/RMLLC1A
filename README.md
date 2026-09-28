@@ -4,9 +4,9 @@ Personal agent workspace for Rodney Bishop.
 
 ## Primary agent
 
-The **primary agent** is the only agent you talk to. It plans work and directs specialist agents for research, implementation, verification, email, calendar, and Drive.
+The **primary agent** is the main chat session (Cloud Agent or IDE Agent on this repo) — there is no separate `primary.md` file. It is the only agent you talk to. It plans work and directs specialist agents for research, implementation, verification, email, calendar, and Drive.
 
-Start a Cloud Agent or IDE Agent session on this repo and speak to the primary agent in natural language.
+Speak to it in natural language; it routes work to specialists and brings you the answer.
 
 ## Layout
 

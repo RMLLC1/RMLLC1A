@@ -2,15 +2,29 @@
 
 **Updated:** 2026-09-28
 
-## Active role
+## Active goal
 
-Primary agent online for Rodney Bishop. This conversation is the sole user-facing channel; specialists are directed from here.
+Serve as Rodney Bishop's primary agent for RMLLC1A — sole conversational interface; direct all specialists.
+
+## Decisions
+
+- Primary = this Cloud Agent session; specialists under `.cursor/agents/`.
+- Confirm before irreversible external actions (send, delete, share, decline).
+- Gmail, Google Calendar, Google Drive MCP: ready. Outlook Calendar: needs auth when first used.
 
 ## Open loops
 
-- None yet — awaiting Rodney's first task.
+- None — awaiting Rodney's next task.
+
+## Last specialist outcomes
+
+- `researcher` audit: scaffolding complete; hardened invocation/MCP/state gaps (this turn).
+
+## Next action
+
+Wait for Rodney's request; route via default pipelines.
 
 ## Standing preferences
 
-- Confirm before irreversible external actions (send email, delete, share, decline meetings).
+- Confirm before irreversible external actions.
 - Keep replies concise; lead with the answer.
