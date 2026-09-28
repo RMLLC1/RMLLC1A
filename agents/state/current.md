@@ -48,4 +48,5 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Confirm before irreversible external actions.
 - Keep replies concise; lead with the answer.
 - Name: John.
-- Free AT&T texting: confirmed working (Rodney acknowledged test).
+- Prefer email for notifications (confirmed working to rodney.bishoprn@gmail.com on 2026-09-28).
+- Free AT&T texting: failed (carrier gateway shut down). Prefer email.
