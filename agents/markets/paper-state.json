@@ -1,13 +1,13 @@
 {
   "starting_cash": 100000.0,
-  "cash": 50000.0,
-  "updated": "2026-09-28T23:04:28Z",
+  "cash": 0.0,
+  "updated": "2026-09-28T23:06:43Z",
   "positions": [
     {
       "symbol": "UXRP",
-      "qty": 2951.5938606847694,
+      "qty": 5903.187721369539,
       "avg_cost": 16.94,
-      "cost_basis": 50000.0,
+      "cost_basis": 100000.0,
       "last_upl_pct": 0.0
     },
     {
@@ -163,6 +163,28 @@
       "status": "PENDING_ARM",
       "arm_price": 17.2788,
       "trail_pct": 0.01,
+      "params_text": "Arm +2% \u2192 $17.2788. Trail 1%. LIMIT sell at stop. (combined UXRP book)"
+    },
+    {
+      "id": "BB-UXRP-3",
+      "symbol": "UXRP",
+      "type": "BUY_BEST",
+      "status": "FILLED",
+      "notional": 50000.0,
+      "attach_trailing_stop": true,
+      "arm_pct": 0.02,
+      "trail_pct": 0.01,
+      "params_text": "Buy $50,000 UXRP at best (lowest) available. Then +2% arm / 1% trail LIMIT stop.",
+      "fill_price": 16.94,
+      "fill_qty": 2951.5938606847694
+    },
+    {
+      "id": "TS-UXRP-4",
+      "symbol": "UXRP",
+      "type": "TRAILING_STOP_LIMIT_SELL",
+      "status": "CANCELLED",
+      "arm_price": 17.2788,
+      "trail_pct": 0.01,
       "params_text": "Arm +2% \u2192 $17.2788. Trail 1%. LIMIT sell at stop."
     }
   ],
@@ -265,13 +287,18 @@
       "price": 16.94,
       "cash_after": 50000.0,
       "rationale": "BUY_BEST BB-UXRP-2 auto-filled at best available"
+    },
+    {
+      "time": "2026-09-28T23:06:43Z",
+      "side": "BUY",
+      "symbol": "UXRP",
+      "qty": 2951.5938606847694,
+      "price": 16.94,
+      "cash_after": 0.0,
+      "rationale": "BUY_BEST BB-UXRP-3 auto-filled at best available"
     }
   ],
   "events": [
-    "2026-09-28T13:29:37Z GDXU mark=107.7830 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T13:30:26Z UXRP STALE_QUOTE age=235826s mark=19.19 \u2014 order logic skipped",
-    "2026-09-28T13:30:26Z GDXU mark=107.5000 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T13:31:19Z UXRP mark=17.9057 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'TRAILED', 'high_water': 17.90570068359375, 'stop': 17.7266}",
     "2026-09-28T13:31:19Z GDXU mark=106.6700 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
     "2026-09-28T13:32:02Z UXRP mark=17.9600 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'TRAILED', 'high_water': 17.959999084472656, 'stop': 17.7804}",
     "2026-09-28T13:32:02Z GDXU mark=108.2100 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
@@ -317,7 +344,11 @@
     "2026-09-28T23:04:10Z UXRP STALE_QUOTE age=10953s mark=16.94 \u2014 order logic skipped",
     "2026-09-28T23:04:28Z UXRP mark=16.9400 {'id': 'BB-UXRP-2', 'symbol': 'UXRP', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 2951.5938606847694, 'price': 16.94, 'cost': 50000.0}",
     "2026-09-28T23:04:28Z UXRP attached TS-UXRP-3 PENDING_ARM arm=17.2788",
-    "2026-09-28T23:04:28Z UXRP STALE_QUOTE age=10971s mark=16.94 \u2014 order logic skipped"
+    "2026-09-28T23:04:28Z UXRP STALE_QUOTE age=10971s mark=16.94 \u2014 order logic skipped",
+    "2026-09-28T23:06:43Z UXRP STALE_QUOTE age=11106s mark=16.94 \u2014 order logic skipped",
+    "2026-09-28T23:06:43Z UXRP mark=16.9400 {'id': 'BB-UXRP-3', 'symbol': 'UXRP', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 2951.5938606847694, 'price': 16.94, 'cost': 50000.0}",
+    "2026-09-28T23:06:43Z UXRP attached TS-UXRP-4 PENDING_ARM arm=17.2788",
+    "2026-09-28T23:06:43Z UXRP STALE_QUOTE age=11106s mark=16.94 \u2014 order logic skipped"
   ],
   "auto_execute": true,
   "standing_rules": {
