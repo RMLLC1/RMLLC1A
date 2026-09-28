@@ -1,6 +1,6 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-09-28T12:05:08Z  
+**Updated:** 2026-09-28T12:06:16Z  
 **Base currency:** USD  
 **Starting cash:** 100,000.00  
 **Cash:** 40,000.00  
@@ -15,16 +15,16 @@
 
 **Marks:**
 - UXRP: **$17.4000** (yahoo_v8_chart_1m)
-- GDXU: **$108.7400** (yahoo_v8_chart_1m)
-- BTC-USD: **$83237.3516** (yahoo_v8_chart_1m)
-- XRP-USD: **$1.4984** (yahoo_v8_chart_1m)
+- GDXU: **$110.7500** (yahoo_v8_chart_1m)
+- BTC-USD: **$83377.5078** (yahoo_v8_chart_1m)
+- XRP-USD: **$1.5043** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | UXRP | 1739.1304 | 17.2500 | 30,000.00 | 17.4000 | 260.87 |
-| GDXU | 275.5580 | 108.8700 | 30,000.00 | 108.7400 | -35.82 |
+| GDXU | 275.5580 | 108.8700 | 30,000.00 | 110.7500 | 518.05 |
 
 ## Open orders (PAPER)
 
@@ -35,8 +35,6 @@
 
 ## Recent events
 
-- 2026-09-28T11:59:10Z UXRP STALE_QUOTE age=230350s mark=17.4 — stop logic skipped
-- 2026-09-28T11:59:10Z GDXU STALE_QUOTE age=230350s mark=108.6712 — stop logic skipped
 - 2026-09-28T11:59:31Z UXRP STALE_QUOTE age=1192s mark=17.4 — stop logic skipped
 - 2026-09-28T11:59:31Z GDXU mark=108.6712 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-09-28T12:03:00Z UXRP STALE_QUOTE age=1401s mark=17.4 — stop logic skipped
@@ -47,6 +45,8 @@
 - 2026-09-28T12:04:17Z GDXU mark=108.7400 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-09-28T12:05:08Z UXRP STALE_QUOTE age=1529s mark=17.4 — stop logic skipped
 - 2026-09-28T12:05:08Z GDXU mark=108.7400 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
+- 2026-09-28T12:06:16Z UXRP STALE_QUOTE age=1597s mark=17.4 — stop logic skipped
+- 2026-09-28T12:06:16Z GDXU mark=110.7500 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 
 ## Rules
 
