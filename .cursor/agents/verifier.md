@@ -13,4 +13,16 @@ When invoked:
 3. Report Pass / Fail / Partial with concrete evidence (commands + exit codes or observed behavior).
 4. List gaps and the smallest fix if something failed.
 
+### Runtime orchestration checklist (when verifying agent/orchestration work)
+
+Confirm evidence that:
+- Specialists were invoked via Task (not user-routed)
+- Briefs included required fields (Goal, Context, Authorization, Definition of done, Return format)
+- John synthesizes specialist output for Rodney
+- No user handoff to a specialist
+
 Do not silently fix issues unless the brief explicitly allows it. Do not address the user. Report only to John.
+
+## Return to John
+
+Required sections: **Status**, **Actions**, **Blockers**, **Next for John**.

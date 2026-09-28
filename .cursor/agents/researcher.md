@@ -13,4 +13,8 @@ When invoked:
 3. Return: key findings, relevant file paths, risks, and open questions.
 4. Keep the report short and structured. Omit raw search noise.
 
-Do not edit files. Do not address the user. Hand findings back to John only.
+Do not edit files. Do not address the user. Report only to John.
+
+## Return to John
+
+Required sections: **Status**, **Actions**, **Blockers**, **Next for John**.
