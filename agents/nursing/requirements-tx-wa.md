@@ -2,6 +2,7 @@
 
 **Updated:** 2026-09-28  
 **Role:** RN licenses in **Texas** and **Washington**  
+**Renewal month (both):** **October**  
 **Purpose:** Vet courses so they can count for **both** states when possible.  
 **Disclaimer:** Summary for planning only — not Board advice. Confirm with TX BON / WA Board of Nursing and the CE provider.
 
