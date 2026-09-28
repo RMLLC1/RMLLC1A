@@ -1,6 +1,6 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-09-28T12:20:30Z  
+**Updated:** 2026-09-28T12:21:43Z  
 **Base currency:** USD  
 **Starting cash:** 100,000.00  
 **Cash:** 40,000.00  
@@ -17,16 +17,16 @@
 
 **Marks:**
 - UXRP: **$17.6521** (yahoo_v8_chart_1m)
-- GDXU: **$111.4900** (yahoo_v8_chart_1m)
-- BTC-USD: **$83418.7031** (yahoo_v8_chart_1m)
-- XRP-USD: **$1.5185** (yahoo_v8_chart_1m)
+- GDXU: **$111.7500** (yahoo_v8_chart_1m)
+- BTC-USD: **$83395.9922** (yahoo_v8_chart_1m)
+- XRP-USD: **$1.5177** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | UXRP | 1739.1304 | 17.2500 | 30,000.00 | 17.6521 | 699.30 |
-| GDXU | 275.5580 | 108.8700 | 30,000.00 | 111.4900 | 721.96 |
+| GDXU | 275.5580 | 108.8700 | 30,000.00 | 111.7500 | 793.61 |
 
 ## Open orders (PAPER)
 
@@ -42,8 +42,6 @@
 
 ## Recent events
 
-- 2026-09-28T12:16:03Z UXRP STALE_QUOTE age=2223s mark=17.4 — order logic skipped
-- 2026-09-28T12:16:03Z GDXU mark=110.2000 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-09-28T12:16:21Z UXRP STALE_QUOTE age=2241s mark=17.4 — order logic skipped
 - 2026-09-28T12:16:21Z GDXU mark=110.1682 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-09-28T12:17:22Z UXRP STALE_QUOTE age=2302s mark=17.4 — order logic skipped
@@ -54,6 +52,8 @@
 - 2026-09-28T12:19:18Z GDXU mark=110.7200 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-09-28T12:20:30Z UXRP mark=17.6521 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED', 'high_water': 17.6521, 'stop': 17.2991}
 - 2026-09-28T12:20:30Z GDXU mark=111.4900 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'ARMED', 'high_water': 111.49, 'stop': 109.2602}
+- 2026-09-28T12:21:43Z UXRP mark=17.6521 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED_HOLD', 'stop': 17.2991}
+- 2026-09-28T12:21:43Z GDXU mark=111.7500 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 111.75, 'stop': 109.515}
 
 ## Rules
 

@@ -1,7 +1,7 @@
 {
   "starting_cash": 100000.0,
   "cash": 40000.0,
-  "updated": "2026-09-28T12:20:30Z",
+  "updated": "2026-09-28T12:21:43Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -15,7 +15,7 @@
       "qty": 275.558,
       "avg_cost": 108.87,
       "cost_basis": 30000.0,
-      "last_upl_pct": 2.41
+      "last_upl_pct": 2.65
     }
   ],
   "orders": [
@@ -38,8 +38,8 @@
       "arm_price": 111.0474,
       "trail_pct": 0.02,
       "params_text": "Arm +2% \u2192 $111.0474. Trail 2%. LIMIT sell at stop.",
-      "high_water": 111.49,
-      "stop": 109.2602
+      "high_water": 111.75,
+      "stop": 109.515
     }
   ],
   "trade_log": [
@@ -103,7 +103,9 @@
     "2026-09-28T12:19:18Z UXRP STALE_QUOTE age=2418s mark=17.4 \u2014 order logic skipped",
     "2026-09-28T12:19:18Z GDXU mark=110.7200 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
     "2026-09-28T12:20:30Z UXRP mark=17.6521 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED', 'high_water': 17.6521, 'stop': 17.2991}",
-    "2026-09-28T12:20:30Z GDXU mark=111.4900 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'ARMED', 'high_water': 111.49, 'stop': 109.2602}"
+    "2026-09-28T12:20:30Z GDXU mark=111.4900 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'ARMED', 'high_water': 111.49, 'stop': 109.2602}",
+    "2026-09-28T12:21:43Z UXRP mark=17.6521 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED_HOLD', 'stop': 17.2991}",
+    "2026-09-28T12:21:43Z GDXU mark=111.7500 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 111.75, 'stop': 109.515}"
   ],
   "auto_execute": true
 }
