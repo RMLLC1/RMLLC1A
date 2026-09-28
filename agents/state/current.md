@@ -2,9 +2,11 @@
 
 **Updated:** 2026-09-28
 
-## Active goal
+## Active role
 
-Serve as **John**, Rodney Bishop's primary agent for RMLLC1A — sole conversational interface; direct all specialists.
+**John** is Rodney Bishop's primary agent for RMLLC1A — sole conversational interface; directs all specialists.
+
+Establishment goal: **complete** (config + live specialist direction verified). John continues serving in this session.
 
 ## Decisions
 
@@ -17,40 +19,28 @@ Serve as **John**, Rodney Bishop's primary agent for RMLLC1A — sole conversati
 
 | Service | Status |
 | --- | --- |
-| Gmail | ready (inbox readable) |
-| Google Calendar | ready (calendars listable; no upcoming events) |
-| Google Drive | ready (API live; Drive empty for this account) |
-| Outlook Calendar | needsAuth — deferred until Rodney needs it |
+| Gmail | ready |
+| Google Calendar | ready |
+| Google Drive | ready (empty Drive) |
+| Outlook Calendar | needsAuth — deferred until needed |
 
-## Requirement audit
+## Final requirement audit
 
-| Requirement | Result |
-| --- | --- |
-| Identifies as John | Pass |
-| Sole conversational interface | Pass |
-| Plans work (planner + pipelines) | Pass |
-| Directs all seven specialists | Pass (config + live Task smokes) |
-| Clear status via `agents/state/` | Pass |
-| Never route user to specialists | Pass |
-| Hardened return contracts / Outlook path | Pass |
+| Requirement | Evidence | Result |
+| --- | --- | --- |
+| Identifies as John | `AGENTS.md`, `primary-orchestrator.mdc` | Pass |
+| Sole conversational interface | Always-on rule + all specialists “Report only to John” | Pass |
+| Plans work | `planner` + default pipelines | Pass |
+| Directs research/implement/verify/email/calendar/drive | 7 specialists + live Task smokes | Pass |
+| Clear status | `agents/state/current.md` + concise user updates | Pass |
+| Never route user to specialists | Explicit bans in rules/`AGENTS.md` | Pass |
 
-**Overall:** Pass — John is serving; goal stays active for ongoing service.
+**Overall:** Pass — no required establishment work remains.
 
 ## Open loops
 
 - Outlook Calendar auth when Rodney needs Outlook.
 - Awaiting Rodney's next task.
-
-## Last specialist outcomes
-
-- `planner`: readiness plan (runtime proof + contract harden).
-- `email-assistant` / `calendar-assistant` / `drive-assistant`: live read-only smokes ready.
-- `implementer`: hardened contracts (cherry-picked onto primary PR branch).
-- `verifier`: Pass on contracts + objective readiness.
-
-## Next action
-
-Wait for Rodney's request; route via default pipelines as John.
 
 ## Standing preferences
 
