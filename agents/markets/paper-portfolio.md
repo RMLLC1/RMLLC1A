@@ -17,7 +17,7 @@
 
 | ID | Symbol | Type | Status | Params | Notes |
 | --- | --- | --- | --- | --- | --- |
-| TS-UXRP-1 | UXRP | TRAILING_STOP_SELL | **PENDING_ARM** | Arm when mark ≥ **+2%** vs avg cost → **$19.5738**. After armed: trail **1%** below high-water mark. Qty: **all** (521.1058). | Rodney 2026-09-28. Not a live broker order. Trail % defaulted to 1% (change anytime). |
+| TS-UXRP-1 | UXRP | TRAILING_STOP_SELL | **PENDING_ARM** | Arm when mark ≥ **+2%** vs avg cost → **$19.5738**. After armed: trail **2%** below high-water mark. Qty: **all** (521.1058). | Rodney 2026-09-28. Not a live broker order. Trail = 2% (matched to profit trigger). |
 
 ### Trailing-stop logic (TS-UXRP-1)
 
