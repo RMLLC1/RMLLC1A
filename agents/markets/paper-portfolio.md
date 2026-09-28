@@ -21,8 +21,8 @@
 
 ### Trailing-stop logic (TS-UXRP-1)
 
-1. **While PENDING_ARM:** if mark ≥ $19.5738, set status → **ARMED**, set `high_water = mark`, `stop = high_water × 0.99`.
-2. **While ARMED:** if mark > high_water, raise high_water and stop (`stop = high_water × 0.99`).
+1. **While PENDING_ARM:** if mark ≥ $19.5738, set status → **ARMED**, set `high_water = mark`, `stop = high_water × 0.98`.
+2. **While ARMED:** if mark > high_water, raise high_water and stop (`stop = high_water × 0.98`).
 3. **Trigger:** if mark ≤ stop, **SELL all** UXRP at assumed mark (paper fill), log trade, clear order + position.
 4. John / markets must refresh a mark when Rodney asks for a check; this environment does not stream live prices.
 
