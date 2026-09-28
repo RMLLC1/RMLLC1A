@@ -1,6 +1,6 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-09-28T11:34:38Z  
+**Updated:** 2026-09-28T11:37:59Z  
 **Base currency:** USD  
 **Starting cash:** 100,000.00  
 **Cash:** 40,000.00  
@@ -15,23 +15,23 @@
 
 **Marks / exposure (approx):**
 - UXRP ~$17.25 pre-market → ~30% ($30k)
-- GDXU **$110.00** (Rodney-corrected fill) → ~30% ($30k)
+- GDXU **$108.87** best pre-market (Yahoo) → ~30% ($30k)
 - Cash 40%
-- **TS-UXRP-1** PENDING_ARM @ $17.595 | **TS-GDXU-1** PENDING_ARM @ **$112.20**
+- **TS-UXRP-1** PENDING_ARM @ $17.595 | **TS-GDXU-1** PENDING_ARM @ **$111.0474**
 
 ## Positions
 
 | Symbol | Qty | Avg cost | Cost basis | Market note |
 | --- | ---: | ---: | ---: | --- |
 | UXRP | 1739.1304 | 17.25 | 30,000.00 | ~30% — best pre-market fills |
-| GDXU | 272.7273 | 110.00 | 30,000.00 | U.S. MicroSectors 3× gold miners ETN. ~30%. **Repriced to ~$110** per Rodney. |
+| GDXU | 275.5580 | 108.87 | 30,000.00 | U.S. MicroSectors 3× gold miners ETN. ~30% @ best pre-market **$108.87** (Rodney confirmed). |
 
 ## Open orders (PAPER)
 
 | ID | Symbol | Type | Status | Params | Notes |
 | --- | --- | --- | --- | --- | --- |
 | TS-UXRP-1 | UXRP | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +2% → **$17.595**. Trail 2%. Trigger → **LIMIT sell** at stop (not market). Qty: all. | PAPER |
-| TS-GDXU-1 | GDXU | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +2% → **$112.20**. Trail 2%. Trigger → **LIMIT sell** at stop (not market). Qty: all (272.7273). | Same rules as UXRP. PAPER |
+| TS-GDXU-1 | GDXU | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +2% → **$111.0474**. Trail 2%. Trigger → **LIMIT sell** at stop (not market). Qty: all (275.5580). | Same rules as UXRP. PAPER |
 
 ### Trailing-stop logic (shared)
 
