@@ -1,6 +1,6 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-09-28T23:06:43Z  
+**Updated:** 2026-09-28T23:08:56Z  
 **Base currency:** USD  
 **Starting cash:** 100,000.00  
 **Cash:** 0.00  
@@ -21,27 +21,26 @@
 - UXRP: **$16.9400** (yahoo_v8_chart_1m)
 - GDXU: **$108.0400** (yahoo_v8_chart_1m)
 - SATA: **$100.0000** (yahoo_v8_chart_1m)
-- BTC-USD: **$83478.0000** (yahoo_v8_chart_1m)
-- XRP-USD: **$1.4953** (yahoo_v8_chart_1m)
+- BTC-USD: **$83493.5391** (yahoo_v8_chart_1m)
+- XRP-USD: **$1.4950** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| UXRP | 5903.1877 | 16.9400 | 100,000.00 | 16.9400 | 0.00 |
+| UXRP | 2951.5939 | 16.9400 | 50,000.00 | 16.9400 | 0.00 |
+| GDXU | 462.7916 | 108.0400 | 50,000.00 | 108.0400 | 0.00 |
 | SATA | 44.4964 | 100.0046 | 4,449.85 | 100.0000 | -0.21 |
 
 ## Open orders (PAPER)
 
 | ID | Symbol | Type | Status | Params |
 | --- | --- | --- | --- | --- |
-| TS-UXRP-3 | UXRP | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +2% → $17.2788. Trail 1%. LIMIT sell at stop. |
-| TS-UXRP-4 | UXRP | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +2% → $17.2788. Trail 1%. LIMIT sell at stop. |
+| TS-UXRP-3 | UXRP | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +2% → $17.2788. Trail 1%. LIMIT sell at stop. (combined UXRP book) |
+| TS-GDXU-3 | GDXU | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +2% → $110.2008. Trail 1%. LIMIT sell at stop. |
 
 ## Trade log (buys/sells)
 
-- 2026-09-28T00:00:00Z **BUY** UXRP qty=1739.1304 @ $17.25 → cash $70000.0
-- 2026-09-28T00:00:00Z **BUY** GDXU qty=275.558 @ $108.87 → cash $40000.0
 - 2026-09-28T12:33:13Z **SELL_LIMIT** GDXU qty=275.558 @ $109.515 → cash $70177.73
 - 2026-09-28T12:39:35Z **BUY** GDXU qty=639.0575544362919 @ $109.5363 → cash $177.73
 - 2026-09-28T12:52:51Z **BUY** SATA qty=1.7778333500050014 @ $99.97 → cash $0.0
@@ -52,14 +51,11 @@
 - 2026-09-28T17:20:40Z **BUY** SATA qty=31.491050222256366 @ $100.01000213623047 → cash $100000.0
 - 2026-09-28T23:04:28Z **BUY** UXRP qty=2951.5938606847694 @ $16.94 → cash $50000.0
 - 2026-09-28T23:06:43Z **BUY** UXRP qty=2951.5938606847694 @ $16.94 → cash $0.0
+- 2026-09-28T23:08:56Z **SELL** UXRP qty=2951.5938606847694 @ $16.94 → cash $50000.0
+- 2026-09-28T23:08:56Z **BUY** GDXU qty=462.7915586819696 @ $108.04 → cash $0.0
 
 ## Recent events
 
-- 2026-09-28T17:10:21Z UXRP mark=17.1900 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'WORKING_LIMIT', 'limit': 17.5923}
-- 2026-09-28T17:20:40Z UXRP mark=17.6100 {'id': 'TS-UXRP-2', 'symbol': 'UXRP', 'event': 'FILLED_LIMIT', 'side': 'SELL', 'limit': 17.5923, 'qty': 5863.327758277689, 'proceeds': 103149.42}
-- 2026-09-28T17:20:40Z queued PB-SATA-3 notional=$3149.42
-- 2026-09-28T17:20:40Z SATA mark=100.0100 {'id': 'PB-SATA-3', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 31.491050222256366, 'price': 100.01000213623047, 'cost': 3149.42}
-- 2026-09-28T23:04:10Z UXRP STALE_QUOTE age=10953s mark=16.94 — order logic skipped
 - 2026-09-28T23:04:28Z UXRP mark=16.9400 {'id': 'BB-UXRP-2', 'symbol': 'UXRP', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 2951.5938606847694, 'price': 16.94, 'cost': 50000.0}
 - 2026-09-28T23:04:28Z UXRP attached TS-UXRP-3 PENDING_ARM arm=17.2788
 - 2026-09-28T23:04:28Z UXRP STALE_QUOTE age=10971s mark=16.94 — order logic skipped
@@ -67,6 +63,11 @@
 - 2026-09-28T23:06:43Z UXRP mark=16.9400 {'id': 'BB-UXRP-3', 'symbol': 'UXRP', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 2951.5938606847694, 'price': 16.94, 'cost': 50000.0}
 - 2026-09-28T23:06:43Z UXRP attached TS-UXRP-4 PENDING_ARM arm=17.2788
 - 2026-09-28T23:06:43Z UXRP STALE_QUOTE age=11106s mark=16.94 — order logic skipped
+- 2026-09-28T23:08:56Z UXRP STALE_QUOTE age=11239s mark=16.94 — order logic skipped
+- 2026-09-28T23:08:56Z UXRP mark=16.9400 {'id': 'SB-UXRP-1', 'symbol': 'UXRP', 'event': 'FILLED_SELL', 'side': 'SELL', 'qty': 2951.5938606847694, 'price': 16.94, 'proceeds': 50000.0, 'basis_released': 50000.0}
+- 2026-09-28T23:08:56Z GDXU mark=108.0400 {'id': 'BB-GDXU-1', 'symbol': 'GDXU', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 462.7915586819696, 'price': 108.04, 'cost': 50000.0}
+- 2026-09-28T23:08:56Z GDXU attached TS-GDXU-3 PENDING_ARM arm=110.2008
+- 2026-09-28T23:08:56Z GDXU mark=108.0400 {'id': 'TS-GDXU-3', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 
 ## Rules
 

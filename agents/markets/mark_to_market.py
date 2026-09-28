@@ -326,8 +326,11 @@ def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) 
 
     # Immediate best-price sell.
     if otype in {"SELL_BEST", "MARKET_SELL"} and status in {"OPEN", "WORKING"}:
-        qty = float(order.get("qty") or position["qty"])
         avail = float(position["qty"])
+        if order.get("notional") is not None and order.get("qty") is None:
+            qty = float(order["notional"]) / mark
+        else:
+            qty = float(order.get("qty") or avail)
         if qty <= 0 or qty > avail + 1e-9:
             event["event"] = "SELL_BLOCKED_QTY"
             return event, cash
@@ -520,9 +523,9 @@ def main() -> None:
 
         otype = order.get("type", "")
 
-        # Do not arm/trigger stops on stale last-close prints. Buys may still use best available mark.
-        buy_types = {"BUY_BEST", "MARKET_BUY", "LIMIT_BUY"}
-        if not quote.get("fresh", True) and otype not in buy_types:
+        # Stops stay blocked on stale quotes. Directed best-price buys/sells may use latest mark.
+        allow_on_stale = {"BUY_BEST", "MARKET_BUY", "LIMIT_BUY", "SELL_BEST", "MARKET_SELL", "LIMIT_SELL"}
+        if not quote.get("fresh", True) and otype not in allow_on_stale:
             events.append(
                 f"{now} {sym} STALE_QUOTE age={quote.get('quote_age_sec')}s mark={mark} — order logic skipped"
             )
