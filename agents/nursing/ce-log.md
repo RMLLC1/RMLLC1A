@@ -17,6 +17,7 @@
 ## Portal notes
 
 - **CE website:** [https://careceus.com](https://careceus.com) (CareCEUs / EdCompass) — nurses: [ceus-for-nurses.php](https://www.careceus.com/ceus-for-nurses.php)
+- **Account (login ID):** `rodney.bishoprn@gmail.com` — password kept out of repo (session/private store only)
 - Provider approval: **California BRN CEP #16375** (also NAB for NHAs — ignore NHA track for RN CE)
 - Pricing (site, 2026-09-28): ~$16/contact hour or ~$199/yr unlimited
 - Texas Nurse Portal CE upload: required for renewals beginning **2026-09-01**
