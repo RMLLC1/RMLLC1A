@@ -56,5 +56,5 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Standing decision (2026-09-28): use email for messaging for now; no SMS/iMessage setup.
 - **Email volume (Rodney 2026-09-28):** email **only when stock/crypto is bought or sold**. Never Gmail for marks/prices. Also: **do not git commit/push** on the 60s marks poll — that was sending GitHub “chore: paper marks poll” emails; commit **only on fills**.
 - Free AT&T texting: failed (carrier gateway shut down). Prefer email.
-- Markets paper: **auto-execute** open buy/sell orders each poll at best price; stop exits = limit. **Trail rule:** arm at **+2%** from fill, then trail **1%** below high water (updated 2026-09-28). UXRP open; GDXU re-bought ~$70k @ $109.5363.
-- **Price feed:** Yahoo near-live poll every **60s** (`agents/markets/mark_to_market.py`) for UXRP, GDXU, BTC-USD, XRP-USD (premarket + regular). Stale quotes skip order logic. Email **only on buy/sell fills**. Commit/push market files **only on fills**.
+- Markets paper: **auto-execute**; trail **+2% arm / 1% trail** limit stops. **Realized profits → buy SATA** (Strive preferred); **hold for daily dividends — never sell**. UXRP + GDXU active; SATA is income sleeve.
+- **Price feed:** Yahoo near-live poll every **60s** for UXRP, GDXU, SATA, BTC-USD, XRP-USD. Email **only on buy/sell fills**. Commit/push **only on fills**.
