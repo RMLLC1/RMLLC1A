@@ -49,4 +49,5 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Keep replies concise; lead with the answer.
 - Name: John.
 - Prefer email for notifications (confirmed working to rodney.bishoprn@gmail.com on 2026-09-28).
+- Standing decision (2026-09-28): use email for messaging for now; no SMS/iMessage setup.
 - Free AT&T texting: failed (carrier gateway shut down). Prefer email.
