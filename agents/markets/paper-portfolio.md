@@ -1,6 +1,6 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-09-28T12:04:17Z  
+**Updated:** 2026-09-28T12:05:08Z  
 **Base currency:** USD  
 **Starting cash:** 100,000.00  
 **Cash:** 40,000.00  
@@ -16,8 +16,8 @@
 **Marks:**
 - UXRP: **$17.4000** (yahoo_v8_chart_1m)
 - GDXU: **$108.7400** (yahoo_v8_chart_1m)
-- BTC-USD: **$83110.5312** (yahoo_v8_chart_1m)
-- XRP-USD: **$1.4942** (yahoo_v8_chart_1m)
+- BTC-USD: **$83237.3516** (yahoo_v8_chart_1m)
+- XRP-USD: **$1.4984** (yahoo_v8_chart_1m)
 
 ## Positions
 
@@ -35,7 +35,6 @@
 
 ## Recent events
 
-- Reset stops to PENDING_ARM after rejecting stale Yahoo last-close as live premarket marks.
 - 2026-09-28T11:59:10Z UXRP STALE_QUOTE age=230350s mark=17.4 — stop logic skipped
 - 2026-09-28T11:59:10Z GDXU STALE_QUOTE age=230350s mark=108.6712 — stop logic skipped
 - 2026-09-28T11:59:31Z UXRP STALE_QUOTE age=1192s mark=17.4 — stop logic skipped
@@ -46,6 +45,8 @@
 - 2026-09-28T12:03:31Z GDXU mark=108.7407 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-09-28T12:04:17Z UXRP STALE_QUOTE age=1478s mark=17.4 — stop logic skipped
 - 2026-09-28T12:04:17Z GDXU mark=108.7400 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
+- 2026-09-28T12:05:08Z UXRP STALE_QUOTE age=1529s mark=17.4 — stop logic skipped
+- 2026-09-28T12:05:08Z GDXU mark=108.7400 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 
 ## Rules
 
