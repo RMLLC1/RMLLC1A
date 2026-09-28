@@ -1,11 +1,11 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-09-28T11:25:00Z  
+**Updated:** 2026-09-28T11:26:00Z  
 **Base currency:** USD  
 **Starting cash:** 100,000.00  
 **Cash:** 90,000.00  
 **Mode:** PAPER only  
-**Equity (mark ≈ last close):** refresh on next mark-to-market
+**Last UXRP mark check:** ~$19.19 last close (2026-09-25); pre-market scrape ~$17.25 (Yahoo). vs entry $19.19 → about **0%** on last close, **~−10%** on pre-market. Arm needs **$19.5738** → stop still **PENDING_ARM**.
 
 ## Positions
 
