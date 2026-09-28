@@ -29,8 +29,9 @@ John is the main chat session (this Cloud/IDE agent). There is no `.cursor/agent
 | `email-assistant` | Gmail: search, draft, send, label (only when asked). Not for AT&T SMS — gateway shut down. |
 | `calendar-assistant` | Google/Outlook calendar: list, create, update events |
 | `drive-assistant` | Google Drive: find, read, organize files |
+| `accountant` | Bookkeeping, taxes, accounting, receipts, financial docs |
 
-Invoke via Task with `subagent_type` equal to the agent name above. Built-in Cursor subagents (`explore`, `bash`, `browser`, etc.) remain available for tactical work.
+Invoke via Task with `subagent_type` equal to the agent name above. If `accountant` is unavailable as a Task type, use `generalPurpose` with the accountant brief and `.cursor/agents/accountant.md` as the role. Built-in Cursor subagents (`explore`, `bash`, `browser`, etc.) remain available for tactical work.
 
 ## Brief every specialist
 
@@ -47,6 +48,7 @@ Every specialist prompt must include:
 - Ambiguous work → `planner` → execute
 - Repo change → `researcher` (if needed) → `implementer` → `verifier`
 - External services → matching specialist; confirm irreversibles with Rodney first
+- Bookkeeping / taxes / accounting → `accountant` (may use Drive/Gmail findings via John)
 
 ## Delegation rules
 
