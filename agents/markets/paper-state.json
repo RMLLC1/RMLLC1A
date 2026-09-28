@@ -1,7 +1,7 @@
 {
   "starting_cash": 100000.0,
-  "cash": 70177.73,
-  "updated": "2026-09-28T12:33:13Z",
+  "cash": 177.73,
+  "updated": "2026-09-28T12:39:35Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -12,10 +12,10 @@
     },
     {
       "symbol": "GDXU",
-      "qty": 0.0,
-      "avg_cost": 108.87,
-      "cost_basis": 0.0,
-      "last_upl_pct": 0.39
+      "qty": 639.0575544362919,
+      "avg_cost": 109.5363,
+      "cost_basis": 70000.0,
+      "last_upl_pct": 0.0
     }
   ],
   "orders": [
@@ -42,6 +42,29 @@
       "stop": 109.515,
       "limit_price": 109.515,
       "fill_price": 109.515
+    },
+    {
+      "id": "LB-GDXU-2",
+      "symbol": "GDXU",
+      "type": "LIMIT_BUY",
+      "status": "FILLED",
+      "limit_price": 110.0,
+      "notional": 70000.0,
+      "attach_trailing_stop": true,
+      "arm_pct": 0.02,
+      "trail_pct": 0.02,
+      "params_text": "Buy $70,000 GDXU at $110 or better (best/lowest). Then +2% arm / 2% trail LIMIT stop.",
+      "fill_price": 109.5363,
+      "fill_qty": 639.0575544362919
+    },
+    {
+      "id": "TS-GDXU-2",
+      "symbol": "GDXU",
+      "type": "TRAILING_STOP_LIMIT_SELL",
+      "status": "PENDING_ARM",
+      "arm_price": 111.727,
+      "trail_pct": 0.02,
+      "params_text": "Arm +2% \u2192 $111.727. Trail 2%. LIMIT sell at stop."
     }
   ],
   "trade_log": [
@@ -71,18 +94,18 @@
       "price": 109.515,
       "cash_after": 70177.73,
       "rationale": "Trailing stop-limit TS-GDXU-1 auto-filled"
+    },
+    {
+      "time": "2026-09-28T12:39:35Z",
+      "side": "BUY",
+      "symbol": "GDXU",
+      "qty": 639.0575544362919,
+      "price": 109.5363,
+      "cash_after": 177.73,
+      "rationale": "LIMIT_BUY LB-GDXU-2 auto-filled at best available"
     }
   ],
   "events": [
-    "2026-09-28T12:06:16Z UXRP STALE_QUOTE age=1597s mark=17.4 \u2014 stop logic skipped",
-    "2026-09-28T12:06:16Z GDXU mark=110.7500 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T12:07:13Z UXRP STALE_QUOTE age=1654s mark=17.4 \u2014 stop logic skipped",
-    "2026-09-28T12:07:13Z GDXU mark=111.0000 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T12:08:18Z UXRP STALE_QUOTE age=1719s mark=17.4 \u2014 stop logic skipped",
-    "2026-09-28T12:08:18Z GDXU mark=111.0000 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T12:09:22Z UXRP STALE_QUOTE age=1822s mark=17.4 \u2014 stop logic skipped",
-    "2026-09-28T12:09:22Z GDXU mark=110.5100 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T12:10:13Z UXRP STALE_QUOTE age=1873s mark=17.4 \u2014 stop logic skipped",
     "2026-09-28T12:10:13Z GDXU mark=110.3999 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
     "2026-09-28T12:11:20Z UXRP STALE_QUOTE age=1940s mark=17.4 \u2014 stop logic skipped",
     "2026-09-28T12:11:20Z GDXU mark=110.2500 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
@@ -123,7 +146,16 @@
     "2026-09-28T12:32:21Z UXRP mark=17.8300 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED_HOLD', 'stop': 17.4734}",
     "2026-09-28T12:32:21Z GDXU mark=109.3000 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'WORKING_LIMIT', 'limit': 109.515, 'mark': 109.3}",
     "2026-09-28T12:33:13Z UXRP mark=17.8300 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED_HOLD', 'stop': 17.4734}",
-    "2026-09-28T12:33:13Z GDXU mark=109.8000 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'FILLED_LIMIT', 'side': 'SELL', 'limit': 109.515, 'qty': 275.558, 'proceeds': 30177.73}"
+    "2026-09-28T12:33:13Z GDXU mark=109.8000 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'FILLED_LIMIT', 'side': 'SELL', 'limit': 109.515, 'qty': 275.558, 'proceeds': 30177.73}",
+    "2026-09-28T12:34:18Z UXRP mark=17.8300 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED_HOLD', 'stop': 17.4734}",
+    "2026-09-28T12:35:23Z UXRP mark=17.8300 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED_HOLD', 'stop': 17.4734}",
+    "2026-09-28T12:36:12Z UXRP mark=17.8300 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED_HOLD', 'stop': 17.4734}",
+    "2026-09-28T12:37:14Z UXRP mark=17.8300 {'id': 'TS-UXRP-1', 'symbol': 'UXRP', 'event': 'ARMED_HOLD', 'stop': 17.4734}",
+    "2026-09-28T12:38:21Z UXRP STALE_QUOTE age=918s mark=17.83 \u2014 order logic skipped",
+    "2026-09-28T12:39:35Z UXRP STALE_QUOTE age=992s mark=17.83 \u2014 order logic skipped",
+    "2026-09-28T12:39:35Z GDXU mark=109.5363 {'id': 'LB-GDXU-2', 'symbol': 'GDXU', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 639.0575544362919, 'price': 109.5363, 'cost': 70000.0, 'limit': 110.0}",
+    "2026-09-28T12:39:35Z GDXU attached TS-GDXU-2 PENDING_ARM arm=111.727",
+    "2026-09-28T12:39:35Z GDXU mark=109.5363 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}"
   ],
   "auto_execute": true
 }

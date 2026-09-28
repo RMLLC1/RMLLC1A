@@ -450,17 +450,38 @@ def main() -> None:
             if ev.get("event") in FILL_EVENTS:
                 fills.append(ev)
                 side = "BUY" if ev["event"] == "FILLED_BUY" else "SELL"
+                fill_px = float(ev.get("price") or ev.get("limit"))
                 state.setdefault("trade_log", []).append(
                     {
                         "time": now,
                         "side": side,
                         "symbol": sym,
                         "qty": ev["qty"],
-                        "price": ev.get("price") or ev.get("limit"),
+                        "price": fill_px,
                         "cash_after": cash,
                         "rationale": f"{otype} {order['id']} auto-filled at best available",
                     }
                 )
+                # Same standing exit rules: +2% arm, 2% trail, LIMIT sell at stop.
+                if (
+                    ev.get("event") == "FILLED_BUY"
+                    and order.get("attach_trailing_stop", False)
+                ):
+                    arm_pct = float(order.get("arm_pct", 0.02))
+                    trail_pct = float(order.get("trail_pct", 0.02))
+                    arm = round(fill_px * (1 + arm_pct), 4)
+                    n = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "TRAILING_STOP_LIMIT_SELL") + 1
+                    ts = {
+                        "id": f"TS-{sym}-{n}",
+                        "symbol": sym,
+                        "type": "TRAILING_STOP_LIMIT_SELL",
+                        "status": "PENDING_ARM",
+                        "arm_price": arm,
+                        "trail_pct": trail_pct,
+                        "params_text": f"Arm +{arm_pct*100:.0f}% → ${arm}. Trail {trail_pct*100:.0f}%. LIMIT sell at stop.",
+                    }
+                    state["orders"].append(ts)
+                    events.append(f"{now} {sym} attached {ts['id']} PENDING_ARM arm={arm}")
 
     state["cash"] = cash
 
