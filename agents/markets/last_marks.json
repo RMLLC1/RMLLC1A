@@ -1,0 +1,75 @@
+{
+  "updated": "2026-09-28T23:08:56Z",
+  "marks": {
+    "UXRP": {
+      "symbol": "UXRP",
+      "mark": 16.94,
+      "regularMarketPrice": 17.03,
+      "previousClose": 19.19,
+      "last_1m": 16.94,
+      "regularMarketTime": 1790625600,
+      "bar_time": 1790625697,
+      "quote_age_sec": 11239,
+      "fresh": false,
+      "instrumentType": "EQUITY",
+      "exchangeTimezoneName": "America/New_York",
+      "source": "yahoo_v8_chart_1m"
+    },
+    "GDXU": {
+      "symbol": "GDXU",
+      "mark": 108.04,
+      "regularMarketPrice": 107.0,
+      "previousClose": 127.75,
+      "last_1m": 108.04,
+      "regularMarketTime": 1790625600,
+      "bar_time": 1790636691,
+      "quote_age_sec": 245,
+      "fresh": true,
+      "instrumentType": "ETF",
+      "exchangeTimezoneName": "America/New_York",
+      "source": "yahoo_v8_chart_1m"
+    },
+    "SATA": {
+      "symbol": "SATA",
+      "mark": 100.0,
+      "regularMarketPrice": 100.01,
+      "previousClose": 99.9584,
+      "last_1m": 100.0,
+      "regularMarketTime": 1790625600,
+      "bar_time": 1790636836,
+      "quote_age_sec": 100,
+      "fresh": true,
+      "instrumentType": "EQUITY",
+      "exchangeTimezoneName": "America/New_York",
+      "source": "yahoo_v8_chart_1m"
+    },
+    "BTC-USD": {
+      "symbol": "BTC-USD",
+      "mark": 83493.5390625,
+      "regularMarketPrice": 83493.54,
+      "previousClose": 84457.3,
+      "last_1m": 83493.5390625,
+      "regularMarketTime": 1790636931,
+      "bar_time": 1790636931,
+      "quote_age_sec": 5,
+      "fresh": true,
+      "instrumentType": "CRYPTOCURRENCY",
+      "exchangeTimezoneName": "UTC",
+      "source": "yahoo_v8_chart_1m"
+    },
+    "XRP-USD": {
+      "symbol": "XRP-USD",
+      "mark": 1.4950000047683716,
+      "regularMarketPrice": 1.495,
+      "previousClose": 1.5181931,
+      "last_1m": 1.4950000047683716,
+      "regularMarketTime": 1790636929,
+      "bar_time": 1790636929,
+      "quote_age_sec": 7,
+      "fresh": true,
+      "instrumentType": "CRYPTOCURRENCY",
+      "exchangeTimezoneName": "UTC",
+      "source": "yahoo_v8_chart_1m"
+    }
+  }
+}
