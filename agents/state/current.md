@@ -55,4 +55,4 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Prefer email for notifications (to `regiaemanagementllc@gmail.com`; updated 2026-09-28).
 - Standing decision (2026-09-28): use email for messaging for now; no SMS/iMessage setup.
 - Free AT&T texting: failed (carrier gateway shut down). Prefer email.
-- Markets paper fills: **always best available price** (buy = lowest quote; sell = highest). Repriced UXRP to ~$17.25 pre-market.
+- Markets paper fills: **always best available price** (buy = lowest quote; sell = highest). UXRP ~30% paper weight @ $17.25; TS-UXRP-1 pending +2% arm.
