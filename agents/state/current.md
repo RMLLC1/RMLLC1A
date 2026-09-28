@@ -44,7 +44,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 
 - Outlook Calendar auth when Rodney needs Outlook.
 - Accountant specialist ready; Rodney will try a finance task later.
-- Markets specialist ready; UXRP research delivered; paper trade deferred.
+- Markets specialist ready; UXRP research delivered; paper UXRP 10% buy placed; GDXU research delivered.
 - Awaiting Rodney's next task.
 
 ## Standing preferences
