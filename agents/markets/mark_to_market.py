@@ -236,9 +236,8 @@ def main() -> None:
             continue
         msg = f"{now} {sym} mark={mark:.4f} {ev}"
         events.append(msg)
-        if ev.get("event") in {"ARMED", "FILLED_LIMIT", "WORKING_LIMIT"}:
-            big.append(ev)
         if ev.get("event") == "FILLED_LIMIT":
+            big.append(ev)
             state["cash"] = round(float(state["cash"]) + float(ev["proceeds"]), 2)
             state.setdefault("trade_log", []).append(
                 {
