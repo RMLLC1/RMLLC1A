@@ -57,4 +57,4 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - **Email volume (Rodney 2026-09-28):** email **only when stock/crypto is bought or sold** (paper or live). No emails for marks, stop arming, P&amp;L moves, routine status, or other events unless Rodney explicitly asks.
 - Free AT&T texting: failed (carrier gateway shut down). Prefer email.
 - Markets paper fills: best price buys/sells; stop exits = limit. UXRP ~30% @ $17.25; GDXU ~30% @ $108.87; cash ~40%.
-- **Price feed:** Yahoo near-live poll every **60s** (`agents/markets/mark_to_market.py`) for UXRP, GDXU, BTC-USD, XRP-USD. Stale equity quotes skip stop logic. Email only on big items.
+- **Price feed:** Yahoo near-live poll every **60s** (`agents/markets/mark_to_market.py`) for UXRP, GDXU, BTC-USD, XRP-USD. Stale equity quotes skip stop logic. Email **only on buy/sell fills**.

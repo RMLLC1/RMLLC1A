@@ -263,8 +263,7 @@ def main() -> None:
         upl_pct = (qty * mark - basis) / basis * 100 if basis else 0
         prev = p.get("last_upl_pct")
         p["last_upl_pct"] = round(upl_pct, 2)
-        if prev is not None and abs(upl_pct - prev) >= 5:
-            big.append({"event": "UPL_MOVE", "symbol": p["symbol"], "upl_pct": round(upl_pct, 2)})
+        # UPL moves are tracked but are not email-worthy (Rodney: email only on buy/sell).
 
     state.setdefault("events", [])
     state["events"].extend(events[-20:])
