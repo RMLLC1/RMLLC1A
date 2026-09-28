@@ -16,6 +16,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Shared specialist return contract: Status / Actions / Blockers / Next for John.
 - Free texting: **not available** for AT&T — carrier shut down email→SMS (2025-06-17). Do not use `@txt.att.net`. Use email instead unless Rodney adds a paid SMS MCP.
 - Specialist `accountant` added for bookkeeping, taxes, accounting (2026-09-28).
+- Specialist `markets` added for stock/crypto research + paper trading only (2026-09-28). No live trading.
 
 ## MCP readiness (live smoke)
 

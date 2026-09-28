@@ -4,7 +4,7 @@ Personal agent workspace for Rodney Bishop.
 
 ## John (primary agent)
 
-**John** is the main chat session (Cloud Agent or IDE Agent on this repo) — there is no separate `primary.md` file. He is the only agent you talk to. He plans work and directs specialist agents for research, implementation, verification, email, calendar, Drive, and accounting.
+**John** is the main chat session (Cloud Agent or IDE Agent on this repo) — there is no separate `primary.md` file. He is the only agent you talk to. He plans work and directs specialist agents for research, implementation, verification, email, calendar, Drive, accounting, and markets (research + paper trading).
 
 Speak to John in natural language; he routes work to specialists and brings you the answer.
 
@@ -27,3 +27,4 @@ Speak to John in natural language; he routes work to specialists and brings you 
 - `calendar-assistant` — Google / Outlook calendar
 - `drive-assistant` — Google Drive
 - `accountant` — bookkeeping, taxes, accounting
+- `markets` — stock/crypto research + paper trading (not live)
