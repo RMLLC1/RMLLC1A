@@ -144,19 +144,20 @@ def queue_sata_profit_buy(state: dict, profit: float, events: list, now: str) ->
 
 
 def block_sata_sells(order: dict, pos: dict) -> bool:
-    """True if this sell must be skipped (SATA hold-for-dividends)."""
+    """True if this sell must be skipped (SATA hold-for-dividends). Buys still allowed."""
     if order.get("symbol") != "SATA":
         return False
-    if pos.get("no_sell") or pos.get("hold_for_dividends"):
-        return True
-    if order.get("type") in {
+    otype = order.get("type", "")
+    if otype not in {
         "SELL_BEST",
         "MARKET_SELL",
         "LIMIT_SELL",
         "TRAILING_STOP_LIMIT_SELL",
     }:
+        return False
+    if pos.get("no_sell") or pos.get("hold_for_dividends"):
         return True
-    return False
+    return True  # default: never sell SATA under standing policy
 
 
 def apply_trailing_stop(order: dict, mark: float, position: dict) -> dict:
