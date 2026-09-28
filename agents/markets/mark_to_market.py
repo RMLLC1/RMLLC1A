@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Near-live Yahoo Finance marks for paper portfolio (poll; not tick stream)."""
+"""Near-live Yahoo Finance marks + auto paper order execution (poll; not tick stream)."""
 
 from __future__ import annotations
 
 import json
-import re
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,6 +15,9 @@ PORTFOLIO_MD = ROOT / "paper-portfolio.md"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; JohnMarkBot/1.0)"}
 
 SYMBOLS = ["UXRP", "GDXU", "BTC-USD", "XRP-USD"]
+
+# Email / chat notify ONLY on these fill events — never on marks or price updates.
+FILL_EVENTS = {"FILLED_LIMIT", "FILLED_BUY", "FILLED_SELL"}
 
 
 def fetch_yahoo(symbol: str) -> dict:
@@ -30,9 +32,7 @@ def fetch_yahoo(symbol: str) -> dict:
     meta = result["meta"]
     timestamps = result.get("timestamp") or []
     closes = (result.get("indicators", {}).get("quote") or [{}])[0].get("close") or []
-    lasts = [c for c in closes if c is not None]
-    last_1m = float(lasts[-1]) if lasts else None
-    # Pair last non-null close with its timestamp when possible.
+    last_1m = None
     last_ts = None
     if timestamps and closes:
         for ts, cl in zip(reversed(timestamps), reversed(closes)):
@@ -72,6 +72,15 @@ def load_state() -> dict:
     raise SystemExit(f"missing {STATE_PATH}")
 
 
+def ensure_position(pos_by_sym: dict, state: dict, symbol: str) -> dict:
+    if symbol in pos_by_sym:
+        return pos_by_sym[symbol]
+    pos = {"symbol": symbol, "qty": 0.0, "avg_cost": 0.0, "cost_basis": 0.0}
+    state["positions"].append(pos)
+    pos_by_sym[symbol] = pos
+    return pos
+
+
 def apply_trailing_stop(order: dict, mark: float, position: dict) -> dict:
     """Mutate order/position; return event dict or empty."""
     if order.get("status") in {"FILLED", "CANCELLED"}:
@@ -103,8 +112,7 @@ def apply_trailing_stop(order: dict, mark: float, position: dict) -> dict:
             return event
         stop = float(order["stop"])
         if mark <= stop:
-            # Limit sell at stop: paper-fill only if mark >= stop (limit or better for sells = higher).
-            # At exact trigger mark == stop is fillable; if mark gapped below stop, leave WORKING_LIMIT.
+            # Limit sell at stop: paper-fill only if mark >= stop (limit or better for sells).
             limit = stop
             if mark + 1e-9 >= limit:
                 qty = float(position["qty"])
@@ -115,6 +123,7 @@ def apply_trailing_stop(order: dict, mark: float, position: dict) -> dict:
                 event.update(
                     {
                         "event": "FILLED_LIMIT",
+                        "side": "SELL",
                         "limit": limit,
                         "qty": qty,
                         "proceeds": proceeds,
@@ -140,7 +149,15 @@ def apply_trailing_stop(order: dict, mark: float, position: dict) -> dict:
             proceeds = round(qty * limit, 2)
             order["status"] = "FILLED"
             order["fill_price"] = limit
-            event.update({"event": "FILLED_LIMIT", "limit": limit, "qty": qty, "proceeds": proceeds})
+            event.update(
+                {
+                    "event": "FILLED_LIMIT",
+                    "side": "SELL",
+                    "limit": limit,
+                    "qty": qty,
+                    "proceeds": proceeds,
+                }
+            )
             position["qty"] = 0.0
             position["cost_basis"] = 0.0
             return event
@@ -149,6 +166,147 @@ def apply_trailing_stop(order: dict, mark: float, position: dict) -> dict:
         return event
 
     return {}
+
+
+def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) -> tuple[dict, float]:
+    """Auto-execute standing paper BUY/SELL orders at best available mark. Returns (event, new_cash)."""
+    if order.get("status") in {"FILLED", "CANCELLED"}:
+        return {}, cash
+
+    otype = order.get("type", "")
+    status = order.get("status", "OPEN")
+    event = {"id": order["id"], "symbol": order["symbol"]}
+
+    # Immediate best-price buy (uses current fresh mark as best available print).
+    if otype in {"BUY_BEST", "MARKET_BUY"} and status in {"OPEN", "WORKING"}:
+        notional = order.get("notional")
+        qty = order.get("qty")
+        if notional is not None:
+            qty = float(notional) / mark
+        else:
+            qty = float(qty or 0)
+        cost = round(qty * mark, 2)
+        if qty <= 0 or cost > cash + 1e-9:
+            event["event"] = "BUY_BLOCKED_CASH"
+            return event, cash
+        # Best buy = lowest valid quote → fill at mark (proxy for best available on this poll).
+        prev_qty = float(position["qty"])
+        prev_basis = float(position["cost_basis"])
+        new_qty = prev_qty + qty
+        new_basis = prev_basis + cost
+        position["qty"] = new_qty
+        position["cost_basis"] = round(new_basis, 2)
+        position["avg_cost"] = round(new_basis / new_qty, 6) if new_qty else 0.0
+        cash = round(cash - cost, 2)
+        order["status"] = "FILLED"
+        order["fill_price"] = mark
+        order["fill_qty"] = qty
+        event.update({"event": "FILLED_BUY", "side": "BUY", "qty": qty, "price": mark, "cost": cost})
+        return event, cash
+
+    # Limit buy: fill when mark <= limit (best price at or below limit).
+    if otype == "LIMIT_BUY" and status in {"OPEN", "WORKING"}:
+        limit = float(order["limit_price"])
+        if mark <= limit + 1e-9:
+            fill_px = mark  # best (lowest) available at or under limit
+            notional = order.get("notional")
+            qty = order.get("qty")
+            if notional is not None:
+                qty = float(notional) / fill_px
+            else:
+                qty = float(qty or 0)
+            cost = round(qty * fill_px, 2)
+            if qty <= 0 or cost > cash + 1e-9:
+                event["event"] = "BUY_BLOCKED_CASH"
+                return event, cash
+            prev_qty = float(position["qty"])
+            prev_basis = float(position["cost_basis"])
+            new_qty = prev_qty + qty
+            new_basis = prev_basis + cost
+            position["qty"] = new_qty
+            position["cost_basis"] = round(new_basis, 2)
+            position["avg_cost"] = round(new_basis / new_qty, 6) if new_qty else 0.0
+            cash = round(cash - cost, 2)
+            order["status"] = "FILLED"
+            order["fill_price"] = fill_px
+            order["fill_qty"] = qty
+            event.update(
+                {"event": "FILLED_BUY", "side": "BUY", "qty": qty, "price": fill_px, "cost": cost, "limit": limit}
+            )
+            return event, cash
+        event["event"] = "WORKING_BUY"
+        event["limit"] = limit
+        return event, cash
+
+    # Immediate best-price sell.
+    if otype in {"SELL_BEST", "MARKET_SELL"} and status in {"OPEN", "WORKING"}:
+        qty = float(order.get("qty") or position["qty"])
+        avail = float(position["qty"])
+        if qty <= 0 or qty > avail + 1e-9:
+            event["event"] = "SELL_BLOCKED_QTY"
+            return event, cash
+        # Best sell = highest valid quote → fill at mark.
+        proceeds = round(qty * mark, 2)
+        basis = float(position["cost_basis"])
+        avg = float(position["avg_cost"])
+        rem = avail - qty
+        position["qty"] = rem
+        position["cost_basis"] = round(avg * rem, 2) if rem > 0 else 0.0
+        if rem <= 0:
+            position["avg_cost"] = 0.0
+        cash = round(cash + proceeds, 2)
+        order["status"] = "FILLED"
+        order["fill_price"] = mark
+        order["fill_qty"] = qty
+        event.update(
+            {
+                "event": "FILLED_SELL",
+                "side": "SELL",
+                "qty": qty,
+                "price": mark,
+                "proceeds": proceeds,
+                "basis_released": round(basis - float(position["cost_basis"]), 2),
+            }
+        )
+        return event, cash
+
+    # Limit sell: fill when mark >= limit (best price at or above limit).
+    if otype == "LIMIT_SELL" and status in {"OPEN", "WORKING"}:
+        limit = float(order["limit_price"])
+        if mark + 1e-9 >= limit:
+            fill_px = mark  # best (highest) available at or over limit
+            qty = float(order.get("qty") or position["qty"])
+            avail = float(position["qty"])
+            if qty <= 0 or qty > avail + 1e-9:
+                event["event"] = "SELL_BLOCKED_QTY"
+                return event, cash
+            proceeds = round(qty * fill_px, 2)
+            avg = float(position["avg_cost"])
+            rem = avail - qty
+            position["qty"] = rem
+            position["cost_basis"] = round(avg * rem, 2) if rem > 0 else 0.0
+            if rem <= 0:
+                position["avg_cost"] = 0.0
+            cash = round(cash + proceeds, 2)
+            order["status"] = "FILLED"
+            order["fill_price"] = fill_px
+            order["fill_qty"] = qty
+            event.update(
+                {
+                    "event": "FILLED_SELL",
+                    "side": "SELL",
+                    "qty": qty,
+                    "price": fill_px,
+                    "proceeds": proceeds,
+                    "limit": limit,
+                }
+            )
+            return event, cash
+        event["event"] = "WORKING_SELL"
+        event["limit"] = limit
+        return event, cash
+
+    return {}, cash
 
 
 def render_md(state: dict, marks: dict) -> str:
@@ -161,14 +319,16 @@ def render_md(state: dict, marks: dict) -> str:
         "**Base currency:** USD  ",
         f"**Starting cash:** {state['starting_cash']:,.2f}  ",
         f"**Cash:** {cash:,.2f}  ",
-        "**Mode:** PAPER only  ",
-        "**Price feed:** Yahoo Finance v8 1m chart (near-live poll; may lag / miss thin premarket prints)  ",
+        "**Mode:** PAPER only — **auto-execute** open buy/sell orders on each poll  ",
+        "**Price feed:** Yahoo Finance v8 1m chart (near-live poll; premarket + regular; may lag)  ",
+        "**Email:** only on buy/sell fills — never on mark/price updates  ",
         "",
         "### Standing fill rule (Rodney)",
         "",
         "- **Buys:** best (lowest) available valid quote.",
         "- **Sells:** best (highest) available valid quote.",
         "- **Stop exits:** **LIMIT** at stop (or better) — never market.",
+        "- Open paper orders auto-fill when conditions hit (no manual confirm).",
         "",
         "**Marks:**",
     ]
@@ -189,8 +349,24 @@ def render_md(state: dict, marks: dict) -> str:
 
     lines += ["", "## Open orders (PAPER)", "", "| ID | Symbol | Type | Status | Params |", "| --- | --- | --- | --- | --- |"]
     for o in state["orders"]:
-        params = o.get("params_text") or json.dumps({k: o.get(k) for k in ("arm_price", "trail_pct", "stop", "high_water", "limit_price") if o.get(k) is not None})
+        if o.get("status") in {"FILLED", "CANCELLED"}:
+            continue
+        params = o.get("params_text") or json.dumps(
+            {
+                k: o.get(k)
+                for k in ("arm_price", "trail_pct", "stop", "high_water", "limit_price", "qty", "notional")
+                if o.get(k) is not None
+            }
+        )
         lines.append(f"| {o['id']} | {o['symbol']} | {o['type']} | **{o['status']}** | {params} |")
+
+    lines += ["", "## Trade log (buys/sells)", ""]
+    for t in state.get("trade_log", [])[-12:]:
+        lines.append(
+            f"- {t.get('time')} **{t.get('side')}** {t.get('symbol')} qty={t.get('qty')} @ ${t.get('price')} → cash ${t.get('cash_after')}"
+        )
+    if not state.get("trade_log"):
+        lines.append("- (none yet)")
 
     lines += ["", "## Recent events", ""]
     for e in state.get("events", [])[-12:]:
@@ -201,6 +377,7 @@ def render_md(state: dict, marks: dict) -> str:
         "",
         "- Simulated only. Not advice.",
         "- Near-live poll ≈ every 60s while timer active; Yahoo free data can be delayed.",
+        "- **Do not email** on price/mark updates — email only when a buy or sell fills.",
         "",
     ]
     return "\n".join(lines)
@@ -213,45 +390,80 @@ def main() -> None:
 
     state = load_state()
     state["updated"] = now
+    state["auto_execute"] = True
     events = []
-    big = []
+    fills = []  # only buy/sell fills — email-worthy
 
     pos_by_sym = {p["symbol"]: p for p in state["positions"]}
+    cash = float(state["cash"])
+
     for order in state["orders"]:
+        if order.get("status") in {"FILLED", "CANCELLED"}:
+            continue
         sym = order["symbol"]
         quote = marks.get(sym, {})
         mark = quote.get("mark")
-        if mark is None or sym not in pos_by_sym:
+        if mark is None:
             continue
-        if float(pos_by_sym[sym]["qty"]) <= 0 and order["status"] not in {"FILLED", "CANCELLED"}:
-            continue
-        # Do not arm/trigger equity stops on stale last-close prints (common in free Yahoo premarket).
+
+        otype = order.get("type", "")
+
+        # Do not execute equity/crypto orders on stale last-close prints.
         if not quote.get("fresh", True):
             events.append(
-                f"{now} {sym} STALE_QUOTE age={quote.get('quote_age_sec')}s mark={mark} — stop logic skipped"
+                f"{now} {sym} STALE_QUOTE age={quote.get('quote_age_sec')}s mark={mark} — order logic skipped"
             )
             continue
-        ev = apply_trailing_stop(order, float(mark), pos_by_sym[sym])
-        if not ev:
-            continue
-        msg = f"{now} {sym} mark={mark:.4f} {ev}"
-        events.append(msg)
-        if ev.get("event") == "FILLED_LIMIT":
-            big.append(ev)
-            state["cash"] = round(float(state["cash"]) + float(ev["proceeds"]), 2)
-            state.setdefault("trade_log", []).append(
-                {
-                    "time": now,
-                    "side": "SELL_LIMIT",
-                    "symbol": sym,
-                    "qty": ev["qty"],
-                    "price": ev["limit"],
-                    "cash_after": state["cash"],
-                    "rationale": f"Trailing stop-limit {order['id']} filled",
-                }
-            )
 
-    # Material UPL move > 5% on a position vs cost
+        if otype == "TRAILING_STOP_LIMIT_SELL":
+            pos = ensure_position(pos_by_sym, state, sym)
+            if float(pos["qty"]) <= 0:
+                continue
+            ev = apply_trailing_stop(order, float(mark), pos)
+            if not ev:
+                continue
+            msg = f"{now} {sym} mark={mark:.4f} {ev}"
+            events.append(msg)
+            if ev.get("event") in FILL_EVENTS:
+                fills.append(ev)
+                cash = round(cash + float(ev["proceeds"]), 2)
+                state.setdefault("trade_log", []).append(
+                    {
+                        "time": now,
+                        "side": "SELL_LIMIT",
+                        "symbol": sym,
+                        "qty": ev["qty"],
+                        "price": ev["limit"],
+                        "cash_after": cash,
+                        "rationale": f"Trailing stop-limit {order['id']} auto-filled",
+                    }
+                )
+            continue
+
+        if otype in {"BUY_BEST", "MARKET_BUY", "LIMIT_BUY", "SELL_BEST", "MARKET_SELL", "LIMIT_SELL"}:
+            pos = ensure_position(pos_by_sym, state, sym)
+            ev, cash = apply_buy_sell_order(order, float(mark), pos, cash)
+            if not ev:
+                continue
+            msg = f"{now} {sym} mark={mark:.4f} {ev}"
+            events.append(msg)
+            if ev.get("event") in FILL_EVENTS:
+                fills.append(ev)
+                side = "BUY" if ev["event"] == "FILLED_BUY" else "SELL"
+                state.setdefault("trade_log", []).append(
+                    {
+                        "time": now,
+                        "side": side,
+                        "symbol": sym,
+                        "qty": ev["qty"],
+                        "price": ev.get("price") or ev.get("limit"),
+                        "cash_after": cash,
+                        "rationale": f"{otype} {order['id']} auto-filled at best available",
+                    }
+                )
+
+    state["cash"] = cash
+
     for p in state["positions"]:
         qty = float(p["qty"])
         if qty <= 0:
@@ -261,9 +473,8 @@ def main() -> None:
             continue
         basis = float(p["cost_basis"])
         upl_pct = (qty * mark - basis) / basis * 100 if basis else 0
-        prev = p.get("last_upl_pct")
         p["last_upl_pct"] = round(upl_pct, 2)
-        # UPL moves are tracked but are not email-worthy (Rodney: email only on buy/sell).
+        # Marks / UPL are never email-worthy.
 
     state.setdefault("events", [])
     state["events"].extend(events[-20:])
@@ -275,8 +486,9 @@ def main() -> None:
         "updated": now,
         "marks": {k: v.get("mark") for k, v in marks.items()},
         "cash": state["cash"],
-        "big_items": big,
+        "big_items": fills,  # buy/sell fills only; empty ⇒ no email
         "events_tail": events[-5:],
+        "note": "Never email on mark updates; email only if big_items non-empty",
     }
     print(json.dumps(summary, indent=2))
 

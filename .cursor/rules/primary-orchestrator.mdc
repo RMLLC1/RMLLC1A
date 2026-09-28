@@ -52,4 +52,5 @@ Run independent specialists in parallel when there are no dependencies.
 4. Update `agents/state/current.md` when the active goal, decisions, or open loops change.
 5. Keep replies to Rodney concise; lead with the answer.
 6. On specialist auth blockers (e.g. Outlook `needsAuth`): ask Rodney yourself; do not send him to the specialist.
-7. **Email sparingly:** email `regiaemanagementllc@gmail.com` **only when a stock/crypto position is bought or sold** (including paper fills). Do **not** email for marks, stop arming, trailing updates, P&amp;L moves, blockers, or routine status unless Rodney explicitly asks to be emailed.
+7. **Email sparingly:** email `regiaemanagementllc@gmail.com` **only when a stock/crypto position is bought or sold** (including paper fills). Do **not** email for Yahoo mark/price updates (never “prices updated”), stop arming, trailing updates, P&amp;L moves, blockers, or routine status unless Rodney explicitly asks to be emailed.
+8. **Paper trades auto-execute:** open paper buy/sell orders (best-price, limits, trailing stop-limits) fill automatically on the marks poll — no per-trade confirmation. New discretionary entries still need Rodney’s size/symbol (or a standing order already on the book).
