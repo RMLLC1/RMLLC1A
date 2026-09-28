@@ -1,7 +1,7 @@
 {
   "starting_cash": 100000.0,
   "cash": 177.73,
-  "updated": "2026-09-28T12:39:35Z",
+  "updated": "2026-09-28T12:40:32Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -15,7 +15,7 @@
       "qty": 639.0575544362919,
       "avg_cost": 109.5363,
       "cost_basis": 70000.0,
-      "last_upl_pct": 0.0
+      "last_upl_pct": -0.03
     }
   ],
   "orders": [
@@ -25,10 +25,10 @@
       "type": "TRAILING_STOP_LIMIT_SELL",
       "status": "ARMED",
       "arm_price": 17.595,
-      "trail_pct": 0.02,
-      "params_text": "Arm +2% \u2192 $17.595. Trail 2%. LIMIT sell at stop.",
+      "trail_pct": 0.01,
+      "params_text": "Arm +2% \u2192 $17.595. Trail 1% after armed. LIMIT sell at stop.",
       "high_water": 17.83,
-      "stop": 17.4734
+      "stop": 17.6517
     },
     {
       "id": "TS-GDXU-1",
@@ -63,8 +63,8 @@
       "type": "TRAILING_STOP_LIMIT_SELL",
       "status": "PENDING_ARM",
       "arm_price": 111.727,
-      "trail_pct": 0.02,
-      "params_text": "Arm +2% \u2192 $111.727. Trail 2%. LIMIT sell at stop."
+      "trail_pct": 0.01,
+      "params_text": "Arm +2% \u2192 $111.727. Trail 1% after armed. LIMIT sell at stop."
     }
   ],
   "trade_log": [
@@ -106,10 +106,6 @@
     }
   ],
   "events": [
-    "2026-09-28T12:10:13Z GDXU mark=110.3999 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T12:11:20Z UXRP STALE_QUOTE age=1940s mark=17.4 \u2014 stop logic skipped",
-    "2026-09-28T12:11:20Z GDXU mark=110.2500 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-09-28T12:12:12Z UXRP STALE_QUOTE age=1993s mark=17.4 \u2014 stop logic skipped",
     "2026-09-28T12:12:12Z GDXU mark=109.5161 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
     "2026-09-28T12:15:26Z UXRP STALE_QUOTE age=2186s mark=17.4 \u2014 order logic skipped",
     "2026-09-28T12:15:26Z GDXU mark=110.1500 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
@@ -155,7 +151,17 @@
     "2026-09-28T12:39:35Z UXRP STALE_QUOTE age=992s mark=17.83 \u2014 order logic skipped",
     "2026-09-28T12:39:35Z GDXU mark=109.5363 {'id': 'LB-GDXU-2', 'symbol': 'GDXU', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 639.0575544362919, 'price': 109.5363, 'cost': 70000.0, 'limit': 110.0}",
     "2026-09-28T12:39:35Z GDXU attached TS-GDXU-2 PENDING_ARM arm=111.727",
-    "2026-09-28T12:39:35Z GDXU mark=109.5363 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}"
+    "2026-09-28T12:39:35Z GDXU mark=109.5363 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-09-28T12:40:01Z UXRP STALE_QUOTE age=1018s mark=17.83 \u2014 order logic skipped",
+    "2026-09-28T12:40:01Z GDXU mark=109.5363 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-09-28T12:40:32Z UXRP STALE_QUOTE age=1049s mark=17.83 \u2014 order logic skipped",
+    "2026-09-28T12:40:32Z GDXU mark=109.5000 {'id': 'TS-GDXU-2', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}"
   ],
-  "auto_execute": true
+  "auto_execute": true,
+  "standing_rules": {
+    "arm_pct": 0.02,
+    "trail_pct_after_arm": 0.01,
+    "stop_exit": "LIMIT",
+    "note": "Arm at +2% from fill; once armed trail 1% below high water; LIMIT sell at stop."
+  }
 }

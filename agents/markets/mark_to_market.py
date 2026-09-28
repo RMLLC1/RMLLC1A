@@ -468,7 +468,8 @@ def main() -> None:
                     and order.get("attach_trailing_stop", False)
                 ):
                     arm_pct = float(order.get("arm_pct", 0.02))
-                    trail_pct = float(order.get("trail_pct", 0.02))
+                    # Standing rule: trail 1% after +2% arm (Rodney 2026-09-28).
+                    trail_pct = float(order.get("trail_pct", 0.01))
                     arm = round(fill_px * (1 + arm_pct), 4)
                     n = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "TRAILING_STOP_LIMIT_SELL") + 1
                     ts = {
