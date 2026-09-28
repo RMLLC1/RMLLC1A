@@ -42,6 +42,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 ## Open loops
 
 - Outlook Calendar auth when Rodney needs Outlook.
+- Accountant specialist ready; Rodney will try a finance task later.
 - Awaiting Rodney's next task.
 
 ## Standing preferences
