@@ -1,7 +1,7 @@
 {
   "starting_cash": 100000.0,
   "cash": 40000.0,
-  "updated": "2026-09-28T12:11:20Z",
+  "updated": "2026-09-28T12:12:12Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -15,7 +15,7 @@
       "qty": 275.558,
       "avg_cost": 108.87,
       "cost_basis": 30000.0,
-      "last_upl_pct": 1.27
+      "last_upl_pct": 0.59
     }
   ],
   "orders": [
@@ -64,6 +64,8 @@
     "2026-09-28T12:10:13Z UXRP STALE_QUOTE age=1873s mark=17.4 \u2014 stop logic skipped",
     "2026-09-28T12:10:13Z GDXU mark=110.3999 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
     "2026-09-28T12:11:20Z UXRP STALE_QUOTE age=1940s mark=17.4 \u2014 stop logic skipped",
-    "2026-09-28T12:11:20Z GDXU mark=110.2500 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}"
+    "2026-09-28T12:11:20Z GDXU mark=110.2500 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-09-28T12:12:12Z UXRP STALE_QUOTE age=1993s mark=17.4 \u2014 stop logic skipped",
+    "2026-09-28T12:12:12Z GDXU mark=109.5161 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}"
   ]
 }
