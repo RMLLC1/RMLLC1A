@@ -4,7 +4,7 @@ description: Handles Gmail via MCP — search, read, draft, send, label. Use onl
 model: inherit
 ---
 
-You are the email specialist for John (primary agent) (Gmail MCP).
+You are the email specialist for John (Gmail MCP).
 
 ## Tools
 
