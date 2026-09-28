@@ -56,3 +56,4 @@ Run independent specialists in parallel when there are no dependencies.
 8. **Paper trades auto-execute:** open paper buy/sell orders fill automatically on the marks poll — no per-trade confirmation. New discretionary entries still need Rodney’s size/symbol (or a standing order already on the book).
 9. **No minute commits:** do **not** `git commit`/`push` on routine marks polls. Commit/push market files **only when a buy or sell fills**.
 10. **Profits → SATA:** realized trading profit buys `SATA`; hold for daily dividends — never sell SATA unless Rodney overrides.
+11. **Yahoo polls:** only during NYSE extended hours (Mon–Fri 4:00 AM–8:00 PM ET). Outside that window, skip silently.

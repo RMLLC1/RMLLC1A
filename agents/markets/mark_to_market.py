@@ -4,15 +4,22 @@
 from __future__ import annotations
 
 import json
+import sys
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, time, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent
 STATE_PATH = ROOT / "paper-state.json"
 MARKS_PATH = ROOT / "last_marks.json"
 PORTFOLIO_MD = ROOT / "paper-portfolio.md"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; JohnMarkBot/1.0)"}
+NY_TZ = ZoneInfo("America/New_York")
+
+# NYSE extended session (Yahoo/broker typical): premarket 4:00 AM – after-hours 8:00 PM ET, weekdays.
+SESSION_OPEN = time(4, 0)
+SESSION_CLOSE = time(20, 0)  # inclusive through 8:00 PM ET
 
 SYMBOLS = ["UXRP", "GDXU", "SATA", "BTC-USD", "XRP-USD"]
 
@@ -457,14 +464,38 @@ def render_md(state: dict, marks: dict) -> str:
         "## Rules",
         "",
         "- Simulated only. Not advice.",
-        "- Near-live poll ≈ every **10 minutes** while timer active; Yahoo free data can be delayed.",
+        "- Poll ≈ every **10 minutes** during **NYSE extended hours only** (Mon–Fri 4:00 AM–8:00 PM ET).",
         "- **Do not email** on price/mark updates — email only when a buy or sell fills.",
         "",
     ]
     return "\n".join(lines)
 
 
+def in_nyse_extended_hours(now_et: datetime | None = None) -> bool:
+    """True Mon–Fri from 4:00 AM through 8:00 PM America/New_York."""
+    now_et = now_et or datetime.now(NY_TZ)
+    if now_et.weekday() >= 5:  # Sat/Sun
+        return False
+    t = now_et.time()
+    return SESSION_OPEN <= t <= SESSION_CLOSE
+
+
 def main() -> None:
+    force = "--force" in sys.argv
+    now_et = datetime.now(NY_TZ)
+    if not force and not in_nyse_extended_hours(now_et):
+        summary = {
+            "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "skipped": True,
+            "reason": "outside_nyse_extended_hours",
+            "local_et": now_et.strftime("%Y-%m-%d %H:%M:%S %Z"),
+            "window": "Mon–Fri 04:00–20:00 America/New_York (premarket through after-hours)",
+            "big_items": [],
+            "note": "No Yahoo poll outside NYSE extended hours; use --force to override",
+        }
+        print(json.dumps(summary, indent=2))
+        return
+
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     marks = {s: fetch_yahoo(s) for s in SYMBOLS}
     MARKS_PATH.write_text(json.dumps({"updated": now, "marks": marks}, indent=2) + "\n")

@@ -57,4 +57,4 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - **Email volume (Rodney 2026-09-28):** email **only when stock/crypto is bought or sold**. Never Gmail for marks/prices. Also: **do not git commit/push** on routine marks polls; commit **only on fills**.
 - Free AT&T texting: failed (carrier gateway shut down). Prefer email.
 - Markets paper: **auto-execute**; trail **+2% arm / 1% trail** limit stops. **Realized profits → buy SATA** (Strive preferred); **hold for daily dividends — never sell**. UXRP + GDXU active; SATA is income sleeve.
-- **Price feed:** Yahoo poll every **10 minutes** for UXRP, GDXU, SATA, BTC-USD, XRP-USD. Email **only on buy/sell fills**. Commit/push **only on fills**.
+- **Price feed:** Yahoo poll every **10 minutes** during **NYSE extended hours only** (Mon–Fri **4:00 AM–8:00 PM ET**, premarket through after-hours). No overnight/weekend polls. Email **only on buy/sell fills**. Commit/push **only on fills**.
