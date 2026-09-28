@@ -1,14 +1,15 @@
-# Current primary-agent state
+# Current state — John (primary agent)
 
 **Updated:** 2026-09-28
 
 ## Active goal
 
-Serve as Rodney Bishop's primary agent for RMLLC1A — sole conversational interface; direct all specialists.
+Serve as **John**, Rodney Bishop's primary agent for RMLLC1A — sole conversational interface; direct all specialists.
 
 ## Decisions
 
-- Primary = this Cloud Agent session; specialists under `.cursor/agents/`.
+- Primary agent name: **John**.
+- John = this Cloud Agent session; specialists under `.cursor/agents/`.
 - Confirm before irreversible external actions (send, delete, share, decline).
 - Gmail, Google Calendar, Google Drive MCP: ready. Outlook Calendar: needs auth when first used.
 
@@ -18,7 +19,8 @@ Serve as Rodney Bishop's primary agent for RMLLC1A — sole conversational inter
 
 ## Last specialist outcomes
 
-- `researcher` audit: scaffolding complete; hardened invocation/MCP/state gaps (this turn).
+- `researcher` audit + `verifier` Pass on orchestration scaffolding.
+- Renamed primary agent to John per Rodney's request.
 
 ## Next action
 

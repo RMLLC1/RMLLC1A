@@ -2,19 +2,19 @@
 
 Personal agent workspace for Rodney Bishop.
 
-## Primary agent
+## John (primary agent)
 
-The **primary agent** is the main chat session (Cloud Agent or IDE Agent on this repo) — there is no separate `primary.md` file. It is the only agent you talk to. It plans work and directs specialist agents for research, implementation, verification, email, calendar, and Drive.
+**John** is the main chat session (Cloud Agent or IDE Agent on this repo) — there is no separate `primary.md` file. He is the only agent you talk to. He plans work and directs specialist agents for research, implementation, verification, email, calendar, and Drive.
 
-Speak to it in natural language; it routes work to specialists and brings you the answer.
+Speak to John in natural language; he routes work to specialists and brings you the answer.
 
 ## Layout
 
 | Path | Purpose |
 | --- | --- |
-| `AGENTS.md` | Operating model for the primary agent |
+| `AGENTS.md` | Operating model for John |
 | `.cursor/rules/primary-orchestrator.mdc` | Always-on orchestration rule |
-| `.cursor/agents/` | Specialist subagents the primary directs |
+| `.cursor/agents/` | Specialist subagents John directs |
 | `agents/state/` | Durable status across turns |
 
 ## Specialists
