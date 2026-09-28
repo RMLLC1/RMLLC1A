@@ -520,8 +520,9 @@ def main() -> None:
 
         otype = order.get("type", "")
 
-        # Do not execute equity/crypto orders on stale last-close prints.
-        if not quote.get("fresh", True):
+        # Do not arm/trigger stops on stale last-close prints. Buys may still use best available mark.
+        buy_types = {"BUY_BEST", "MARKET_BUY", "LIMIT_BUY"}
+        if not quote.get("fresh", True) and otype not in buy_types:
             events.append(
                 f"{now} {sym} STALE_QUOTE age={quote.get('quote_age_sec')}s mark={mark} — order logic skipped"
             )
