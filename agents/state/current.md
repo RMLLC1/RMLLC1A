@@ -56,4 +56,4 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Standing decision (2026-09-28): use email for messaging for now; no SMS/iMessage setup.
 - **Email volume (Rodney 2026-09-28):** email **only for big items** (e.g. stop triggers, large P&amp;L moves, blockers needing a decision, explicit “email me”). No routine confirms, mark checks, or small portfolio tweaks by email.
 - Free AT&T texting: failed (carrier gateway shut down). Prefer email.
-- Markets paper fills: **always best available price** (buy = lowest quote; sell = highest). Stop exits = **limit** (not market). UXRP ~30% @ $17.25; GDXU ~30% @ **$108.87**; both trailing stop-limits pending +2% arm. Cash ~40%.
+**Price feed:** Near-live Yahoo Finance poll every **60 seconds** while timer active (`agents/markets/mark_to_market.py`). Free Yahoo data can lag and may not show true premarket prints for some ETFs — stale equity quotes do not arm/trigger stops. Crypto (BTC-USD, XRP-USD) polled for reference.

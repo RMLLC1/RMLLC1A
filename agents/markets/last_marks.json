@@ -1,0 +1,61 @@
+{
+  "updated": "2026-09-28T11:59:31Z",
+  "marks": {
+    "UXRP": {
+      "symbol": "UXRP",
+      "mark": 17.4,
+      "regularMarketPrice": 19.19,
+      "previousClose": 18.19,
+      "last_1m": 17.4,
+      "regularMarketTime": 1790366400,
+      "bar_time": 1790595579,
+      "quote_age_sec": 1192,
+      "fresh": false,
+      "instrumentType": "EQUITY",
+      "exchangeTimezoneName": "America/New_York",
+      "source": "yahoo_v8_chart_1m"
+    },
+    "GDXU": {
+      "symbol": "GDXU",
+      "mark": 108.6712,
+      "regularMarketPrice": 127.75,
+      "previousClose": 125.17,
+      "last_1m": 108.6712,
+      "regularMarketTime": 1790366400,
+      "bar_time": 1790596738,
+      "quote_age_sec": 33,
+      "fresh": true,
+      "instrumentType": "ETF",
+      "exchangeTimezoneName": "America/New_York",
+      "source": "yahoo_v8_chart_1m"
+    },
+    "BTC-USD": {
+      "symbol": "BTC-USD",
+      "mark": 83043.9765625,
+      "regularMarketPrice": 83043.98,
+      "previousClose": 84457.3,
+      "last_1m": 83043.9765625,
+      "regularMarketTime": 1790596769,
+      "bar_time": 1790596769,
+      "quote_age_sec": 2,
+      "fresh": true,
+      "instrumentType": "CRYPTOCURRENCY",
+      "exchangeTimezoneName": "UTC",
+      "source": "yahoo_v8_chart_1m"
+    },
+    "XRP-USD": {
+      "symbol": "XRP-USD",
+      "mark": 1.4924999475479126,
+      "regularMarketPrice": 1.4925,
+      "previousClose": 1.5181931,
+      "last_1m": 1.4924999475479126,
+      "regularMarketTime": 1790596767,
+      "bar_time": 1790596767,
+      "quote_age_sec": 4,
+      "fresh": true,
+      "instrumentType": "CRYPTOCURRENCY",
+      "exchangeTimezoneName": "UTC",
+      "source": "yahoo_v8_chart_1m"
+    }
+  }
+}

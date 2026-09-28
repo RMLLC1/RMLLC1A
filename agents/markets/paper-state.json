@@ -1,0 +1,49 @@
+{
+  "starting_cash": 100000.0,
+  "cash": 40000.0,
+  "updated": "2026-09-28T11:59:31Z",
+  "positions": [
+    {
+      "symbol": "UXRP",
+      "qty": 1739.1304,
+      "avg_cost": 17.25,
+      "cost_basis": 30000.0,
+      "last_upl_pct": 0.87
+    },
+    {
+      "symbol": "GDXU",
+      "qty": 275.558,
+      "avg_cost": 108.87,
+      "cost_basis": 30000.0,
+      "last_upl_pct": -0.18
+    }
+  ],
+  "orders": [
+    {
+      "id": "TS-UXRP-1",
+      "symbol": "UXRP",
+      "type": "TRAILING_STOP_LIMIT_SELL",
+      "status": "PENDING_ARM",
+      "arm_price": 17.595,
+      "trail_pct": 0.02,
+      "params_text": "Arm +2% \u2192 $17.595. Trail 2%. LIMIT sell at stop."
+    },
+    {
+      "id": "TS-GDXU-1",
+      "symbol": "GDXU",
+      "type": "TRAILING_STOP_LIMIT_SELL",
+      "status": "PENDING_ARM",
+      "arm_price": 111.0474,
+      "trail_pct": 0.02,
+      "params_text": "Arm +2% \u2192 $111.0474. Trail 2%. LIMIT sell at stop."
+    }
+  ],
+  "trade_log": [],
+  "events": [
+    "Reset stops to PENDING_ARM after rejecting stale Yahoo last-close as live premarket marks.",
+    "2026-09-28T11:59:10Z UXRP STALE_QUOTE age=230350s mark=17.4 \u2014 stop logic skipped",
+    "2026-09-28T11:59:10Z GDXU STALE_QUOTE age=230350s mark=108.6712 \u2014 stop logic skipped",
+    "2026-09-28T11:59:31Z UXRP STALE_QUOTE age=1192s mark=17.4 \u2014 stop logic skipped",
+    "2026-09-28T11:59:31Z GDXU mark=108.6712 {'id': 'TS-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}"
+  ]
+}
