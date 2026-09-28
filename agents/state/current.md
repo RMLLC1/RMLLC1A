@@ -48,3 +48,4 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Confirm before irreversible external actions.
 - Keep replies concise; lead with the answer.
 - Name: John.
+- Free AT&T texting: confirmed working (Rodney acknowledged test).
