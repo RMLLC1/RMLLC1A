@@ -26,7 +26,7 @@
 
 | ID | Symbol | Type | Status | Params | Notes |
 | --- | --- | --- | --- | --- | --- |
-| TS-UXRP-1 | UXRP | TRAILING_STOP_SELL | **PENDING_ARM** | Arm when mark ≥ **+2%** vs avg cost → **$17.595**. After armed: trail **2%** below high-water mark. Qty: **all** (1739.1304). | Covers full UXRP position after 20% add-on. PAPER only. |
+| TS-UXRP-1 | UXRP | TRAILING_STOP_**LIMIT**_SELL | **PENDING_ARM** | Arm at **+2%** → **$17.595**. Trail **2%** below high-water. On trigger: place **LIMIT sell** at `stop` (not market). Qty: **all** (1739.1304). Fill at limit or better. | Rodney: limit exits only. PAPER. |
 
 ### Trailing-stop logic (TS-UXRP-1)
 
