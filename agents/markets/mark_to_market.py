@@ -456,7 +456,7 @@ def render_md(state: dict, marks: dict) -> str:
         "## Rules",
         "",
         "- Simulated only. Not advice.",
-        "- Near-live poll ≈ every 60s while timer active; Yahoo free data can be delayed.",
+        "- Near-live poll ≈ every **10 minutes** while timer active; Yahoo free data can be delayed.",
         "- **Do not email** on price/mark updates — email only when a buy or sell fills.",
         "",
     ]

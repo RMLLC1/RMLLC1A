@@ -15,4 +15,4 @@ Live trading is out of scope until Rodney explicitly upgrades and connects a bro
 python3 agents/markets/mark_to_market.py
 ```
 
-Polls Yahoo Finance 1m charts for UXRP, GDXU, BTC-USD, XRP-USD. Updates `paper-state.json`, `last_marks.json`, and `paper-portfolio.md`. A Cloud Agent timer can run this about every 60 seconds.
+Polls Yahoo Finance 1m charts for UXRP, GDXU, SATA, BTC-USD, XRP-USD. Updates `paper-state.json`, `last_marks.json`, and `paper-portfolio.md`. A Cloud Agent timer runs this about every **10 minutes**.
