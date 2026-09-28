@@ -14,7 +14,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - John = this Cloud Agent session; specialists under `.cursor/agents/`.
 - Confirm before irreversible external actions (send, delete, share, decline).
 - Shared specialist return contract: Status / Actions / Blockers / Next for John.
-- Free texting: AT&T email→SMS via Gmail (`***@txt.att.net`). Number stored privately (not in git). Confirm before non-test texts.
+- Free texting: **not available** for AT&T — carrier shut down email→SMS (2025-06-17). Do not use `@txt.att.net`. Use email instead unless Rodney adds a paid SMS MCP.
 
 ## MCP readiness (live smoke)
 

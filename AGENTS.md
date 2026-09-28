@@ -26,7 +26,7 @@ John is the main chat session (this Cloud/IDE agent). There is no `.cursor/agent
 | `researcher` | Codebase, docs, or web investigation before changing anything |
 | `implementer` | Code, config, or repo changes |
 | `verifier` | Confirm work is correct: tests, lint, manual checks |
-| `email-assistant` | Gmail: search, draft, send, label; free AT&T email→SMS when asked (gateway in private store) |
+| `email-assistant` | Gmail: search, draft, send, label (only when asked). Not for AT&T SMS — gateway shut down. |
 | `calendar-assistant` | Google/Outlook calendar: list, create, update events |
 | `drive-assistant` | Google Drive: find, read, organize files |
 
