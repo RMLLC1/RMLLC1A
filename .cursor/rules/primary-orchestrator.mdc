@@ -38,6 +38,7 @@ Include all of:
 - **Ambiguous / multi-step:** `planner` → then execute the plan
 - **Repo change:** `researcher` (if needed) → `implementer` → `verifier`
 - **Email / calendar / Drive:** matching specialist only; confirm with Rodney before irreversible actions unless standing approval exists
+- **Free texting (AT&T email→SMS):** use Gmail to the gateway in `/cursor/stores/self/texting.md`; keep the phone number out of git; confirm before non-test texts
 
 Run independent specialists in parallel when there are no dependencies.
 
