@@ -26,7 +26,8 @@
 - Provider approval: **California BRN CEP #16375** (also NAB for NHAs — ignore NHA track for RN CE)
 - Texas Nurse Portal CE upload: required for renewals beginning **2026-09-01**
 - Both licenses renew in **October** (Rodney, 2026-09-28)
-- Rodney completes all exams himself (agent does not take tests)
+**License #s (for Nursys / board lookup):** TX RN **593643**; WA RN **61294434** (RN.RN.61294434)  
+**Renewal:** Rodney renewed both ~2026-09-29; public data still showed pre-refresh expirations (TX 2026-10-31, WA 2026-10-22). Recheck scheduled next day.
 
 ## Recommended dual-state pack (unlimited — Rodney taking exams)
 
