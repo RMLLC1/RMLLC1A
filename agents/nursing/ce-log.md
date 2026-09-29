@@ -5,7 +5,11 @@
 
 | Date | Course | Provider | Hrs | Accreditor | TX fit | WA fit | Tags (equity, jurisprudence, etc.) | Certificate |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **2026-02-11** | ONS Cancer Basics | ONS | **6.0** | **ANCC** | **OK** toward TX 20 | **OK** toward WA 8 (2026) | oncology | keep certificate |
+| **2026** (date TBD) | ONS Emergencies | ONS | **2.75** | **ANCC** | **OK** if date in current TX window | **OK** if date in WA 2026 year | oncology / emergencies | keep certificate |
 | **2026-03-19** | ONS/ONCC Chemotherapy Immunotherapy Certificate | ONS/ONCC | **15.25** NCPD | **ANCC** | **OK** toward TX 20 (oncology; in current 2-yr window ending Oct) | **OK** toward WA 8 for Oct **2026** renewal | oncology / chemo / immunotherapy | keep certificate |
+
+**ONS subtotal (known):** **24.0** hrs (6.0 + 2.75 + 15.25) — confirm Emergencies completion date.
 
 ## Current period targets
 
