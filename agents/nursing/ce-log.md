@@ -5,7 +5,7 @@
 
 | Date | Course | Provider | Hrs | Accreditor | TX fit | WA fit | Tags (equity, jurisprudence, etc.) | Certificate |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | | | |
+| ~2025–26 (confirm dates) | Oncology classes + ONS chemo/immunotherapy certificate | ONS (ANCC provider) | see cert (often ~10–15.25 NCPD) | ANCC | Likely OK if in period + oncology practice | Likely OK if in *this* WA year | oncology / chemo | keep ONS certificate |
 
 ## Current period targets
 
