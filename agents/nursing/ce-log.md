@@ -5,7 +5,7 @@
 
 | Date | Course | Provider | Hrs | Accreditor | TX fit | WA fit | Tags (equity, jurisprudence, etc.) | Certificate |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **2026** (confirm exact date on cert) | ONS chemotherapy administration certificate (+ related oncology classes) | ONS | confirm on cert (Fundamentals often **10.0**; Certificate course often **15.25** NCPD) | **ANCC** | **Likely OK** toward TX 20 (oncology practice; in 2026 = current 2-yr window if Oct renew) | **Likely OK** toward WA 8 for **2026** Oct renewal (same calendar year; must be before you renew) | oncology / chemo admin | keep ONS certificates |
+| **2026** (confirm exact date on cert) | ONS/ONCC Chemotherapy Immunotherapy Certificate | ONS/ONCC | **15.25** NCPD | **ANCC** | **OK** toward TX 20 (oncology practice) | **OK** — covers WA **8** general hours for 2026 (still need equity topic check) | oncology / chemo / immunotherapy | keep certificate |
 
 ## Current period targets
 
