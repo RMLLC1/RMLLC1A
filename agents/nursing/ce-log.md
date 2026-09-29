@@ -15,8 +15,8 @@
 
 | Jurisdiction | Period ends | Hours needed | Done | Remaining | Notes |
 | --- | --- | --- | --- | --- | --- |
-| Texas RN | **October** (2-year cycle; confirm odd/even year in Nurse Portal) | 20 contact hrs / 2 yrs (or Board-approved cert) + targeted topics | **15.25** (ONS/ONCC chemo) | **~4.75** + targeted | CE upload required for renewals from 2026-09-01 |
-| Washington RN | **October** each year | 8 CE hrs/yr (incl. **2 health equity**) + 96 practice hrs/yr | **15.25** (same cert; only 8 needed) | **0** general; still **2 hr health equity** if not in this course | One-time 6-hr suicide prevention if not already done |
+| Texas RN | **October** (2-year cycle; confirm odd/even year in Nurse Portal) | 20 contact hrs / 2 yrs (or Board-approved cert) + targeted topics | **~24.0** ONS (if Emergencies in-period) | **0** general; still targeted | CE upload required for renewals from 2026-09-01 |
+| Washington RN | **October** each year | 8 CE hrs/yr (incl. **2 health equity**) + 96 practice hrs/yr | **>>8** from ONS 2026 | **0** general; still **2 hr health equity** | One-time 6-hr suicide prevention if not already done |
 
 ## Portal notes
 
