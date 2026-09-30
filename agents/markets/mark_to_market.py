@@ -150,6 +150,173 @@ def queue_sata_profit_buy(state: dict, profit: float, events: list, now: str) ->
     events.append(f"{now} queued PB-SATA-{n} notional=${profit:.2f}")
 
 
+def cancel_entry_group(
+    state: dict, entry_group: str, events: list, now: str, *, except_ids: set[str] | None = None
+) -> None:
+    """Cancel open protective orders sharing an entry_group (hard stop / trail / scale-out)."""
+    if not entry_group:
+        return
+    except_ids = except_ids or set()
+    for o in state["orders"]:
+        if o.get("id") in except_ids:
+            continue
+        if o.get("entry_group") != entry_group:
+            continue
+        if o.get("status") in {"FILLED", "CANCELLED"}:
+            continue
+        o["status"] = "CANCELLED"
+        events.append(f"{now} cancelled {o['id']} (entry_group={entry_group})")
+
+
+def apply_hard_stop_limit(order: dict, mark: float, position: dict) -> dict:
+    """Fixed stop-limit sell (hard invalidation). Triggers when mark <= stop; LIMIT at stop."""
+    if order.get("status") in {"FILLED", "CANCELLED"}:
+        return {}
+    stop = float(order["stop_price"])
+    limit = float(order.get("limit_price") or stop)
+    event = {"id": order["id"], "symbol": order["symbol"]}
+    status = order.get("status", "OPEN")
+
+    if status == "WORKING_LIMIT":
+        limit = float(order["limit_price"])
+        if mark + 1e-9 >= limit:
+            qty = float(position["qty"])
+            if qty <= 0:
+                order["status"] = "CANCELLED"
+                event["event"] = "CANCELLED_NO_QTY"
+                return event
+            proceeds = round(qty * limit, 2)
+            order["status"] = "FILLED"
+            order["fill_price"] = limit
+            order["fill_qty"] = qty
+            avg = float(position.get("avg_cost") or 0)
+            position["qty"] = 0.0
+            position["cost_basis"] = 0.0
+            position["avg_cost"] = 0.0
+            event.update(
+                {
+                    "event": "FILLED_LIMIT",
+                    "side": "SELL",
+                    "limit": limit,
+                    "qty": qty,
+                    "proceeds": proceeds,
+                    "basis_released": round(avg * qty, 2),
+                }
+            )
+            return event
+        event["event"] = "WORKING_LIMIT"
+        event["limit"] = limit
+        return event
+
+    if mark <= stop + 1e-9:
+        if mark + 1e-9 >= limit:
+            qty = float(position["qty"])
+            if qty <= 0:
+                order["status"] = "CANCELLED"
+                event["event"] = "CANCELLED_NO_QTY"
+                return event
+            proceeds = round(qty * limit, 2)
+            order["status"] = "FILLED"
+            order["fill_price"] = limit
+            order["fill_qty"] = qty
+            avg = float(position.get("avg_cost") or 0)
+            position["qty"] = 0.0
+            position["cost_basis"] = 0.0
+            position["avg_cost"] = 0.0
+            event.update(
+                {
+                    "event": "FILLED_LIMIT",
+                    "side": "SELL",
+                    "limit": limit,
+                    "qty": qty,
+                    "proceeds": proceeds,
+                    "basis_released": round(avg * qty, 2),
+                }
+            )
+            return event
+        order["status"] = "WORKING_LIMIT"
+        order["limit_price"] = limit
+        event["event"] = "WORKING_LIMIT"
+        event["limit"] = limit
+        event["mark"] = mark
+        return event
+
+    event["event"] = "HARD_STOP_HOLD"
+    event["stop"] = stop
+    return event
+
+
+def attach_trading_exits(
+    state: dict, order: dict, sym: str, fill_px: float, fill_qty: float, events: list, now: str
+) -> None:
+    """Attach hard stop (−2%), trail (+2% arm / 1%), and scale-out (⅓ at +4%). Not for SATA."""
+    rules = state.get("standing_rules") or {}
+    arm_pct = float(order.get("arm_pct", rules.get("arm_pct", 0.02)))
+    trail_pct = float(order.get("trail_pct", rules.get("trail_pct_after_arm", 0.01)))
+    hard_pct = float(order.get("hard_stop_pct", rules.get("hard_stop_pct", 0.02)))
+    scale_pct = float(order.get("scale_out_pct", rules.get("scale_out_pct", 0.04)))
+    scale_frac = float(order.get("scale_out_fraction", rules.get("scale_out_fraction", 1.0 / 3.0)))
+    entry_group = order["id"]
+
+    arm = round(fill_px * (1 + arm_pct), 4)
+    hard = round(fill_px * (1 - hard_pct), 4)
+    scale_px = round(fill_px * (1 + scale_pct), 4)
+    scale_qty = fill_qty * scale_frac
+
+    n_ts = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "TRAILING_STOP_LIMIT_SELL") + 1
+    n_hs = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "HARD_STOP_LIMIT_SELL") + 1
+    n_so = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("purpose") == "SCALE_OUT") + 1
+
+    ts = {
+        "id": f"TS-{sym}-{n_ts}",
+        "symbol": sym,
+        "type": "TRAILING_STOP_LIMIT_SELL",
+        "status": "PENDING_ARM",
+        "arm_price": arm,
+        "trail_pct": trail_pct,
+        "entry_group": entry_group,
+        "entry_price": fill_px,
+        "params_text": (
+            f"Arm +{arm_pct*100:.0f}% → ${arm}. Trail {trail_pct*100:.0f}%. LIMIT sell at stop. "
+            f"(group {entry_group})"
+        ),
+    }
+    hs = {
+        "id": f"HS-{sym}-{n_hs}",
+        "symbol": sym,
+        "type": "HARD_STOP_LIMIT_SELL",
+        "status": "OPEN",
+        "stop_price": hard,
+        "limit_price": hard,
+        "entry_group": entry_group,
+        "entry_price": fill_px,
+        "cancel_when_trail_armed": True,
+        "params_text": (
+            f"Hard invalidation −{hard_pct*100:.0f}% → ${hard} LIMIT until trail arms. "
+            f"(group {entry_group})"
+        ),
+    }
+    so = {
+        "id": f"SO-{sym}-{n_so}",
+        "symbol": sym,
+        "type": "LIMIT_SELL",
+        "status": "OPEN",
+        "limit_price": scale_px,
+        "qty": scale_qty,
+        "purpose": "SCALE_OUT",
+        "entry_group": entry_group,
+        "entry_price": fill_px,
+        "params_text": (
+            f"Scale-out {scale_frac*100:.0f}% at +{scale_pct*100:.0f}% → ${scale_px} LIMIT. "
+            f"(group {entry_group})"
+        ),
+    }
+    state["orders"].extend([ts, hs, so])
+    events.append(f"{now} {sym} attached {ts['id']} PENDING_ARM arm={arm}")
+    events.append(f"{now} {sym} attached {hs['id']} HARD_STOP stop={hard}")
+    events.append(f"{now} {sym} attached {so['id']} SCALE_OUT qty={scale_qty:.4f} @ {scale_px}")
+
+
 def block_sata_sells(order: dict, pos: dict) -> bool:
     """True if this sell must be skipped (SATA hold-for-dividends). Buys still allowed."""
     if order.get("symbol") != "SATA":
@@ -420,9 +587,10 @@ def render_md(state: dict, marks: dict) -> str:
         "",
         "- **Buys:** best (lowest) available valid quote.",
         "- **Sells:** best (highest) available valid quote.",
-        "- **Stop exits:** arm **+2%** from fill, then trail **1%** — **LIMIT** at stop (or better).",
+        "- **Trading exits (UXRP/GDXU etc.):** hard invalidation **−2%** until trail arms; arm **+2%** then trail **1%** LIMIT; scale-out **⅓ at +4%**; remainder on trail.",
+        "- **Income SATA (~dividends sleeve):** no stops / no scale-outs / no sells unless Rodney overrides.",
         "- Open paper orders auto-fill when conditions hit (no manual confirm).",
-        "- **Profits → SATA:** realized trading profit buys **SATA** at best price; **hold for daily dividends — do not sell**.",
+        "- **Profits → SATA:** realized **trading** profit buys **SATA** at best price; **hold for daily dividends — do not sell**.",
         "",
         "**Marks:**",
     ]
@@ -534,16 +702,18 @@ def main() -> None:
             )
             continue
 
-        if otype == "TRAILING_STOP_LIMIT_SELL":
+        if otype == "HARD_STOP_LIMIT_SELL":
             pos = ensure_position(pos_by_sym, state, sym)
             if float(pos["qty"]) <= 0:
+                order["status"] = "CANCELLED"
                 continue
             if block_sata_sells(order, pos):
                 events.append(f"{now} {sym} SELL blocked — hold for dividends")
                 order["status"] = "CANCELLED"
                 continue
+            qty_before = float(pos.get("qty") or 0)
             basis_before = float(pos.get("cost_basis") or 0)
-            ev = apply_trailing_stop(order, float(mark), pos)
+            ev = apply_hard_stop_limit(order, float(mark), pos)
             if not ev:
                 continue
             msg = f"{now} {sym} mark={mark:.4f} {ev}"
@@ -559,12 +729,67 @@ def main() -> None:
                         "qty": ev["qty"],
                         "price": ev["limit"],
                         "cash_after": cash,
+                        "rationale": f"Hard stop-limit {order['id']} auto-filled",
+                    }
+                )
+                avg_before = basis_before / qty_before if qty_before else 0
+                realized = round(float(ev["proceeds"]) - avg_before * float(ev["qty"]), 2)
+                if realized > 0:
+                    queue_sata_profit_buy(state, realized, events, now)
+                cancel_entry_group(
+                    state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
+                )
+            continue
+
+        if otype == "TRAILING_STOP_LIMIT_SELL":
+            pos = ensure_position(pos_by_sym, state, sym)
+            if float(pos["qty"]) <= 0:
+                continue
+            if block_sata_sells(order, pos):
+                events.append(f"{now} {sym} SELL blocked — hold for dividends")
+                order["status"] = "CANCELLED"
+                continue
+            qty_before = float(pos.get("qty") or 0)
+            basis_before = float(pos.get("cost_basis") or 0)
+            ev = apply_trailing_stop(order, float(mark), pos)
+            if not ev:
+                continue
+            msg = f"{now} {sym} mark={mark:.4f} {ev}"
+            events.append(msg)
+            if ev.get("event") == "ARMED":
+                # Drop hard invalidation once trail is live.
+                for o in state["orders"]:
+                    if (
+                        o.get("entry_group") == order.get("entry_group")
+                        and o.get("type") == "HARD_STOP_LIMIT_SELL"
+                        and o.get("cancel_when_trail_armed")
+                        and o.get("status") not in {"FILLED", "CANCELLED"}
+                    ):
+                        o["status"] = "CANCELLED"
+                        events.append(
+                            f"{now} cancelled {o['id']} — trail {order['id']} ARMED"
+                        )
+            if ev.get("event") in FILL_EVENTS:
+                fills.append(ev)
+                cash = round(cash + float(ev["proceeds"]), 2)
+                state.setdefault("trade_log", []).append(
+                    {
+                        "time": now,
+                        "side": "SELL_LIMIT",
+                        "symbol": sym,
+                        "qty": ev["qty"],
+                        "price": ev["limit"],
+                        "cash_after": cash,
                         "rationale": f"Trailing stop-limit {order['id']} auto-filled",
                     }
                 )
-                realized = round(float(ev["proceeds"]) - basis_before, 2)
+                avg_before = basis_before / qty_before if qty_before else 0
+                realized = round(float(ev["proceeds"]) - avg_before * float(ev["qty"]), 2)
                 if realized > 0:
                     queue_sata_profit_buy(state, realized, events, now)
+                cancel_entry_group(
+                    state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
+                )
             continue
 
         if otype in {"BUY_BEST", "MARKET_BUY", "LIMIT_BUY", "SELL_BEST", "MARKET_SELL", "LIMIT_SELL"}:
@@ -609,27 +834,24 @@ def main() -> None:
                         and order.get("purpose") != "OVERNIGHT_REDEPLOY"
                     ):
                         queue_sata_profit_buy(state, realized, events, now)
-                # Same standing exit rules: +2% arm, then 1% trail, LIMIT sell at stop.
+                # Trading exits: hard −2% until arm, +2% arm / 1% trail, scale-out ⅓ at +4%.
                 if (
                     ev.get("event") == "FILLED_BUY"
                     and order.get("attach_trailing_stop", False)
                     and sym != "SATA"
                 ):
-                    arm_pct = float(order.get("arm_pct", 0.02))
-                    trail_pct = float(order.get("trail_pct", 0.01))
-                    arm = round(fill_px * (1 + arm_pct), 4)
-                    n = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "TRAILING_STOP_LIMIT_SELL") + 1
-                    ts = {
-                        "id": f"TS-{sym}-{n}",
-                        "symbol": sym,
-                        "type": "TRAILING_STOP_LIMIT_SELL",
-                        "status": "PENDING_ARM",
-                        "arm_price": arm,
-                        "trail_pct": trail_pct,
-                        "params_text": f"Arm +{arm_pct*100:.0f}% → ${arm}. Trail {trail_pct*100:.0f}%. LIMIT sell at stop.",
-                    }
-                    state["orders"].append(ts)
-                    events.append(f"{now} {sym} attached {ts['id']} PENDING_ARM arm={arm}")
+                    attach_trading_exits(
+                        state, order, sym, fill_px, float(ev["qty"]), events, now
+                    )
+                # Scale-out partial: leave trail/hard on remaining qty (hard cancels when trail arms).
+                if (
+                    ev.get("event") == "FILLED_SELL"
+                    and order.get("purpose") == "SCALE_OUT"
+                    and float(pos.get("qty") or 0) <= 0
+                ):
+                    cancel_entry_group(
+                        state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
+                    )
 
     # If profit buys were queued mid-loop, process SATA BUY_BEST once more this poll.
     for order in state["orders"]:
