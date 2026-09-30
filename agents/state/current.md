@@ -45,7 +45,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 
 ## Open loops
 
-- **Markets / Soloway learning (2026-09-30):** Knowledge base under `agents/markets/notes/gareth-soloway/`. **Standing refresh:** weekdays **7:00 AM ET** via timer `soloway-youtube-refresh-am` → `refresh_soloway.py`. No email; chat only if new public videos; no git for routine refreshes.
+- **Markets / Soloway learning (2026-09-30):** Knowledge base under `agents/markets/notes/gareth-soloway/` for **both** `@GarethSolowayProTrader` and `@verifiedinvesting`. **Standing refresh:** weekdays **7:00 AM ET** via timer `soloway-youtube-refresh-am`. No email; chat only if new public videos; no git for routine refreshes.
 - Outlook Calendar auth when Rodney needs Outlook.
 - Accountant specialist ready; Rodney will try a finance task later.
 - Markets specialist ready; UXRP research delivered; paper UXRP 10% buy placed; GDXU research delivered.
