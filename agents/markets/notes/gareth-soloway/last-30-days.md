@@ -2,8 +2,8 @@
 
 Deep digests from **official YouTube descriptions + chapters** (RSS). Newest first.
 
-Public videos with full description in feed: **15** (YouTube RSS cap ~15).
-Older titles in the ~30-day window appear in `video-index.md` for follow-up refresh.
+**Refreshed:** 2026-09-30T00:30:37Z
+Public videos in feed: **15** (YouTube RSS cap ~15).
 
 ## 2026-09-29 — Warning: Oil Falls But Yields Still Rise: A Stock Market Breaking Point?
 
@@ -245,25 +245,24 @@ Gareth explains why the surge looks heavily driven by short covering after the C
 
 From there Gareth covers Ethereum holding the same bull flag structure, a Hyperliquid short setup off parallel resistance, and a possible topping tail on Zcash that could signal money rotating out of the extended alt coins and back into Bitcoin and Ethereum. On the macro side he covers the Kevin Warsh rate decision and the overnight reframe that followed it, the Bank of Japan hike that sent U.S. yields back up, the S&P 500 bull flag, his ongoing crude oil short, and why gold and silver are stuck in purgatory heading into year end.
 
-Chapters
-0:00 Bitcoin Holds The Key Level
-0:59 Gareth's Top Squad Live Q&A
-1:41 Bitcoin Surges 6% On Short Covering
-2:40 The $75,500 Line That Held
-3:39 Why Buying At A Technical Level Works
-4:37 The Next Test Is A Higher High
-5:33 Higher Highs And Lower Highs Explained
-6:26 What Makes A Bull Flag
-6:53 The Marathon Runner Analogy
-7:25 Ethereum And Hyperliquid Setups
-8:00 Zcash Topping Tail Warning
-8:25 Kevin Warsh And The Rate Hike
-9:00 Bank Of Japan Sparks Yield Turmoil
-9:23 S&P 500 Bull Flag Holds
-9:53 Crude Oil Short Targets
-10:16 Gold And Silver In Purgatory
+### Chapters
 
-Live portfolios, real-time trade alerts to your phone, and the Verified Investing app: www.VerifiedInvesting.com
+- 0:00 Bitcoin Holds The Key Level
+- 0:59 Gareth's Top Squad Live Q&A
+- 1:41 Bitcoin Surges 6% On Short Covering
+- 2:40 The $75,500 Line That Held
+- 3:39 Why Buying At A Technical Level Works
+- 4:37 The Next Test Is A Higher High
+- 5:33 Higher Highs And Lower Highs Explained
+- 6:26 What Makes A Bull Flag
+- 6:53 The Marathon Runner Analogy
+- 7:25 Ethereum And Hyperliquid Setups
+- 8:00 Zcash Topping Tail Warning
+- 8:25 Kevin Warsh And The Rate Hike
+- 9:00 Bank Of Japan Sparks Yield Turmoil
+- 9:23 S&P 500 Bull Flag Holds
+- 9:53 Crude Oil Short Targets
+- 10:16 Gold And Silver In Purgatory
 
 ---
 
@@ -479,21 +478,20 @@ On the macro side, Gareth breaks down why gold has been the rocket ship while si
 
 He closes on copper, where a tightening ascending wedge with seven trend line touches has him bearish, and explains why a copper breakdown would reinforce the same economic slowdown read.
 
-Chapters
-0:00 Silver's make-or-break range: $100 or $50
-0:44 Gareth's Top Squad
-1:19 Silver breaks the descending wedge, but does it mean new highs?
-2:53 The range: $62-$64 support, $70-$72 resistance
-4:47 Why breakouts flush first: retrace to the scene of the crime
-5:46 The head and shoulders pattern forming on silver
-6:44 Measuring the neckline and the downside target
-8:41 Gold versus silver, bond buying, and fiat on life support
-9:35 Silver's industrial half: AI data centers and slowdown risk
-10:21 Summary: the two paths from here
-11:29 Copper's ascending wedge and the bearish breakdown setup
-13:03 Rumble Wallet promo
+### Chapters
 
-Verified Investing: www.VerifiedInvesting.com
+- 0:00 Silver's make-or-break range: $100 or $50
+- 0:44 Gareth's Top Squad
+- 1:19 Silver breaks the descending wedge, but does it mean new highs?
+- 2:53 The range: $62-$64 support, $70-$72 resistance
+- 4:47 Why breakouts flush first: retrace to the scene of the crime
+- 5:46 The head and shoulders pattern forming on silver
+- 6:44 Measuring the neckline and the downside target
+- 8:41 Gold versus silver, bond buying, and fiat on life support
+- 9:35 Silver's industrial half: AI data centers and slowdown risk
+- 10:21 Summary: the two paths from here
+- 11:29 Copper's ascending wedge and the bearish breakdown setup
+- 13:03 Rumble Wallet promo
 
 ---
 

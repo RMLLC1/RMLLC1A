@@ -1,9 +1,19 @@
 # Current levels & bias (Soloway)
 
-**As of:** 2026-09-30  
-**Sources:** public videos through 2026-09-29 (official descriptions).  
-**Label in chat:** “Soloway’s view as of \<date\>” — not advice; levels stale quickly.
+**As of:** 2026-09-30 (RSS refresh)
+**Newest public video dated:** 2026-09-29
+**Sources:** public channel RSS descriptions.
+**Label in chat:** "Soloway's view as of <date>" — not advice; levels stale quickly.
 
+## Headline bias snapshot (newest in feed)
+
+- **2026-09-29** — Warning: Oil Falls But Yields Still Rise: A Stock Market Breaking Point?
+- **2026-09-28** — Gold And Silver Technical Analysis  Forecasting Precious Metals 1
+- **2026-09-26** — S&P 500 To 8,000 While Oil Breaks Down To $80
+- **2026-09-24** — Bitcoin Bear Market Is Over, My $175,000 Target
+- **2026-09-23** — Yields Break Out To 5.12%: Next Great Depression Odds Keep Rising Faster
+
+---
 ## Macro tape (his framing)
 
 - **Oil down + 10-year yields up** = dangerous **divergence** (normally they move together) → omen for a stock selloff (2026-09-29).

@@ -31,9 +31,9 @@ When Rodney asks about possible trades, John/Markets should:
 | `last-30-days.md` | Per-video digests (newest first) |
 | `video-index.md` | Title index of recent uploads (incl. members-only flags) |
 
-## Refresh command (for John/Markets)
+## Morning refresh (standing — Rodney 2026-09-30)
 
-```bash
-curl -sL "https://www.youtube.com/feeds/videos.xml?channel_id=UCwTu6kD2igaLMpxswtcdxlg" -o /tmp/soloway_rss.xml
-# Then update digests / levels from new entries
-```
+- **When:** each weekday morning **7:00 AM America/New_York** (timer: `soloway-youtube-refresh-am`).
+- **Command:** `python3 agents/markets/notes/gareth-soloway/refresh_soloway.py`
+- **Behavior:** rewrite digests from channel RSS; bump levels “as of”; track new video ids in `refresh-state.json`.
+- **Comms:** no email. Chat only if `new_count > 0`. No git commit/push for routine refreshes (keep on disk).
