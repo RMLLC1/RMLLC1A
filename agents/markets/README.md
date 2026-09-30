@@ -5,7 +5,8 @@ Research notes and **paper** (simulated) trading for John → **Markets Departme
 | Path | Purpose |
 | --- | --- |
 | `paper-portfolio.md` | Virtual cash, positions, trade log |
-| `notes/` | Optional thesis / research notes (create as needed) |
+| `notes/` | Thesis / research notes |
+| `notes/gareth-soloway/` | Living knowledge base from Soloway’s YouTube (framework, levels, digests) |
 
 Live trading is out of scope until Rodney explicitly upgrades and connects a broker with per-trade approval.
 

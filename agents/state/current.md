@@ -45,6 +45,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 
 ## Open loops
 
+- **Markets / Soloway learning (2026-09-30):** Knowledge base started under `agents/markets/notes/gareth-soloway/` from last ~month of public YouTube (official descriptions/chapters; cannot literally listen to audio here). Members-only videos not digested. Refresh RSS periodically; deepen with transcripts if tooling allows later.
 - Outlook Calendar auth when Rodney needs Outlook.
 - Accountant specialist ready; Rodney will try a finance task later.
 - Markets specialist ready; UXRP research delivered; paper UXRP 10% buy placed; GDXU research delivered.
