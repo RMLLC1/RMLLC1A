@@ -1,6 +1,6 @@
 # Nursing CE workspace
 
-Specialist: `nurse-ce` (John directs).
+**Nursing Education Department** (`nurse-ce` — John directs).
 
 | Path | Purpose |
 | --- | --- |

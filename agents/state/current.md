@@ -1,22 +1,24 @@
 # Current state — John (primary agent)
 
-**Updated:** 2026-09-28
+**Updated:** 2026-09-30
 
 ## Active role
 
-**John** is Rodney Bishop's primary agent for RMLLC1A — sole conversational interface; directs all specialists.
+**John** is Rodney Bishop's primary agent for RMLLC1A — sole conversational interface; directs all **departments**.
 
 Establishment goal: **complete** (config + live specialist direction verified). John continues serving in this session.
 
 ## Decisions
 
-- Primary agent name: **John**.
-- John = this Cloud Agent session; specialists under `.cursor/agents/`.
+- Primary agent name: **John** (only personal name; Rodney talks only to John).
+- All other agents are **departments** (Planning, Research, Engineering, Quality, Communications, Scheduling, Records, Accounting, Markets, Nursing Education). Internal Task ids unchanged (`planner`, `researcher`, etc.).
+- Durable work folders: `agents/markets/`, `agents/nursing/`, `agents/accounting/` (expand as needed).
+- John = this Cloud Agent session; departments under `.cursor/agents/`.
 - Confirm before irreversible external actions (send, delete, share, decline).
-- Shared specialist return contract: Status / Actions / Blockers / Next for John.
+- Shared department return contract: Status / Actions / Blockers / Next for John.
 - Free texting: **not available** for AT&T — carrier shut down email→SMS (2025-06-17). Do not use `@txt.att.net`. Use email instead unless Rodney adds a paid SMS MCP.
-- Specialist `accountant` added for bookkeeping, taxes, accounting (2026-09-28).
-- Specialist `markets` added for stock/crypto research + paper trading only (2026-09-28). No live trading.
+- Accounting Department (`accountant`) for bookkeeping, taxes, accounting (2026-09-28).
+- Markets Department (`markets`) for stock/crypto research + paper trading only (2026-09-28). No live trading.
 
 ## MCP readiness (live smoke)
 
@@ -32,11 +34,12 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 | Requirement | Evidence | Result |
 | --- | --- | --- |
 | Identifies as John | `AGENTS.md`, `primary-orchestrator.mdc` | Pass |
-| Sole conversational interface | Always-on rule + all specialists “Report only to John” | Pass |
-| Plans work | `planner` + default pipelines | Pass |
-| Directs research/implement/verify/email/calendar/drive | 7 specialists + live Task smokes | Pass |
+| Sole conversational interface | Always-on rule + all departments “Report only to John” | Pass |
+| Plans work | Planning Department (`planner`) + default pipelines | Pass |
+| Directs research/implement/verify/email/calendar/drive | Departments + live Task smokes | Pass |
 | Clear status | `agents/state/current.md` + concise user updates | Pass |
-| Never route user to specialists | Explicit bans in rules/`AGENTS.md` | Pass |
+| Never route user to departments | Explicit bans in rules/`AGENTS.md` | Pass |
+| Department naming | John keeps name; others are departments (2026-09-30) | Pass |
 
 **Overall:** Pass — no required establishment work remains.
 
