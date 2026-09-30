@@ -63,4 +63,4 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Free AT&T texting: failed (carrier gateway shut down). Prefer email.
 - Markets paper: **auto-execute**; trail **+2% arm / 1% trail** limit stops. **Realized profits → buy SATA**; **hold for daily dividends — never sell**.
 - **Price feed:** Yahoo poll every **5 minutes** during **NYSE extended hours only** (Mon–Fri **4:00 AM–8:00 PM ET**). Gmail **only on buy/sell fills**.
-- **Soloway YouTube:** weekday morning refresh **7:00 AM ET** (`soloway-youtube-refresh-am`). Chat only on new public videos; no email; no git for routine refreshes.
+- **Soloway / Verified Investing YouTube:** weekday morning refresh **7:00 AM ET** (`soloway-youtube-refresh-am`) for both `@GarethSolowayProTrader` and `@verifiedinvesting`. Chat only on new public videos; no email; no git for routine refreshes.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Refresh Gareth Soloway public YouTube digests from channel RSS.
+"""Refresh Soloway + Verified Investing public YouTube digests from channel RSS.
 
 Writes under agents/markets/notes/gareth-soloway/.
 Stdout JSON summary for the morning timer. No email. No git.
@@ -14,10 +14,24 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
-CHANNEL_ID = "UCwTu6kD2igaLMpxswtcdxlg"
-RSS_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={CHANNEL_ID}"
+CHANNELS = [
+    {
+        "key": "soloway",
+        "label": "Gareth Soloway",
+        "id": "UCwTu6kD2igaLMpxswtcdxlg",
+        "handle": "@GarethSolowayProTrader",
+        "digest": "last-30-days.md",
+    },
+    {
+        "key": "verified",
+        "label": "Verified Investing",
+        "id": "UCZ-J2m1AUSLnifUEKam5_dA",
+        "handle": "@verifiedinvesting",
+        "digest": "verified-investing-last-30-days.md",
+    },
+]
+
 BASE = Path(__file__).resolve().parent
-DIGEST_PATH = BASE / "last-30-days.md"
 LEVELS_PATH = BASE / "levels-current.md"
 STATE_PATH = BASE / "refresh-state.json"
 
@@ -28,8 +42,9 @@ NS = {
 }
 
 
-def fetch_rss() -> list[dict]:
-    with urllib.request.urlopen(RSS_URL, timeout=45) as resp:
+def fetch_rss(channel_id: str, channel_key: str, channel_label: str) -> list[dict]:
+    url = f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
+    with urllib.request.urlopen(url, timeout=45) as resp:
         root = ET.fromstring(resp.read())
     vids = []
     for e in root.findall("a:entry", NS):
@@ -46,6 +61,8 @@ def fetch_rss() -> list[dict]:
                 "url": f"https://www.youtube.com/watch?v={vid}",
                 "description": desc,
                 "members_only": "MEMBERS ONLY" in title.upper(),
+                "channel_key": channel_key,
+                "channel_label": channel_label,
             }
         )
     return vids
@@ -63,6 +80,8 @@ def trim_body(desc: str) -> tuple[str, list[str]]:
         "Join Gareth",
         "Get more of Gareth",
         "More from Gareth",
+        "Subscribe to Verified",
+        "www.VerifiedInvesting.com",
         "#Stock",
         "#Gold",
         "#Silver",
@@ -75,19 +94,19 @@ def trim_body(desc: str) -> tuple[str, list[str]]:
     return body, chapters[:20]
 
 
-def render_digest(vids: list[dict]) -> str:
+def render_digest(vids: list[dict], channel_label: str, handle: str) -> str:
+    public = [v for v in vids if not v.get("members_only")]
     lines = [
-        "# Last ~30 days — video digests",
+        f"# {channel_label} — recent video digests",
         "",
+        f"**Channel:** [{handle}](https://www.youtube.com/{handle})",
         "Deep digests from **official YouTube descriptions + chapters** (RSS). Newest first.",
         "",
         f"**Refreshed:** {datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}",
-        f"Public videos in feed: **{len(vids)}** (YouTube RSS cap ~15).",
+        f"Public videos in feed: **{len(public)}** (YouTube RSS cap ~15).",
         "",
     ]
-    for v in vids:
-        if v.get("members_only"):
-            continue
+    for v in public:
         pub = (v.get("published") or "")[:10]
         body, chapters = trim_body(v.get("description") or "")
         lines += [
@@ -95,8 +114,9 @@ def render_digest(vids: list[dict]) -> str:
             "",
             f"- **URL:** {v['url']}",
             f"- **ID:** `{v['id']}`",
+            f"- **Channel:** {channel_label}",
             "",
-            "### Summary (from his description)",
+            "### Summary (from description)",
             "",
             body or "_(no description)_",
             "",
@@ -111,40 +131,45 @@ def render_digest(vids: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def bump_levels_header(vids: list[dict]) -> None:
+def bump_levels_header(all_public: list[dict]) -> None:
     """Update as-of stamp + headline snapshot; keep curated body if present."""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    newest = (vids[0].get("published") or "")[:10] if vids else now
+    sorted_vids = sorted(all_public, key=lambda v: v.get("published") or "", reverse=True)
+    newest = (sorted_vids[0].get("published") or "")[:10] if sorted_vids else now
     headlines = []
-    for v in vids[:5]:
-        if v.get("members_only"):
-            continue
-        headlines.append(f"- **{(v.get('published') or '')[:10]}** — {v['title']}")
+    for v in sorted_vids[:8]:
+        ch = v.get("channel_label") or ""
+        headlines.append(
+            f"- **{(v.get('published') or '')[:10]}** [{ch}] — {v['title']}"
+        )
     header = [
-        "# Current levels & bias (Soloway)",
+        "# Current levels & bias (Soloway / Verified Investing)",
         "",
         f"**As of:** {now} (RSS refresh)",
         f"**Newest public video dated:** {newest}",
-        "**Sources:** public channel RSS descriptions.",
-        '**Label in chat:** "Soloway\'s view as of <date>" — not advice; levels stale quickly.',
+        "**Sources:** Gareth Soloway + Verified Investing public channel RSS.",
+        '**Label in chat:** "Soloway/VI view as of <date>" — not advice; levels stale quickly.',
         "",
-        "## Headline bias snapshot (newest in feed)",
+        "## Headline bias snapshot (newest across both channels)",
         "",
     ] + (headlines or ["- _(no public videos in feed)_"]) + ["", "---", ""]
 
     if LEVELS_PATH.exists():
         old = LEVELS_PATH.read_text()
-        # Keep curated sections after first horizontal rule if present
         if "\n---\n" in old:
             curated = old.split("\n---\n", 1)[1].lstrip()
-            # Drop old auto header if file was fully auto
-            if curated.startswith("## Macro") or curated.startswith("## S&P") or "How to answer Rodney" in curated:
+            if (
+                curated.startswith("## Macro")
+                or curated.startswith("## S&P")
+                or "How to answer Rodney" in curated
+            ):
                 LEVELS_PATH.write_text("\n".join(header) + curated)
                 return
-        # Fallback: prepend snapshot note
         LEVELS_PATH.write_text("\n".join(header) + old)
     else:
-        LEVELS_PATH.write_text("\n".join(header) + "_Curated levels not yet written — see last-30-days.md._\n")
+        LEVELS_PATH.write_text(
+            "\n".join(header) + "_Curated levels not yet written — see digest files._\n"
+        )
 
 
 def main() -> None:
@@ -156,30 +181,41 @@ def main() -> None:
             prev = {}
     prev_ids = set(prev.get("video_ids") or [])
 
-    vids = fetch_rss()
-    public = [v for v in vids if not v.get("members_only")]
-    ids = [v["id"] for v in public]
-    new_ids = [i for i in ids if i not in prev_ids]
-    new_titles = [v["title"] for v in public if v["id"] in set(new_ids)]
+    all_public: list[dict] = []
+    per_channel: dict[str, int] = {}
+    new_titles: list[str] = []
+    new_ids: list[str] = []
 
-    DIGEST_PATH.write_text(render_digest(public))
-    bump_levels_header(public)
+    for ch in CHANNELS:
+        vids = fetch_rss(ch["id"], ch["key"], ch["label"])
+        public = [v for v in vids if not v.get("members_only")]
+        per_channel[ch["key"]] = len(public)
+        all_public.extend(public)
+        (BASE / ch["digest"]).write_text(render_digest(vids, ch["label"], ch["handle"]))
+        for v in public:
+            if v["id"] not in prev_ids:
+                new_ids.append(v["id"])
+                new_titles.append(f"[{ch['label']}] {v['title']}")
+
+    ids = [v["id"] for v in all_public]
+    bump_levels_header(all_public)
 
     state = {
         "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "video_ids": ids,
         "new_ids": new_ids,
         "new_titles": new_titles,
+        "channels": {c["key"]: c["id"] for c in CHANNELS},
     }
     STATE_PATH.write_text(json.dumps(state, indent=2) + "\n")
 
     summary = {
         "updated": state["updated"],
-        "public_in_feed": len(public),
+        "channels": per_channel,
+        "public_in_feed": len(all_public),
         "new_count": len(new_ids),
         "new_titles": new_titles,
-        "digest": str(DIGEST_PATH),
-        "note": "No email on Soloway refresh; chat only if new_count > 0",
+        "note": "No email on Soloway/VI refresh; chat only if new_count > 0",
     }
     print(json.dumps(summary, indent=2))
 

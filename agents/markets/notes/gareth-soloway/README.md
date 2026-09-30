@@ -1,10 +1,13 @@
 # Gareth Soloway — Markets knowledge base
 
-**Channel:** [Gareth Soloway](https://www.youtube.com/@GarethSolowayProTrader) (`UCwTu6kD2igaLMpxswtcdxlg`)  
-**Role:** Chief Market Strategist, Verified Investing  
+**Channels (both Soloway / Verified Investing):**  
+- [Gareth Soloway](https://www.youtube.com/@GarethSolowayProTrader) (`UCwTu6kD2igaLMpxswtcdxlg`)  
+- [Verified Investing](https://www.youtube.com/@verifiedinvesting) (`UCZ-J2m1AUSLnifUEKam5_dA`) — owned/operated with Gareth; includes *My Trading Game Plan*, Weekly Wrap-Up, etc.  
+
+**Role:** Chief Market Strategist / Verified Investing ecosystem  
 **Maintained by:** Markets Department (for John → Rodney)  
 **Started:** 2026-09-30  
-**Window:** last ~30 days of public uploads (deep digests from official video descriptions + chapters)
+**Window:** newest public uploads via RSS (~15 per channel; deep digests from official descriptions + chapters)
 
 ## How we use this
 
@@ -28,12 +31,13 @@ When Rodney asks about possible trades, John/Markets should:
 | --- | --- |
 | `framework.md` | Recurring method / playbook distilled from recent videos |
 | `levels-current.md` | Latest key levels & bias by asset (from newest digests) |
-| `last-30-days.md` | Per-video digests (newest first) |
+| `last-30-days.md` | Gareth Soloway channel digests |
+| `verified-investing-last-30-days.md` | Verified Investing channel digests |
 | `video-index.md` | Title index of recent uploads (incl. members-only flags) |
 
 ## Morning refresh (standing — Rodney 2026-09-30)
 
 - **When:** each weekday morning **7:00 AM America/New_York** (timer: `soloway-youtube-refresh-am`).
 - **Command:** `python3 agents/markets/notes/gareth-soloway/refresh_soloway.py`
-- **Behavior:** rewrite digests from channel RSS; bump levels “as of”; track new video ids in `refresh-state.json`.
+- **Behavior:** rewrite digests from **both** channel RSS feeds; bump levels “as of”; track new video ids in `refresh-state.json`.
 - **Comms:** no email. Chat only if `new_count > 0`. No git commit/push for routine refreshes (keep on disk).

@@ -1,16 +1,18 @@
-# Last ~30 days — video digests
+# Gareth Soloway — recent video digests
 
+**Channel:** [@GarethSolowayProTrader](https://www.youtube.com/@GarethSolowayProTrader)
 Deep digests from **official YouTube descriptions + chapters** (RSS). Newest first.
 
-**Refreshed:** 2026-09-30T00:30:37Z
+**Refreshed:** 2026-09-30T00:33:42Z
 Public videos in feed: **15** (YouTube RSS cap ~15).
 
 ## 2026-09-29 — Warning: Oil Falls But Yields Still Rise: A Stock Market Breaking Point?
 
 - **URL:** https://www.youtube.com/watch?v=QLEmf5-7tfg
 - **ID:** `QLEmf5-7tfg`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 No B.S. Just Charts. Oil is falling sharply and the 10-year Treasury yield is still rising, and Gareth Soloway explains why this divergence could come before a bigger stock market sell-off. For months, yields have tracked oil: when oil rose, yields rose, and when oil fell, yields fell. On Tuesday, crude oil dropped 3 percent while the 10-year yield climbed to 5.285 percent, piercing its June 2007 pivot high of 5.28 percent. Gareth argues the market is now looking past oil toward bigger problems: U.S. debt, a still relatively strong economy, and inflation that may be embedded in the system.
 
@@ -40,8 +42,9 @@ He also covers WTI crude's path to $88 at the lower parallel line, and why a bre
 
 - **URL:** https://www.youtube.com/watch?v=WmQ836ZCoJM
 - **ID:** `WmQ836ZCoJM`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 No B.S. Just Charts. Gold and silver are collapsing today, with gold down almost 4 percent and silver down more than 5 percent, as major trend lines break on both metals. Gareth Soloway, Chief Market Strategist at VerifiedInvesting.com, breaks down what the break means, where the metals likely go next, and exactly what he is doing as an investor.
 
@@ -72,8 +75,9 @@ Silver shows the same structure break. Gareth names $55 as the first level to ni
 
 - **URL:** https://www.youtube.com/watch?v=YOKV8cD6YG0
 - **ID:** `YOKV8cD6YG0`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 Gareth Soloway, Chief Market Strategist at VerifiedInvesting.com, preps the stock market week ahead with a full technical breakdown of the S&P 500, crude oil, the ten-year yield, gold, silver, Bitcoin and three individual stocks on his radar.
 
@@ -110,8 +114,9 @@ He closes with gold and silver sitting on parallel-channel support, Bitcoin's hi
 
 - **URL:** https://www.youtube.com/watch?v=sDQb_E7oYic
 - **ID:** `sDQb_E7oYic`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 Bitcoin's bear market is over and Gareth Soloway walks through the exact chart signal that confirmed it, plus how high he thinks the next bull market runs. Gareth, Chief Market Strategist at VerifiedInvesting.com, starts with a blank Bitcoin daily chart and builds the whole forecast from scratch, one level at a time.
 
@@ -134,8 +139,9 @@ New User Sign up:  https://www.coinbase.com/affiliate/verifiedinvesting
 
 - **URL:** https://www.youtube.com/watch?v=1geEwendD3I
 - **ID:** `1geEwendD3I`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 The ten-year yield is breaking out above 5 percent to new 20-plus-year highs, and Gareth Soloway walks through exactly what that means for stocks, gold, silver, Bitcoin, oil and natural gas. The 5.02 percent pivot high from 2023 has been taken out, and the last time yields traded this high was July 2007.
 
@@ -168,8 +174,9 @@ Then into the charts. The ten-year's next resistance zone, the S&P 500 and why a
 
 - **URL:** https://www.youtube.com/watch?v=idV2N4xGR34
 - **ID:** `idV2N4xGR34`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 Bitcoin just confirmed its bear market is over, and Chief Market Strategist Gareth Soloway walks through the exact chart signal that did it. After holding the 75,500 base point on a closing basis twice, once on the Clarity Act failure and again on the Fed day, Bitcoin squeezed higher and printed a new high above the prior swing high. Gareth explains why a higher high changes the structure of the chart, why he took profits into the move instead of chasing it, and where he becomes a buyer on pullbacks.
 
@@ -202,8 +209,9 @@ On the S&P 500, Gareth walks through his three-zone map of bullish, neutral and 
 
 - **URL:** https://www.youtube.com/watch?v=nc62aD3vwnE
 - **ID:** `nc62aD3vwnE`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 The S&P 500 is sitting roughly 50 points from a bull flag breakout, and Chief Market Strategist Gareth Soloway walks through what that means for stocks, oil, gold, silver, Bitcoin and the ten-year yield heading into the trading week.
 
@@ -236,8 +244,9 @@ Gareth then covers crude oil pullback targets and the confluence that sets up th
 
 - **URL:** https://www.youtube.com/watch?v=G233Y5ol-dY
 - **ID:** `G233Y5ol-dY`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 Bitcoin surged 6% after holding the $75,500 technical level Gareth Soloway called in his previous video, and in this update he breaks down what has to happen next for the bear market low to be confirmed. Gareth walks through the bull flag structure on Bitcoin, why the two-day pierce of $75,500 never invalidated the level, and the single price that would flip the chart from a bear market rally to an established bottom.
 
@@ -270,8 +279,9 @@ From there Gareth covers Ethereum holding the same bull flag structure, a Hyperl
 
 - **URL:** https://www.youtube.com/watch?v=Pd0hugp6z1c
 - **ID:** `Pd0hugp6z1c`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 Gold is ripping back after a hawkish Federal Reserve rate hike, and Gareth Soloway walks through what it means for gold, silver and the long-term precious metals thesis. Both metals triggered head and shoulders patterns over the past month. Both are now pushing back above their necklines, and Gareth explains why a close back above the line negates the bearish setup entirely.
 
@@ -312,8 +322,9 @@ SPONSOR: KEET, end to end encrypted messaging! Use link keet.io/verified and sta
 
 - **URL:** https://www.youtube.com/watch?v=sn0p6_eeDcU
 - **ID:** `sn0p6_eeDcU`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 Bitcoin is sitting right on top of its line in the sand at $75,500, and Gareth Soloway walks through exactly what happens if that level goes. In this video he breaks down why the bear market in Bitcoin is still technically intact, the level that decides the next leg, and where the first real support sits underneath.
 
@@ -352,8 +363,9 @@ Free market analysis and trade setups: www.VerifiedInvesting.com
 
 - **URL:** https://www.youtube.com/watch?v=SdeOLBEm6ls
 - **ID:** `SdeOLBEm6ls`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 Oil is surging to $106 a barrel and the ten-year yield just broke above 5% for the first time since 2007, and Gareth Soloway walks through why he thinks yields fall from here even if the Fed hikes tomorrow.
 
@@ -386,8 +398,9 @@ Gareth's Top Squad is his premium YouTube membership, $10 a month, with live Q&A
 
 - **URL:** https://www.youtube.com/watch?v=leWFKuETS7s
 - **ID:** `leWFKuETS7s`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 In this special Sunday edition, Gareth Soloway breaks down the Federal Reserve meeting on Tuesday and Wednesday and what a rate hike means for the S&P 500, gold, silver, crude oil and Bitcoin heading into next week. Fed funds odds sit near 87.3 percent for a 25 basis point hike, and Gareth explains why the market has already priced that in. The move that actually swings stocks Wednesday afternoon is what Chair Kevin Warsh says about future hikes.
 
@@ -425,8 +438,9 @@ This video also features Gareth's Hot Take, where he explains why he believes AI
 
 - **URL:** https://www.youtube.com/watch?v=4Ti6cXCWn1g
 - **ID:** `4Ti6cXCWn1g`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 Oil is exploding above $102 a barrel, up more than 5% on the day and roughly 29% in two weeks, and Gareth Soloway breaks down exactly what that move is doing to yields, stocks, gold, silver and Bitcoin. Gareth, Chief Market Strategist at VerifiedInvesting.com, walks through the crude oil chart from the recent low, names the next major level at $104 and the Fibonacci target zone stretching to $108, and explains why he is short oil through the USO while treating this rally as the early stage of an accumulation phase rather than a reason to panic.
 
@@ -461,8 +475,9 @@ Gareth then makes the case that he is still bullish on the S&P 500, pointing out
 
 - **URL:** https://www.youtube.com/watch?v=QZ_VrDjXy6E
 - **ID:** `QZ_VrDjXy6E`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 Silver is sitting inside a make-or-break range, and Gareth Soloway, Chief Market Strategist at Verified Investing, lays out the exact levels that decide whether the next move is a run toward $100 an ounce or a flush all the way down to $50.
 
@@ -499,8 +514,9 @@ He closes on copper, where a tightening ascending wedge with seven trend line to
 
 - **URL:** https://www.youtube.com/watch?v=WitBjEWfkXU
 - **ID:** `WitBjEWfkXU`
+- **Channel:** Gareth Soloway
 
-### Summary (from his description)
+### Summary (from description)
 
 No B.S. Just Charts.
 

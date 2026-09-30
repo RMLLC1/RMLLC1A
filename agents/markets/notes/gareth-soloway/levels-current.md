@@ -1,17 +1,20 @@
-# Current levels & bias (Soloway)
+# Current levels & bias (Soloway / Verified Investing)
 
 **As of:** 2026-09-30 (RSS refresh)
 **Newest public video dated:** 2026-09-29
-**Sources:** public channel RSS descriptions.
-**Label in chat:** "Soloway's view as of <date>" — not advice; levels stale quickly.
+**Sources:** Gareth Soloway + Verified Investing public channel RSS.
+**Label in chat:** "Soloway/VI view as of <date>" — not advice; levels stale quickly.
 
-## Headline bias snapshot (newest in feed)
+## Headline bias snapshot (newest across both channels)
 
-- **2026-09-29** — Warning: Oil Falls But Yields Still Rise: A Stock Market Breaking Point?
-- **2026-09-28** — Gold And Silver Technical Analysis  Forecasting Precious Metals 1
-- **2026-09-26** — S&P 500 To 8,000 While Oil Breaks Down To $80
-- **2026-09-24** — Bitcoin Bear Market Is Over, My $175,000 Target
-- **2026-09-23** — Yields Break Out To 5.12%: Next Great Depression Odds Keep Rising Faster
+- **2026-09-29** [Verified Investing] — Dollar Breakout Hits Resistance As The Euro Gets Oversold
+- **2026-09-29** [Verified Investing] — Yield Surge Triggers Equity Drop! Your Next Trade Setup Is Here NOW
+- **2026-09-29** [Verified Investing] — BITCOIN REVEALED: The True Story | September 30, 2026
+- **2026-09-29** [Verified Investing] — My Trading Game Plan | September 30, 2026
+- **2026-09-29** [Verified Investing] — Trading Journal: Review Every Trade
+- **2026-09-29** [Verified Investing] — Gold Loses $4,161 As Yields Hit New Highs
+- **2026-09-29** [Verified Investing] — Bitcoin vs. Gold: The Exact Chart Confirming a Massive Breakout
+- **2026-09-29** [Gareth Soloway] — Warning: Oil Falls But Yields Still Rise: A Stock Market Breaking Point?
 
 ---
 ## Macro tape (his framing)
