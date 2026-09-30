@@ -162,6 +162,9 @@ def block_sata_sells(order: dict, pos: dict) -> bool:
         "TRAILING_STOP_LIMIT_SELL",
     }:
         return False
+    # Explicit Rodney override (e.g. exit overnight SATA redeploy).
+    if order.get("allow_sata_sell") or order.get("rodney_override_sata_sell"):
+        return False
     if pos.get("no_sell") or pos.get("hold_for_dividends"):
         return True
     return True  # default: never sell SATA under standing policy
@@ -467,7 +470,7 @@ def render_md(state: dict, marks: dict) -> str:
         "## Rules",
         "",
         "- Simulated only. Not advice.",
-        "- Poll ≈ every **10 minutes** during **NYSE extended hours only** (Mon–Fri 4:00 AM–8:00 PM ET).",
+        "- Poll ≈ every **5 minutes** during **NYSE extended hours only** (Mon–Fri 4:00 AM–8:00 PM ET).",
         "- **Do not email** on price/mark updates — email only when a buy or sell fills.",
         "",
     ]
@@ -597,13 +600,14 @@ def main() -> None:
                     pos["no_sell"] = True
                 if ev.get("event") == "FILLED_SELL":
                     # Approx realized on partial/full: use avg cost × qty sold
-                    avg = float(pos.get("avg_cost") or 0) if qty_before <= float(ev["qty"]) else (
-                        basis_before / qty_before if qty_before else 0
-                    )
-                    # After sell, avg on remaining is unchanged; cost of sold = avg_before * qty
                     avg_before = basis_before / qty_before if qty_before else 0
                     realized = round(float(ev["proceeds"]) - avg_before * float(ev["qty"]), 2)
-                    if realized > 0:
+                    # Skip profit→SATA on explicit redeploy exits (cash needed for other buys).
+                    if (
+                        realized > 0
+                        and not order.get("skip_profit_to_sata")
+                        and order.get("purpose") != "OVERNIGHT_REDEPLOY"
+                    ):
                         queue_sata_profit_buy(state, realized, events, now)
                 # Same standing exit rules: +2% arm, then 1% trail, LIMIT sell at stop.
                 if (
