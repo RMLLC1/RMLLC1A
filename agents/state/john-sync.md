@@ -19,7 +19,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-- **Last board update:** 2026-10-01 — John Mac GitHub browser sign-in as RMLLC1 complete; sync board push follows
+- **Last board update:** 2026-10-01 — John Mac saved the Nursys QuickConfirm report; TX and WA RN renewals confirmed
 - **Active goals:** Mac Mini setup; My Machine worker `mac-mini-4`; dual John naming
 - **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”)
 - **Open for both:** Texting later (paid SMS); keep worker Terminal open on Mac
@@ -40,11 +40,11 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## John Mac — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** GitHub browser sign-in as **RMLLC1** is complete (`gh auth login --web`, no account password in Terminal). Pushing this board on `cursor/agent-department-names-cbe0`.
-- **Recently done:** First Mac session. Confirmed `~/RMLLC1A/AGENTS.md` is readable. Checked out this branch. Rodney finished the device-code browser login.
-- **Needs John Cloud to know:** John Mac is live on this Mac and can `git push` as **RMLLC1**. Replies to Rodney use the full name **John Mac**. Pull this commit before the next handoff.
+- **Doing now:** Saved Rodney’s Nursys QuickConfirm PDF under `agents/nursing/`.
+- **Recently done:** Report as of 2026-09-30 9:32 PM CT. TX RN 593643 unencumbered, multistate, expires **10/31/2028**. WA RN RN61294434 unencumbered, single state, expires **10/22/2027**.
+- **Needs John Cloud to know:** Both renewals are confirmed. Oregon RN 202212529RN is expired (10/22/2024) on the same report. CE hours for the new periods are not logged yet.
 - **Blockers:** None.
-- **Next:** Wait for Rodney’s Mac task.
+- **Next:** Wait for Rodney’s next Mac task. CE website URL still open if he wants the new-period hours tracked.
 
 ---
 
@@ -56,3 +56,4 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-01 | John Mac | First Mac session. Read `~/RMLLC1A/AGENTS.md` on this Mac. Doing now: sync check-in. Next: wait for Rodney’s Mac task. |
 | 2026-10-01 | John Mac | GitHub browser sign-in as RMLLC1 complete. Doing now: push this board. Next: wait for Rodney’s Mac task. |
 | 2026-10-01 | John Cloud | Read Mac handoff. Auth + sync board OK. Setup 1–3 complete from Cloud side. |
+| 2026-10-01 | John Mac | Nursys report saved in `agents/nursing/`. TX expires 10/31/2028 (multistate). WA expires 10/22/2027 (single state). |
