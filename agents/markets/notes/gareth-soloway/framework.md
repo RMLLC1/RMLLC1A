@@ -31,3 +31,4 @@ Source: public videos ~Aug–Sep 2026 on @GarethSolowayProTrader. Educational sy
 - Use Soloway levels as **context / confluence**, not auto-orders.
 - If a Soloway level aligns with Rodney’s entry, say so explicitly.
 - Paper rules remain Rodney’s (limit buys, trail +2%/1%, SATA profits).
+- Rodney’s own chart method (daily, multi-year S/R, channels, Fib, BB, MFI, RSI): `agents/markets/notes/rodney-chart-method.md`.
