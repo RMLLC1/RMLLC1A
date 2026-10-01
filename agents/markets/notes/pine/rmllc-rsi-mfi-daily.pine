@@ -1,0 +1,32 @@
+// RMLLC daily oscillators — RSI + MFI for entry timing (Rodney method)
+// Use on Daily chart in a separate pane under price.
+// Not financial advice.
+//@version=5
+indicator(
+     title      = "RMLLC RSI + MFI (Daily entries)",
+     shorttitle = "RMLLC RSI/MFI",
+     overlay    = false,
+     precision  = 2
+ )
+
+rsiLen = input.int(14, "RSI length", minval=2)
+mfiLen = input.int(14, "MFI length", minval=2)
+ob     = input.float(70, "Overbought", minval=50, maxval=95)
+os     = input.float(30, "Oversold", minval=5, maxval=50)
+
+r = ta.rsi(close, rsiLen)
+m = ta.mfi(hlc3, mfiLen)
+
+plot(r, "RSI", color=color.new(color.yellow, 0), linewidth=2)
+plot(m, "MFI", color=color.new(color.aqua, 0), linewidth=2)
+hline(ob, "OB", color=color.new(color.red, 40))
+hline(os, "OS", color=color.new(color.green, 40))
+hline(50, "Mid", color=color.new(color.gray, 70))
+
+// Soft entry flags (timing only — still require S/R, channel, or Fib confluence)
+longWatch  = r < os and m < os
+shortWatch = r > ob and m > ob
+bgcolor(longWatch ? color.new(color.green, 85) : shortWatch ? color.new(color.red, 85) : na)
+
+plotshape(longWatch and not longWatch[1], title="RSI+MFI oversold", style=shape.triangleup, location=location.bottom, color=color.green, size=size.tiny)
+plotshape(shortWatch and not shortWatch[1], title="RSI+MFI overbought", style=shape.triangledown, location=location.top, color=color.red, size=size.tiny)

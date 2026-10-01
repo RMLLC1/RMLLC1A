@@ -1,0 +1,65 @@
+// RMLLC daily chart toolkit — matches Rodney's review style
+// Daily (1D): multi-year Fib, Bollinger Bands; RSI + MFI in panes.
+// Draw support/resistance and parallel channels on the chart (or via TradingView AI Copilot).
+// Not financial advice.
+//@version=5
+indicator(
+     title      = "RMLLC Daily Toolkit (BB + Fib + RSI/MFI)",
+     shorttitle = "RMLLC Toolkit D",
+     overlay    = true,
+     max_lines_count = 20,
+     max_labels_count = 20
+ )
+
+// ── Lookback / Fib ──────────────────────────────────────────────────────────
+// ~252 trading days/year; 5y ≈ 1260 bars on daily
+lookbackYears = input.int(5, "Fib lookback (years)", minval=1, maxval=15)
+barsPerYear   = input.int(252, "Bars per year (daily)", minval=200, maxval=280)
+fibLen        = lookbackYears * barsPerYear
+
+showFib = input.bool(true, "Show Fibonacci retracements")
+showBB  = input.bool(true, "Show Bollinger Bands")
+
+bbLen   = input.int(20, "BB length", minval=5)
+bbMult  = input.float(2.0, "BB mult", minval=0.5, step=0.1)
+
+hi = ta.highest(high, fibLen)
+lo = ta.lowest(low, fibLen)
+rng = hi - lo
+
+f0   = hi
+f236 = hi - rng * 0.236
+f382 = hi - rng * 0.382
+f50  = hi - rng * 0.5
+f618 = hi - rng * 0.618
+f786 = hi - rng * 0.786
+f1   = lo
+
+plot(showFib ? f0 : na, "Fib 0% (high)", color=color.new(color.red, 0), linewidth=1)
+plot(showFib ? f236 : na, "Fib 23.6%", color=color.new(color.orange, 40))
+plot(showFib ? f382 : na, "Fib 38.2%", color=color.new(color.olive, 30))
+plot(showFib ? f50 : na, "Fib 50%", color=color.new(color.gray, 20), linewidth=2)
+plot(showFib ? f618 : na, "Fib 61.8%", color=color.new(color.teal, 20), linewidth=2)
+plot(showFib ? f786 : na, "Fib 78.6%", color=color.new(color.blue, 40))
+plot(showFib ? f1 : na, "Fib 100% (low)", color=color.new(color.green, 0), linewidth=1)
+
+// Bollinger
+[bbMid, bbUp, bbLo] = ta.bb(close, bbLen, bbMult)
+plot(showBB ? bbMid : na, "BB mid", color=color.new(color.fuchsia, 50))
+pUp = plot(showBB ? bbUp : na, "BB upper", color=color.new(color.fuchsia, 70))
+pLo = plot(showBB ? bbLo : na, "BB lower", color=color.new(color.fuchsia, 70))
+fill(pUp, pLo, color=color.new(color.fuchsia, 92))
+
+// Note on chart
+var label tip = na
+if barstate.islast
+    label.delete(tip)
+    tip := label.new(
+         bar_index,
+         high,
+         "Draw S/R + parallel channels manually (or Copilot).\nFib lookback ≈ " + str.tostring(lookbackYears) + "y daily.",
+         style=label.style_label_left,
+         textcolor=color.white,
+         color=color.new(color.black, 30),
+         size=size.small
+     )

@@ -1,16 +1,27 @@
 # TradingView Pine scripts (daily)
 
-Rodney prefers **daily** timeframes for chart review.
+Rodney prefers **daily (1D)** charts, often **multi-year** lookback.
 
-| File | Purpose |
-| --- | --- |
-| `rmllc-exits-daily.pine` | Strategy Tester stack: hard **−2%** until arm; arm **+2%** / trail **1%**; scale-out **⅓ at +4%** |
+## Chart checklist (Rodney)
 
-## How to run (TradingView Business)
+Support/resistance · parallel channels · Fibonacci · Bollinger Bands · MFI · RSI  
 
-1. Open the symbol (e.g. `UXRP`) on a **1D** chart.
-2. Pine Editor → New blank indicator/strategy → paste the `.pine` file → Add to chart.
-3. Open **Strategy Tester** below the chart; tweak inputs / entry rule as needed.
-4. Optional: use TradingView **AI Copilot** to refine the entry theory; keep the exit stack unless you ask John to change paper rules.
+Details: `../rodney-chart-method.md`
 
-Paper book on John Cloud still uses Yahoo marks + your standing exits — this Pine file is for **chart backtests**, not live broker orders.
+## Scripts
+
+| File | Pane | Purpose |
+| --- | --- | --- |
+| `rmllc-chart-toolkit-daily.pine` | Overlay | Multi-year Fib + Bollinger; reminder to draw S/R & channels |
+| `rmllc-rsi-mfi-daily.pine` | Below | RSI + MFI for entry timing |
+| `rmllc-exits-daily.pine` | Overlay strategy | Exit stack: hard −2% / +2% arm / 1% trail / ⅓@+4% |
+
+## How to set up (TradingView Business)
+
+1. Symbol on **1D**, zoom out several years.  
+2. Add **toolkit** + **RSI/MFI** scripts from Pine Editor.  
+3. Draw **S/R** and **parallel channels** (manual or AI Copilot).  
+4. Optionally add **exits** strategy for Strategy Tester.  
+5. Entries: wait for level confluence (S/R / channel / Fib) **and** RSI/MFI timing — don’t chase mid-band with hot oscillators.
+
+Paper book on John Cloud still uses Yahoo marks + standing exits; these scripts are for **chart review / backtests**, not live broker orders.
