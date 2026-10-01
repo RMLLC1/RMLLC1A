@@ -657,6 +657,12 @@ def in_nyse_extended_hours(now_et: datetime | None = None) -> bool:
 def main() -> None:
     force = "--force" in sys.argv
     now_et = datetime.now(NY_TZ)
+
+    # iMessage text-orders: pull pending from git and apply into local paper-state even off-hours.
+    from apply_text_orders import process_pending  # local module beside this file
+
+    text_summary = process_pending()
+
     if not force and not in_nyse_extended_hours(now_et):
         summary = {
             "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -665,6 +671,7 @@ def main() -> None:
             "local_et": now_et.strftime("%Y-%m-%d %H:%M:%S %Z"),
             "window": "Mon–Fri 04:00–20:00 America/New_York (premarket through after-hours)",
             "big_items": [],
+            "text_orders": text_summary,
             "note": "No Yahoo poll outside NYSE extended hours; use --force to override",
         }
         print(json.dumps(summary, indent=2))
@@ -674,6 +681,7 @@ def main() -> None:
     marks = {s: fetch_yahoo(s) for s in SYMBOLS}
     MARKS_PATH.write_text(json.dumps({"updated": now, "marks": marks}, indent=2) + "\n")
 
+    # Re-load after text apply so newly queued OPEN orders are visible this poll.
     state = load_state()
     state["updated"] = now
     state["auto_execute"] = True
@@ -912,6 +920,7 @@ def main() -> None:
         "cash": state["cash"],
         "dividend_cash": state.get("dividend_cash", 0),
         "big_items": fills,  # buy/sell fills only; empty ⇒ no email
+        "text_orders": text_summary,
         "events_tail": events[-5:],
         "note": "Never email on mark updates; email only if big_items non-empty",
     }

@@ -20,7 +20,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## Shared (both read)
 
 - **Last board update:** 2026-10-01 — Rodney + John Mac iMessaging working
-- **Active goals:** Steady ops (paper + dual desks). Optional paid SMS later if needed beyond iMessage.
+- **Active goals:** Steady ops (paper + dual desks). iMessage paper trading via text-orders enabled; optional Telegram/SMS later.
 - **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney
 - **Open for both:** Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed.
 
@@ -64,3 +64,4 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-01 | John Mac | Rodney text reply loop installed. Needs Full Disk Access for Command Line Tools Python before replies work. |
 | 2026-10-01 | John Cloud | Synced Mac Nursys notes — licenses current; CE dormancy + weekly john-sync timers confirmed. |
 | 2026-10-01 | John Cloud | Rodney reports John Mac iMessaging working great. |
+| 2026-10-01 | John Cloud | iMessage→paper text-orders path live (queue_text_order + apply on marks). |

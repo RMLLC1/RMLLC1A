@@ -5,10 +5,15 @@ Research notes and **paper** (simulated) trading for John → **Markets Departme
 | Path | Purpose |
 | --- | --- |
 | `paper-portfolio.md` | Virtual cash, positions, trade log |
+| `text-orders/` | iMessage → John Mac queue → John Cloud applies (see `text-orders/README.md`) |
+| `queue_text_order.py` | Mac: parse/queue/push a text command |
+| `apply_text_orders.py` | Cloud: pull pending and apply into `paper-state.json` |
 | `notes/` | Thesis / research notes |
 | `notes/gareth-soloway/` | Living knowledge base from Soloway’s YouTube (framework, levels, digests) |
 
 Live trading is out of scope until Rodney explicitly upgrades and connects a broker with per-trade approval.
+
+**Text trading:** Rodney may iMessage John Mac with BUY/SELL/CANCEL commands. Mac queues under `text-orders/pending/` (git). Cloud’s 5m marks run applies them into local paper state. Fills still email only.
 
 ## Near-live marks
 

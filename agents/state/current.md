@@ -70,3 +70,4 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - **Trading exits (2026-09-30):** hard **−2%** until arm; arm **+2%** / trail **1%** LIMIT; scale-out **⅓ at +4%**; profits→SATA hold. **Income SATA (~$8k): no stops.**
 - **Paper (Rodney 2026-10-01):** Leave working orders alone unless Rodney asks to change (UXRP $50k @$17 still working; GDXU held with exits).
 - **Mac reboot auto-start:** Verified OK (Rodney 2026-10-01).
+- **iMessage paper trading (2026-10-01):** Rodney may text John Mac BUY/SELL/CANCEL; Mac queues `agents/markets/text-orders/pending/`; Cloud applies on marks poll. Fills still Gmail only.
