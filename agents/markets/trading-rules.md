@@ -91,13 +91,12 @@ After queue: reply briefly as **John Mac** with the script’s `reply` (queued i
 
 ---
 
-## Book snapshot note (Cloud, 2026-10-01 ~10:48 UTC)
+## Book snapshot note (Cloud, 2026-10-01 ~10:58 UTC)
 
 Canonical numbers also on `agents/state/john-sync.md` Shared. Mac must not invent balances.
 
-- **Cash** $48,811.92 + **dividend cash** $10.71
-- **UXRP** 2,951.59 @ ~$17.04 (~$50,303; UPL +~$303) — standard exits open (hard / trail pending arm / scale-out)
-- **SATA** 80.67 @ ~$99.99 (~$8,067) — dividend hold, no sells
-- **GDXU** flat (hard-stop filled earlier)
-- Approx equity **~$107,192** (started $100k)
+- **Cash** $0.00 + **dividend cash** $10.71
+- **UXRP** ~5,816.14 sh avg ~$16.989 (basis $98,811.92) — two entry groups with standard exits each
+- **SATA** 80.67 — dividend hold, no sells
+- **GDXU** flat
 - Ask John Cloud for a live snapshot; Mac STATUS does not read Cloud `paper-state.json`.
