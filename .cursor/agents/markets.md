@@ -36,7 +36,7 @@ Canonical desk copy for John Cloud / John Mac: `agents/markets/trading-rules.md`
    - **Arm +2%** from fill, then **trail 1%** LIMIT at stop.
    - **Scale-out ⅓ at +4%** LIMIT; remainder stays on the 1% trail.
 4. **Income SATA:** never attach hard stops, trails, or scale-outs. No sells unless Rodney’s explicit override (e.g. overnight redeploy).
-5. **Auto-execute:** standing paper orders fill on the ~5-minute poll **only during NYSE extended hours** (Mon–Fri 4:00 AM–8:00 PM ET). Premarket + regular + after-hours when Yahoo has a fresh print.
+5. **Auto-execute:** **paused** — Yahoo 5-minute marks timer stopped (Rodney 2026-10-01). If marks are run manually, fills use NYSE extended hours rules (Mon–Fri 4:00 AM–8:00 PM ET).
 6. Record: symbol, side, qty, assumed price, timestamp (UTC), rationale, cash remaining.
 7. Keep a simple running P&amp;L vs cost basis. Label everything **PAPER**.
 8. If cash or positions are insufficient, report Blocker — do not invent money.
