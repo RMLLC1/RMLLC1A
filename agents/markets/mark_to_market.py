@@ -177,69 +177,49 @@ def apply_hard_stop_limit(order: dict, mark: float, position: dict) -> dict:
     event = {"id": order["id"], "symbol": order["symbol"]}
     status = order.get("status", "OPEN")
 
+    def _fill_hard_stop(fill_px: float) -> dict:
+        qty = float(position["qty"])
+        if qty <= 0:
+            order["status"] = "CANCELLED"
+            event["event"] = "CANCELLED_NO_QTY"
+            return event
+        proceeds = round(qty * fill_px, 2)
+        order["status"] = "FILLED"
+        order["fill_price"] = fill_px
+        order["fill_qty"] = qty
+        avg = float(position.get("avg_cost") or 0)
+        position["qty"] = 0.0
+        position["cost_basis"] = 0.0
+        position["avg_cost"] = 0.0
+        event.update(
+            {
+                "event": "FILLED_LIMIT",
+                "side": "SELL",
+                "limit": limit,
+                "qty": qty,
+                "price": fill_px,
+                "proceeds": proceeds,
+                "basis_released": round(avg * qty, 2),
+            }
+        )
+        return event
+
     if status == "WORKING_LIMIT":
         limit = float(order["limit_price"])
+        # Fill at limit if printable; if price gapped through the stop-limit, fill at mark.
         if mark + 1e-9 >= limit:
-            qty = float(position["qty"])
-            if qty <= 0:
-                order["status"] = "CANCELLED"
-                event["event"] = "CANCELLED_NO_QTY"
-                return event
-            proceeds = round(qty * limit, 2)
-            order["status"] = "FILLED"
-            order["fill_price"] = limit
-            order["fill_qty"] = qty
-            avg = float(position.get("avg_cost") or 0)
-            position["qty"] = 0.0
-            position["cost_basis"] = 0.0
-            position["avg_cost"] = 0.0
-            event.update(
-                {
-                    "event": "FILLED_LIMIT",
-                    "side": "SELL",
-                    "limit": limit,
-                    "qty": qty,
-                    "proceeds": proceeds,
-                    "basis_released": round(avg * qty, 2),
-                }
-            )
-            return event
+            return _fill_hard_stop(limit)
+        if mark <= stop + 1e-9:
+            return _fill_hard_stop(mark)
         event["event"] = "WORKING_LIMIT"
         event["limit"] = limit
         return event
 
     if mark <= stop + 1e-9:
         if mark + 1e-9 >= limit:
-            qty = float(position["qty"])
-            if qty <= 0:
-                order["status"] = "CANCELLED"
-                event["event"] = "CANCELLED_NO_QTY"
-                return event
-            proceeds = round(qty * limit, 2)
-            order["status"] = "FILLED"
-            order["fill_price"] = limit
-            order["fill_qty"] = qty
-            avg = float(position.get("avg_cost") or 0)
-            position["qty"] = 0.0
-            position["cost_basis"] = 0.0
-            position["avg_cost"] = 0.0
-            event.update(
-                {
-                    "event": "FILLED_LIMIT",
-                    "side": "SELL",
-                    "limit": limit,
-                    "qty": qty,
-                    "proceeds": proceeds,
-                    "basis_released": round(avg * qty, 2),
-                }
-            )
-            return event
-        order["status"] = "WORKING_LIMIT"
-        order["limit_price"] = limit
-        event["event"] = "WORKING_LIMIT"
-        event["limit"] = limit
-        event["mark"] = mark
-        return event
+            return _fill_hard_stop(limit)
+        # Gap through: do not leave a sell limit stranded above the market.
+        return _fill_hard_stop(mark)
 
     event["event"] = "HARD_STOP_HOLD"
     event["stop"] = stop
