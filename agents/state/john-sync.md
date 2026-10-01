@@ -21,7 +21,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 - **Last board update:** 2026-10-01 — cash floor $100k rule; UXRP+GDXU $50k buys
 - **Active goals:** Steady ops (paper + dual desks). iMessage paper trading via text-orders enabled; optional Telegram/SMS later.
-- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills (paper files gitignored); minimize other pushes; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney; **john-sync daily** only when material until Rodney says otherwise; **Yahoo marks ~5m** during NYSE extended hours; **cash floor $100k** — sell SATA to top up when cash is below
+- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills (paper files gitignored); minimize other pushes; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney; **john-sync daily** only when material until Rodney says otherwise; **Yahoo marks ~5m** during NYSE extended hours; **cash floor $100k** — after a trade completes, sell SATA to restore cash if below $100k (not while capital is in open trades)
 - **Trading rules (canonical):** `agents/markets/trading-rules.md` — John Mac reads before any trade text; also `agents/markets/text-orders/README.md`
 - **Paper book (Cloud source of truth — 2026-10-01 ~22:33 UTC):** Cash **$0.00**. **UXRP** ~2,945.89 @ $16.9728 ($50k). **GDXU** ~488.76 @ $102.30 ($50k). **SATA** ~87.85 dividend hold. Standard exits on UXRP/GDXU. Mac must **not** invent balances — use this board / ask Cloud.
 - **Open for both:** Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed.
@@ -35,7 +35,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 - **Recently done:** $50k UXRP + $50k GDXU BEST; SATA sell to cash $100k earlier; cash-floor auto-sell coded.
 - **Needs John Mac to know:** Pull board — cash floor + new paper book. Cash currently $0 after deploys.
 - **Blockers:** None
-- **Next:** Steady cloud ops; cash floor will sell available SATA while cash is below $100k
+- **Next:** Steady cloud ops; cash floor tops up from SATA only after exits / when flat
 
 ---
 
