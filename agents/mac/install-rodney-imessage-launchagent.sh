@@ -23,4 +23,4 @@ launchctl kickstart -k "gui/$(id -u)/$LABEL" 2>/dev/null || true
 
 echo "Installed: $PLIST_DST"
 echo "Logs: $HOME/Library/Logs/john-mac-imessage.log"
-echo "Full Disk Access is required for /usr/bin/python3 so the watcher can read Messages."
+echo "Full Disk Access is required for /Library/Developer/CommandLineTools/usr/bin/python3 so the watcher can read Messages."

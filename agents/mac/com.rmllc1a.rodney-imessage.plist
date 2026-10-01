@@ -6,7 +6,7 @@
 	<string>com.rmllc1a.rodney-imessage</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/bin/python3</string>
+		<string>/Library/Developer/CommandLineTools/usr/bin/python3</string>
 		<string>/Users/regiaemanagementllc/RMLLC1A/agents/mac/rodney_imessage_watch.py</string>
 	</array>
 	<key>WorkingDirectory</key>

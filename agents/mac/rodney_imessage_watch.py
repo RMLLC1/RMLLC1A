@@ -198,7 +198,7 @@ def main() -> int:
         try:
             arm_or_poll()
         except sqlite3.DatabaseError as exc:
-            log(f"ERROR: Messages database not readable ({exc}). Grant Full Disk Access to /usr/bin/python3, then this retries.")
+            log(f"ERROR: Messages database not readable ({exc}). Grant Full Disk Access to /Library/Developer/CommandLineTools/usr/bin/python3, then this retries.")
         except Exception as exc:
             log(f"ERROR: {exc}")
         time.sleep(POLL_SECONDS)

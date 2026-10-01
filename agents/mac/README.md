@@ -36,7 +36,7 @@ Install:
 bash agents/mac/install-rodney-imessage-launchagent.sh
 ```
 
-macOS must allow `/usr/bin/python3` under **System Settings → Privacy & Security → Full Disk Access**. Until that switch is on, the watcher cannot read Messages. Log: `~/Library/Logs/john-mac-imessage.log`.
+macOS must allow `/Library/Developer/CommandLineTools/usr/bin/python3` under **System Settings → Privacy & Security → Full Disk Access**. The switch has to be on, not only listed. Until then the watcher cannot read Messages. Log: `~/Library/Logs/john-mac-imessage.log`.
 
 ## Stop / uninstall
 
