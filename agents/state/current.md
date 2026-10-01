@@ -51,7 +51,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Accountant specialist ready; Rodney will try a finance task later.
 - Markets specialist ready; UXRP research delivered; paper UXRP 10% buy placed; GDXU research delivered.
 - **Nursing CE (dormant until 2 months before expiry — Rodney 2026-10-01):** WA RN expires **2027-10-22** → wake **~2027-08-22** (`nursing-ce-wake-wa`). TX RN expires **2028-10-31** → wake **~2028-08-31** (`nursing-ce-wake-tx`). Renewals confirmed Nursys 2026-09-30; no active CE shopping until wake.
-- **John sync hygiene:** weekly Sunday timer `john-sync-weekly` (~11:00 AM ET) — John Cloud updates `agents/state/john-sync.md` and pushes; chat only if something needs Rodney.
+- **John sync hygiene (2026-10-01):** daily timer `john-sync-daily` (~11:00 AM ET) while desks are new — John Cloud updates `agents/state/john-sync.md` and pushes; chat only if something needs Rodney. Can thin to weekly later.
 - Awaiting Rodney's next task.
 
 ## Standing preferences

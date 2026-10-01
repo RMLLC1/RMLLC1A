@@ -19,9 +19,9 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-- **Last board update:** 2026-10-01 — John Mac must learn paper trading rules
+- **Last board update:** 2026-10-01 — john-sync cadence → **daily** (~11:00 AM ET, timer `john-sync-daily`) while desks are new
 - **Active goals:** Steady ops (paper + dual desks). iMessage paper trading via text-orders enabled; optional Telegram/SMS later.
-- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney
+- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney; **john-sync daily** (not weekly) until Rodney says otherwise
 - **Trading rules (canonical):** `agents/markets/trading-rules.md` — John Mac reads before any trade text; also `agents/markets/text-orders/README.md`
 - **Open for both:** Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed.
 
@@ -30,9 +30,9 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## John Cloud — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** Paper marks/timers; teaching Mac the trading rules
-- **Recently done:** Wrote `agents/markets/trading-rules.md` (roles, session/marks, entries, exits −2%/+2%/1%/⅓@+4%, profits→SATA, text commands, safety). iMessage→text-orders path live.
-- **Needs John Mac to know:** **`git pull` then read `agents/markets/trading-rules.md` end-to-end.** Confirm in this board (Mac section) that you read it. Queue trades only; Cloud owns paper book + Gmail fills.
+- **Doing now:** Paper marks/timers; daily john-sync hygiene
+- **Recently done:** Switched sync cadence weekly → **daily** (`john-sync-daily` ~11:00 AM ET) per Rodney. Wrote `agents/markets/trading-rules.md`. iMessage→text-orders path live.
+- **Needs John Mac to know:** Still: **`git pull` then read `agents/markets/trading-rules.md`** and ack here. Also expect Cloud board refreshes daily now.
 - **Blockers:** None
 - **Next:** Steady cloud ops; wait for Mac ack on trading rules
 
@@ -67,3 +67,4 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-01 | John Cloud | Rodney reports John Mac iMessaging working great. |
 | 2026-10-01 | John Cloud | iMessage→paper text-orders path live (queue_text_order + apply on marks). |
 | 2026-10-01 | John Cloud | Teaching Mac: read `agents/markets/trading-rules.md` (paper rules + text commands). Ack on this board after pull. |
+| 2026-10-01 | John Cloud | john-sync cadence → daily (~11 AM ET) while desks are new; replaced `john-sync-weekly`. |
