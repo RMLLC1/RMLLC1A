@@ -20,10 +20,10 @@ When Rodney asks about possible trades, John/Markets should:
 
 ## Honest limits
 
-- We **cannot literally listen** to YouTube audio in this environment. Digests are built from **official titles, descriptions, and chapter lists** (Soloway’s own writeups are unusually complete).
+- We **cannot literally watch** YouTube video. Digests use **official titles/descriptions/chapters** plus **auto-captions** (spoken points) when the caption fetch works.
+- Caption text can be messy (duplicates, missed chart-only levels). Prefer dated spoken digests + description together.
 - **Members-only** videos are listed but not digested (paywall).
-- YouTube blocks full transcript pulls here; refresh via channel RSS when updating.
-- Levels go stale — re-pull RSS before relying on a number for a live decision.
+- Levels go stale — re-pull before relying on a number for a live decision.
 
 ## Files
 
@@ -33,11 +33,14 @@ When Rodney asks about possible trades, John/Markets should:
 | `levels-current.md` | Latest key levels & bias by asset (from newest digests) |
 | `last-30-days.md` | Gareth Soloway channel digests |
 | `verified-investing-last-30-days.md` | Verified Investing channel digests |
+| `spoken-digests/` | Per-video caption highlights (**local / gitignored**) |
+| `transcripts/` | Cleaned full captions (**local / gitignored**) |
 | `video-index.md` | Title index of recent uploads (incl. members-only flags) |
 
-## Morning refresh (standing — Rodney 2026-09-30)
+## Morning refresh (standing — Rodney 2026-09-30; captions 2026-10-01)
 
 - **When:** each weekday morning **7:00 AM America/New_York** (timer: `soloway-youtube-refresh-am`).
 - **Command:** `python3 agents/markets/notes/gareth-soloway/refresh_soloway.py`
-- **Behavior:** rewrite digests from **both** channel RSS feeds; bump levels “as of”; track new video ids in `refresh-state.json`.
-- **Comms:** no email. Chat only if `new_count > 0`. No git commit/push for routine refreshes (keep on disk).
+- **Behavior:** rewrite digests from **both** channel RSS feeds; for **new** public videos fetch auto-captions → `spoken-digests/` + embed bullets in digest files; bump levels “as of”; track ids in `refresh-state.json`.
+- **Backfill (manual):** `python3 .../refresh_soloway.py --backfill 5` for newest videos missing spoken digests.
+- **Comms:** no email. Chat only if `new_count > 0` (include spoken highlights when present). No git for routine refreshes.

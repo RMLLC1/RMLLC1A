@@ -46,7 +46,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 ## Open loops
 
 - **Dual John desks (2026-10-01):** **John Cloud** (this Primary agent) + **John Mac** (`mac-mini-4` worker). Shared handoff: `agents/state/john-sync.md` (git pull/push; not auto chat sync).
-- **Markets / Soloway learning (2026-09-30):** Knowledge base under `agents/markets/notes/gareth-soloway/` for **both** `@GarethSolowayProTrader` and `@verifiedinvesting`. **Standing refresh:** weekdays **7:00 AM ET** via timer `soloway-youtube-refresh-am`. No email; chat only if new public videos; no git for routine refreshes.
+- **Markets / Soloway learning (2026-09-30; captions 2026-10-01):** Knowledge base under `agents/markets/notes/gareth-soloway/` for **both** `@GarethSolowayProTrader` and `@verifiedinvesting`. **Standing refresh:** weekdays **7:00 AM ET** via timer `soloway-youtube-refresh-am` (RSS + auto-captions → `spoken-digests/`). No email; chat only if new public videos; no git for routine refreshes.
 - Outlook Calendar auth when Rodney needs Outlook.
 - Accountant specialist ready; Rodney will try a finance task later.
 - Markets specialist ready; UXRP research delivered; paper UXRP 10% buy placed; GDXU research delivered.
@@ -65,7 +65,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Free AT&T texting: failed (carrier gateway shut down). Prefer email.
 - Markets paper: **auto-execute**; trail **+2% arm / 1% trail** limit stops. **Realized profits → buy SATA**; **hold for daily dividends — never sell**.
 - **Price feed:** Yahoo poll every **5 minutes** during **NYSE extended hours only** (Mon–Fri **4:00 AM–8:00 PM ET**). Gmail **only on buy/sell fills**.
-- **Soloway / Verified Investing YouTube:** weekday morning refresh **7:00 AM ET** (`soloway-youtube-refresh-am`) for both `@GarethSolowayProTrader` and `@verifiedinvesting`. Chat only on new public videos; no email; no git for routine refreshes.
+- **Soloway / Verified Investing YouTube:** weekday morning refresh **7:00 AM ET** (`soloway-youtube-refresh-am`) for both `@GarethSolowayProTrader` and `@verifiedinvesting`. New videos also pull **auto-captions** → `spoken-digests/` (gitignored). Chat only on new public videos; no email; no git for routine refreshes.
 - **Premarket plan (queued 2026-09-30):** Sell overnight SATA (~1000 sh) at **≥$100.0002** (no loss); keep dividend SATA. Then buy **$50k UXRP @$17** and **$50k GDXU @$107.50**.
 - **Trading exits (2026-09-30):** hard **−2%** until arm; arm **+2%** / trail **1%** LIMIT; scale-out **⅓ at +4%**; profits→SATA hold. **Income SATA (~$8k): no stops.**
 - **Paper (Rodney 2026-10-01):** Leave working orders alone unless Rodney asks to change (UXRP $50k @$17 still working; GDXU held with exits).
