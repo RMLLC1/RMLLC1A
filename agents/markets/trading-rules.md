@@ -58,12 +58,13 @@ SATA income / dividend shares: **no stops** (hold).
 
 ---
 
-## Cash floor $100,000 (par)
+## Loss top-off (restore trade cost to cash)
 
-- Standing **par cash:** **$100,000**.
-- When a trade closes at a **loss** and cash is then below $100,000, auto-sell enough **SATA** at best to bring cash back to par (Rodney override; does **not** recycle that sale into profit→SATA).
+- When a trade closes at a **loss**, sell enough **SATA** at best to cover that loss so the **original cost** of the trade is restored to the cash balance.
+- Example: $50k UXRP exits for $48k → sell **$2k** SATA → **$50k** back in cash.
 - Does **not** sell SATA on profitable/breakeven exits, or just because cash was deployed into open buys.
-- If SATA proceeds are not enough to reach $100,000, sell what is available and note the shortfall.
+- If SATA is not enough to cover the full loss, sell what is available and note the shortfall.
+- Starting dry-powder context remains ~**$100k** cash when fully flat; this rule restores capital **per losing trade**, not by forcing cash to $100k while other trades are still open.
 
 ---
 

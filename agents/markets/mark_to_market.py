@@ -209,8 +209,9 @@ def try_reinvest_dividend_cash(
     return div
 
 
-def _had_trading_loss(fills: list) -> bool:
-    """True if a non-SATA sell filled this poll at a realized loss."""
+def _trading_loss_total(fills: list) -> float:
+    """Sum of realized losses on non-SATA sells this poll (positive dollars lost)."""
+    lost = 0.0
     for ev in fills or []:
         if ev.get("symbol") == "SATA":
             continue
@@ -218,52 +219,50 @@ def _had_trading_loss(fills: list) -> bool:
             continue
         if ev.get("side") not in {None, "SELL"}:
             continue
-        if "realized" in ev and float(ev["realized"]) < 0:
-            return True
-    return False
+        realized = ev.get("realized")
+        if realized is None:
+            continue
+        realized = float(realized)
+        if realized < 0:
+            lost += -realized
+    return round(lost, 2)
 
 
-def maybe_queue_cash_floor_sata_sell(
+def maybe_queue_loss_topoff_sata_sell(
     state: dict,
-    cash: float,
     sata_mark: float | None,
     events: list,
     now: str,
     *,
     fills: list | None = None,
 ) -> None:
-    """After a trading **loss**, sell SATA to restore cash to the $100k par floor.
+    """If trades close at a loss, sell SATA to restore that original cost to cash.
 
-    Does **not** run on profitable exits, breakeven exits, or while cash is merely
-    deployed into open buys.
+    Example: $50k UXRP exits for $48k → sell $2k SATA so the $50k cost is back in cash.
+    Does **not** run on wins/breakeven or while cash is merely deployed into open buys.
     """
     rules = state.get("standing_rules") or {}
     if rules.get("cash_floor_from_sata") is False:
         return
-    floor = float(rules.get("cash_floor_usd", CASH_FLOOR_USD))
-    shortfall = round(floor - float(cash), 2)
-    if shortfall < 1.0:
-        return
-    if not _had_trading_loss(fills or []):
+    loss_total = _trading_loss_total(fills or [])
+    if loss_total < 1.0:
         return
 
     if sata_mark is None or sata_mark <= 0:
-        events.append(f"{now} cash floor ${floor:,.0f}: need ${shortfall:.2f} but no SATA mark")
+        events.append(f"{now} loss top-off: need ${loss_total:.2f} but no SATA mark")
         return
     pos = next((p for p in state["positions"] if p["symbol"] == "SATA"), None)
     qty = float(pos["qty"]) if pos else 0.0
     if qty <= 0:
-        events.append(
-            f"{now} cash floor ${floor:,.0f}: need ${shortfall:.2f} but no SATA shares to sell"
-        )
+        events.append(f"{now} loss top-off: need ${loss_total:.2f} but no SATA shares to sell")
         return
     max_proceeds = round(qty * float(sata_mark), 2)
-    notional = min(shortfall, max_proceeds)
+    notional = min(loss_total, max_proceeds)
     if notional < 1.0:
         return
     params = (
-        f"Cash floor ${floor:,.0f} (trade loss): sell ${{NOTIONAL}} SATA at best "
-        f"(Rodney override; skip profit→SATA)."
+        "Trade loss top-off: sell ${NOTIONAL} SATA at best to restore original cost to cash "
+        "(Rodney override; skip profit→SATA)."
     )
     for o in state["orders"]:
         if (
@@ -277,7 +276,9 @@ def maybe_queue_cash_floor_sata_sell(
             o["rodney_override_sata_sell"] = True
             o["skip_profit_to_sata"] = True
             o["params_text"] = params.replace("${NOTIONAL}", f"${notional:.2f}")
-            events.append(f"{now} cash floor SATA sell notional → ${notional:.2f} (trade loss)")
+            events.append(
+                f"{now} loss top-off SATA sell notional → ${notional:.2f} (restore trade cost)"
+            )
             return
     n = sum(1 for o in state["orders"] if str(o.get("id", "")).startswith("SB-SATA-")) + 1
     oid = f"SB-SATA-{n}"
@@ -292,16 +293,16 @@ def maybe_queue_cash_floor_sata_sell(
             "allow_sata_sell": True,
             "rodney_override_sata_sell": True,
             "skip_profit_to_sata": True,
-            "source": "cash_floor",
+            "source": "loss_topoff",
             "params_text": params.replace("${NOTIONAL}", f"${notional:.2f}"),
         }
     )
     note = (
         f"{now} queued {oid} SELL_BEST SATA ${notional:.2f} "
-        f"(cash floor ${floor:,.0f} after trade loss"
+        f"(restore ${loss_total:.2f} trade cost after loss"
     )
-    if notional + 1e-9 < shortfall:
-        note += f"; short ${shortfall - notional:.2f} — insufficient SATA"
+    if notional + 1e-9 < loss_total:
+        note += f"; short ${loss_total - notional:.2f} — insufficient SATA"
     note += ")"
     events.append(note)
 
@@ -1056,9 +1057,9 @@ def main() -> None:
                 }
             )
 
-    # After a trading loss, restore $100k cash par from SATA if needed.
+    # After a trading loss, sell SATA so the original trade cost returns to cash.
     sata_mark_floor = marks.get("SATA", {}).get("mark")
-    maybe_queue_cash_floor_sata_sell(state, cash, sata_mark_floor, events, now, fills=fills)
+    maybe_queue_loss_topoff_sata_sell(state, sata_mark_floor, events, now, fills=fills)
     for order in state["orders"]:
         if order.get("status") in {"FILLED", "CANCELLED"}:
             continue

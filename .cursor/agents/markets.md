@@ -42,7 +42,7 @@ Canonical desk copy for John Cloud / John Mac: `agents/markets/trading-rules.md`
 8. If cash or positions are insufficient, report Blocker — do not invent money.
 9. **Notify John for email only on buys/sells** (paper fills). Never flag mark/price updates, arming, trailing, or UPL as email-worthy.
 10. **Profits → SATA:** realized **trading** profit buys **SATA** at best price; mark hold-for-dividends / no-sell. **Reinvest `dividend_cash`** when ≥1 share; otherwise merge into the next profit→SATA buy.
-11. **Cash par $100k:** only after a **losing** trade fill, if cash is below $100,000 sell enough SATA at best to restore par. Not on wins/breakeven or while cash is merely deployed.
+11. **Loss top-off:** after a **losing** trade fill, sell SATA equal to the loss so the original trade cost is restored to cash. Not on wins/breakeven or while cash is merely deployed.
 
 ## Return to John
 
