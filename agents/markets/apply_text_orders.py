@@ -161,9 +161,17 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
             "source": "text_order",
             "text_order_id": doc.get("id"),
         }
+        if doc.get("allow_sata_sell"):
+            order["allow_sata_sell"] = True
+            order["rodney_override_sata_sell"] = True
+        if doc.get("skip_profit_to_sata"):
+            order["skip_profit_to_sata"] = True
         if doc.get("qty_all"):
             order["qty_all"] = True
             order["params_text"] = f"Text: sell ALL {sym} ({action})"
+        elif doc.get("notional") is not None:
+            order["notional"] = float(doc["notional"])
+            order["params_text"] = f"Text: sell ${float(doc['notional']):,.2f} {sym} ({action})"
         else:
             order["qty"] = float(doc["qty"])
             order["params_text"] = f"Text: sell {sym} qty={doc['qty']} ({action})"
