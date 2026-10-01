@@ -91,11 +91,13 @@ After queue: reply briefly as **John Mac** with the script’s `reply` (queued i
 
 ---
 
-## Book snapshot note (Cloud, 2026-10-01 morning)
+## Book snapshot note (Cloud, 2026-10-01 ~10:48 UTC)
 
-Approximate after UXRP fill + GDXU hard-stop (subject to later polls):
+Canonical numbers also on `agents/state/john-sync.md` Shared. Mac must not invent balances.
 
-- **UXRP** long with standard exits; Yahoo prints were often stale overnight.
-- **GDXU** stopped out on hard stop (gap-through fill at mark).
-- **Cash** mostly free after GDXU stop; **SATA** dividend hold remains.
+- **Cash** $48,811.92 + **dividend cash** $10.71
+- **UXRP** 2,951.59 @ ~$17.04 (~$50,303; UPL +~$303) — standard exits open (hard / trail pending arm / scale-out)
+- **SATA** 80.67 @ ~$99.99 (~$8,067) — dividend hold, no sells
+- **GDXU** flat (hard-stop filled earlier)
+- Approx equity **~$107,192** (started $100k)
 - Ask John Cloud for a live snapshot; Mac STATUS does not read Cloud `paper-state.json`.
