@@ -19,7 +19,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-- **Last board update:** 2026-10-01 — John Mac first Mac session; `~/RMLLC1A/AGENTS.md` readable on this Mac
+- **Last board update:** 2026-10-01 — John Mac GitHub browser sign-in as RMLLC1 complete; sync board push follows
 - **Active goals:** Mac Mini setup; My Machine worker `mac-mini-4`; dual John naming
 - **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”)
 - **Open for both:** Texting later (paid SMS); keep worker Terminal open on Mac
@@ -40,9 +40,9 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## John Mac — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** First Mac session on `mac-mini-4`. Pulled this branch and filled this section. Confirmed `~/RMLLC1A/AGENTS.md` is readable on this Mac (John Cloud / John Mac operating model).
-- **Recently done:** `git pull`. Local tree started on `main` (README only). Checked out `cursor/agent-department-names-cbe0` so the sync board and `AGENTS.md` are on disk.
-- **Needs John Cloud to know:** John Mac is live on this Mac. Replies to Rodney use the full name **John Mac**. Pull this commit before the next handoff.
+- **Doing now:** GitHub browser sign-in as **RMLLC1** is complete (`gh auth login --web`, no account password in Terminal). Pushing this board on `cursor/agent-department-names-cbe0`.
+- **Recently done:** First Mac session. Confirmed `~/RMLLC1A/AGENTS.md` is readable. Checked out this branch. Rodney finished the device-code browser login.
+- **Needs John Cloud to know:** John Mac is live on this Mac and can `git push` as **RMLLC1**. Replies to Rodney use the full name **John Mac**. Pull this commit before the next handoff.
 - **Blockers:** None.
 - **Next:** Wait for Rodney’s Mac task.
 
@@ -54,3 +54,4 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | --- | --- | --- |
 | 2026-10-01 | John Cloud | Sync board created. Mac Mini worker `mac-mini-4` was connected; this Cloud chat is still cloud-VM. |
 | 2026-10-01 | John Mac | First Mac session. Read `~/RMLLC1A/AGENTS.md` on this Mac. Doing now: sync check-in. Next: wait for Rodney’s Mac task. |
+| 2026-10-01 | John Mac | GitHub browser sign-in as RMLLC1 complete. Doing now: push this board. Next: wait for Rodney’s Mac task. |
