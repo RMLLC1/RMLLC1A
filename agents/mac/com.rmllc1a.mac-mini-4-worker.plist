@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.rmllc1a.mac-mini-4-worker</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/bin/bash</string>
+		<string>/Users/regiaemanagementllc/RMLLC1A/agents/mac/run-mac-mini-4-worker.sh</string>
+	</array>
+	<key>WorkingDirectory</key>
+	<string>/Users/regiaemanagementllc/RMLLC1A</string>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+	<key>StandardOutPath</key>
+	<string>/Users/regiaemanagementllc/Library/Logs/cursor-mac-mini-4-worker.log</string>
+	<key>StandardErrorPath</key>
+	<string>/Users/regiaemanagementllc/Library/Logs/cursor-mac-mini-4-worker.err.log</string>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>HOME</key>
+		<string>/Users/regiaemanagementllc</string>
+		<key>PATH</key>
+		<string>/Users/regiaemanagementllc/.local/bin:/usr/local/bin:/usr/bin:/bin</string>
+	</dict>
+</dict>
+</plist>
