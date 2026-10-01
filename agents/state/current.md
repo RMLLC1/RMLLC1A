@@ -61,7 +61,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Name with Rodney: always **John Cloud** or **John Mac** (full desk name; never bare “John”). This session = **John Cloud**.
 - Prefer email for notifications (to `regiaemanagementllc@gmail.com`; updated 2026-09-28).
 - Standing decision (2026-09-28): email for Cloud fill alerts. **Updated 2026-10-01:** John Mac iMessage with Rodney is working (Mac desk).
-- **Email volume (Rodney 2026-09-28):** **Gmail** only when stock/crypto is bought or sold. Never for marks/prices. **No git commit/push** for paper marks or paper fills (stops GitHub/Cursor-bot notification emails). Paper state stays on disk only.
+- **Email volume (Rodney 2026-09-28; reaffirmed 2026-10-01):** **Gmail** only when stock/crypto is bought or sold. Never for marks/prices/status. **No git commit/push** for paper marks or paper fills. Paper files gitignored (`paper-state.json`, `last_marks.json`, `paper-portfolio.md`). Minimize other pushes; john-sync daily only commits when material.
 - Free AT&T texting: failed (carrier gateway shut down). Prefer email.
 - Markets paper: **auto-execute**; trail **+2% arm / 1% trail** limit stops. **Realized profits → buy SATA**; **hold for daily dividends — never sell**.
 - **Price feed:** Yahoo poll every **5 minutes** during **NYSE extended hours only** (Mon–Fri **4:00 AM–8:00 PM ET**). Gmail **only on buy/sell fills**.

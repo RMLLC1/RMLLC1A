@@ -1,1 +1,6 @@
 agents/markets/notes/gareth-soloway/refresh-state.json
+agents/markets/paper-state.json
+agents/markets/last_marks.json
+agents/markets/paper-portfolio.md
+agents/markets/__pycache__/
+agents/markets/**/__pycache__/
