@@ -11,7 +11,7 @@
 1. **Hard invalidation:** LIMIT sell at **entry − 2%** until the trailing stop arms, then cancel.
 2. **Trail:** arm at **entry + 2%**, then trail **1%** below high water — LIMIT at stop.
 3. **Scale-out:** LIMIT sell **⅓** of the entry qty at **entry + 4%**; remaining **⅔** stay on the trail.
-4. **Profits → SATA:** realized trading P&amp;L buys SATA and holds for dividends (not stop-managed).
+4. **Profits → SATA:** realized trading P&amp;L buys SATA and holds for dividends (not stop-managed). Reinvest `dividend_cash` when ≥1 share; otherwise merge into the next profit→SATA buy.
 
 ## Income sleeve
 

@@ -117,37 +117,93 @@ def credit_sata_dividends(state: dict, now: str, events: list) -> None:
     events.append(f"{now} SATA DIVIDEND paper ${amount} ({qty:.4f} × ${SATA_DAILY_DIV}) → dividend_cash")
 
 
-def queue_sata_profit_buy(state: dict, profit: float, events: list, now: str) -> None:
-    """Standing rule: realized trading profit buys SATA; hold for dividends (no sell)."""
-    profit = round(float(profit), 2)
-    if profit < 1.0:  # ignore dust
+def _queue_sata_buy(
+    state: dict,
+    notional: float,
+    purpose: str,
+    params_text: str,
+    events: list,
+    now: str,
+) -> None:
+    """Queue SATA BUY_BEST (no stops). Merges into an open order with the same purpose."""
+    notional = round(float(notional), 2)
+    if notional < 1.0:
         return
-    # Merge into existing open SATA profit buy if present
     for o in state["orders"]:
         if (
             o.get("symbol") == "SATA"
             and o.get("type") == "BUY_BEST"
             and o.get("status") in {"OPEN", "WORKING"}
-            and o.get("purpose") == "PROFIT_TO_SATA"
+            and o.get("purpose") == purpose
         ):
-            o["notional"] = round(float(o.get("notional") or 0) + profit, 2)
-            o["params_text"] = f"Buy ${o['notional']:.2f} SATA with trading profit. HOLD for daily dividends — do not sell."
-            events.append(f"{now} SATA profit-buy notional → ${o['notional']:.2f}")
+            o["notional"] = round(float(o.get("notional") or 0) + notional, 2)
+            o["params_text"] = params_text.replace("${NOTIONAL}", f"${o['notional']:.2f}")
+            events.append(f"{now} SATA {purpose} notional → ${o['notional']:.2f}")
             return
     n = sum(1 for o in state["orders"] if str(o.get("id", "")).startswith("PB-SATA-")) + 1
+    oid = f"PB-SATA-{n}"
     state["orders"].append(
         {
-            "id": f"PB-SATA-{n}",
+            "id": oid,
             "symbol": "SATA",
             "type": "BUY_BEST",
             "status": "OPEN",
-            "notional": profit,
+            "notional": notional,
             "attach_trailing_stop": False,
-            "purpose": "PROFIT_TO_SATA",
-            "params_text": f"Buy ${profit:.2f} SATA with trading profit. HOLD for daily dividends — do not sell.",
+            "purpose": purpose,
+            "params_text": params_text.replace("${NOTIONAL}", f"${notional:.2f}"),
         }
     )
-    events.append(f"{now} queued PB-SATA-{n} notional=${profit:.2f}")
+    events.append(f"{now} queued {oid} ${notional:.2f} ({purpose})")
+
+
+def queue_sata_profit_buy(state: dict, profit: float, events: list, now: str) -> float:
+    """Trading profit → SATA; sweep any sub-share dividend_cash into the same buy."""
+    profit = round(float(profit), 2)
+    div = round(float(state.get("dividend_cash") or 0), 4)
+    div_sweep = 0.0
+    if div > 0:
+        state["dividend_cash"] = 0
+        div_sweep = div
+        events.append(
+            f"{now} merged ${div:.4f} dividend_cash into profit→SATA buy (below 1-share reinvest threshold alone)"
+        )
+    notional = round(profit + div_sweep, 2)
+    if notional < 1.0:
+        if div_sweep > 0:
+            state["dividend_cash"] = div_sweep
+        return 0.0
+    _queue_sata_buy(
+        state,
+        notional,
+        "PROFIT_TO_SATA",
+        "Buy ${NOTIONAL} SATA (trading profit + any dividend cash). HOLD for daily dividends — do not sell.",
+        events,
+        now,
+    )
+    return div_sweep
+
+
+def try_reinvest_dividend_cash(
+    state: dict, sata_mark: float | None, events: list, now: str
+) -> float:
+    """When dividend_cash alone can buy ≥1 SATA share, reinvest at best. Returns cash to add."""
+    if sata_mark is None or sata_mark <= 0:
+        return 0.0
+    div = round(float(state.get("dividend_cash") or 0), 4)
+    if div < float(sata_mark):
+        return 0.0
+    state["dividend_cash"] = 0
+    _queue_sata_buy(
+        state,
+        div,
+        "DIVIDEND_REINVEST",
+        "Reinvest ${NOTIONAL} SATA dividend cash. HOLD for daily dividends — do not sell.",
+        events,
+        now,
+    )
+    events.append(f"{now} dividend_cash ${div:.4f} → SATA reinvest (≥1 share @ ~${sata_mark:.2f})")
+    return div
 
 
 def cancel_entry_group(
@@ -570,7 +626,8 @@ def render_md(state: dict, marks: dict) -> str:
         "- **Trading exits (UXRP/GDXU etc.):** hard invalidation **−2%** until trail arms; arm **+2%** then trail **1%** LIMIT; scale-out **⅓ at +4%**; remainder on trail.",
         "- **Income SATA (~dividends sleeve):** no stops / no scale-outs / no sells unless Rodney overrides.",
         "- Open paper orders auto-fill when conditions hit (no manual confirm).",
-        "- **Profits → SATA:** realized **trading** profit buys **SATA** at best price; **hold for daily dividends — do not sell**.",
+        "- **Profits → SATA:** realized **trading** profit buys **SATA** at best; **dividend_cash** reinvests when ≥1 share, else merges into the next profit→SATA buy.",
+        "- **Hold for daily dividends — do not sell** income SATA unless Rodney overrides.",
         "",
         "**Marks:**",
     ]
@@ -671,6 +728,10 @@ def main() -> None:
     pos_by_sym = {p["symbol"]: p for p in state["positions"]}
     cash = float(state["cash"])
 
+    credit_sata_dividends(state, now, events)
+    sata_mark_early = marks.get("SATA", {}).get("mark")
+    cash = round(cash + try_reinvest_dividend_cash(state, sata_mark_early, events, now), 2)
+
     for order in state["orders"]:
         if order.get("status") in {"FILLED", "CANCELLED"}:
             continue
@@ -723,7 +784,7 @@ def main() -> None:
                 avg_before = basis_before / qty_before if qty_before else 0
                 realized = round(float(ev["proceeds"]) - avg_before * float(ev["qty"]), 2)
                 if realized > 0:
-                    queue_sata_profit_buy(state, realized, events, now)
+                    cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
                 cancel_entry_group(
                     state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
                 )
@@ -774,7 +835,7 @@ def main() -> None:
                 avg_before = basis_before / qty_before if qty_before else 0
                 realized = round(float(ev["proceeds"]) - avg_before * float(ev["qty"]), 2)
                 if realized > 0:
-                    queue_sata_profit_buy(state, realized, events, now)
+                    cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
                 cancel_entry_group(
                     state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
                 )
@@ -811,6 +872,14 @@ def main() -> None:
                 if ev.get("event") == "FILLED_BUY" and sym == "SATA":
                     pos["hold_for_dividends"] = True
                     pos["no_sell"] = True
+                    purpose = order.get("purpose", "")
+                    if purpose == "DIVIDEND_REINVEST":
+                        rationale = f"Dividend reinvest→SATA {order['id']} auto-filled; hold for dividends"
+                    elif purpose == "PROFIT_TO_SATA":
+                        rationale = f"Profit→SATA {order['id']} auto-filled; hold for dividends"
+                    else:
+                        rationale = f"{otype} {order['id']} auto-filled at best available; hold for dividends"
+                    state["trade_log"][-1]["rationale"] = rationale
                 if ev.get("event") == "FILLED_SELL":
                     # Approx realized on partial/full: use avg cost × qty sold
                     avg_before = basis_before / qty_before if qty_before else 0
@@ -821,7 +890,7 @@ def main() -> None:
                         and not order.get("skip_profit_to_sata")
                         and order.get("purpose") != "OVERNIGHT_REDEPLOY"
                     ):
-                        queue_sata_profit_buy(state, realized, events, now)
+                        cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
                 # Trading exits: hard −2% until arm, +2% arm / 1% trail, scale-out ⅓ at +4%.
                 if (
                     ev.get("event") == "FILLED_BUY"
@@ -861,6 +930,13 @@ def main() -> None:
             pos["hold_for_dividends"] = True
             pos["no_sell"] = True
             fill_px = float(ev.get("price") or mark)
+            purpose = order.get("purpose", "")
+            if purpose == "DIVIDEND_REINVEST":
+                rationale = f"Dividend reinvest→SATA {order['id']} auto-filled; hold for dividends"
+            elif purpose == "PROFIT_TO_SATA":
+                rationale = f"Profit→SATA {order['id']} auto-filled; hold for dividends"
+            else:
+                rationale = f"SATA {order['id']} auto-filled at best available; hold for dividends"
             state.setdefault("trade_log", []).append(
                 {
                     "time": now,
@@ -869,12 +945,11 @@ def main() -> None:
                     "qty": ev["qty"],
                     "price": fill_px,
                     "cash_after": cash,
-                    "rationale": f"Profit→SATA {order['id']} auto-filled; hold for dividends",
+                    "rationale": rationale,
                 }
             )
 
     state["cash"] = cash
-    credit_sata_dividends(state, now, events)
 
     for p in state["positions"]:
         qty = float(p["qty"])

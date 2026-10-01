@@ -51,6 +51,8 @@ SATA income / dividend shares: **no stops** (hold).
 ## Profits → SATA
 
 - Realized trading **profit** → buy **SATA** at best; **hold for daily dividends — do not sell**.
+- **Dividend cash reinvest:** when `dividend_cash` alone can buy **≥1 SATA share** at the current mark, auto-reinvest all of it into SATA (same hold — no stops/sells).
+- If `dividend_cash` is **below** one share, **accumulate** it and **merge into the next** profit→SATA buy (trading profit + pooled dividend cash in one order).
 - Dividend SATA: `hold_for_dividends` / `no_sell`.
 - SATA sells blocked unless Rodney gives an **explicit override** (not available on default text commands).
 

@@ -41,7 +41,7 @@ Canonical desk copy for John Cloud / John Mac: `agents/markets/trading-rules.md`
 7. Keep a simple running P&amp;L vs cost basis. Label everything **PAPER**.
 8. If cash or positions are insufficient, report Blocker — do not invent money.
 9. **Notify John for email only on buys/sells** (paper fills). Never flag mark/price updates, arming, trailing, or UPL as email-worthy.
-10. **Profits → SATA:** realized **trading** profit buys **SATA** at best price; mark hold-for-dividends / no-sell.
+10. **Profits → SATA:** realized **trading** profit buys **SATA** at best price; mark hold-for-dividends / no-sell. **Reinvest `dividend_cash`** when ≥1 share; otherwise merge into the next profit→SATA buy.
 
 ## Return to John
 
