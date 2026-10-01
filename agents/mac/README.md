@@ -26,6 +26,18 @@ bash agents/mac/install-mac-mini-4-worker-launchagent.sh
 
 The worker auto-starts; the John Mac *chat* still needs to be opened once (Reconnect works once the worker is online).
 
+## Rodney texts back
+
+A second login item, `com.rmllc1a.rodney-imessage`, watches only Rodney Bishop’s iMessage number. When he sends a new text, John Mac replies to that number.
+
+Install:
+
+```bash
+bash agents/mac/install-rodney-imessage-launchagent.sh
+```
+
+macOS must allow `/usr/bin/python3` under **System Settings → Privacy & Security → Full Disk Access**. Until that switch is on, the watcher cannot read Messages. Log: `~/Library/Logs/john-mac-imessage.log`.
+
 ## Stop / uninstall
 
 ```bash
