@@ -50,7 +50,8 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Outlook Calendar auth when Rodney needs Outlook.
 - Accountant specialist ready; Rodney will try a finance task later.
 - Markets specialist ready; UXRP research delivered; paper UXRP 10% buy placed; GDXU research delivered.
-- **Nursing CE specialist (`nurse-ce`) added** for Texas + Washington RN dual-state course vetting (2026-09-28). **Both licenses renew in October.** Awaiting CE website URL.
+- **Nursing CE (dormant until 2 months before expiry — Rodney 2026-10-01):** WA RN expires **2027-10-22** → wake **~2027-08-22** (`nursing-ce-wake-wa`). TX RN expires **2028-10-31** → wake **~2028-08-31** (`nursing-ce-wake-tx`). Renewals confirmed Nursys 2026-09-30; no active CE shopping until wake.
+- **John sync hygiene:** weekly Sunday timer `john-sync-weekly` (~11:00 AM ET) — John Cloud updates `agents/state/john-sync.md` and pushes; chat only if something needs Rodney.
 - Awaiting Rodney's next task.
 
 ## Standing preferences
@@ -67,3 +68,5 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - **Soloway / Verified Investing YouTube:** weekday morning refresh **7:00 AM ET** (`soloway-youtube-refresh-am`) for both `@GarethSolowayProTrader` and `@verifiedinvesting`. Chat only on new public videos; no email; no git for routine refreshes.
 - **Premarket plan (queued 2026-09-30):** Sell overnight SATA (~1000 sh) at **≥$100.0002** (no loss); keep dividend SATA. Then buy **$50k UXRP @$17** and **$50k GDXU @$107.50**.
 - **Trading exits (2026-09-30):** hard **−2%** until arm; arm **+2%** / trail **1%** LIMIT; scale-out **⅓ at +4%**; profits→SATA hold. **Income SATA (~$8k): no stops.**
+- **Paper (Rodney 2026-10-01):** Leave working orders alone unless Rodney asks to change (UXRP $50k @$17 still working; GDXU held with exits).
+- **Mac reboot auto-start:** Verified OK (Rodney 2026-10-01).

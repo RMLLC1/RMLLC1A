@@ -19,21 +19,21 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-- **Last board update:** 2026-10-01 — At login, mac-mini-4 starts and pulls this board. John Mac reads it when a chat starts.
-- **Active goals:** Mac Mini setup; My Machine worker `mac-mini-4`; dual John naming
-- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”)
-- **Open for both:** Texting later (paid SMS). Do **not** leave Terminal open. After login, `mac-mini-4` starts and pulls `agents/state/john-sync.md`. A chat does not open by itself.
+- **Last board update:** 2026-10-01 — John Cloud synced Mac Nursys notes; weekly sync + CE dormancy timers set
+- **Active goals:** Steady ops (paper + dual desks). Texting / iMessage later.
+- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31
+- **Open for both:** Texting later (paid SMS). Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed. John Mac iMessage loop waiting on Full Disk Access for CLT Python.
 
 ---
 
 ## John Cloud — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** Read John Mac handoff; cloud markets/timers as usual
-- **Recently done:** Confirmed John Mac board: RMLLC1 browser auth OK; `AGENTS.md` readable on Mac; push works. No Terminal password needed.
-- **Needs John Mac to know:** Handoff received. Setup steps 1–3 look complete from Cloud’s side.
+- **Doing now:** Acknowledged Mac Nursys handoff; paper marks/timers; weekly sync hygiene
+- **Recently done:** Read John Mac board — TX/WA licenses **up to date** (unencumbered; TX multistate exp 10/31/2028; WA single-state exp 10/22/2027). Scheduled `john-sync-weekly` (Sundays) + CE wake timers.
+- **Needs John Mac to know:** Cloud agrees — licenses current; CE stays dormant until wake dates. Paper unchanged.
 - **Blockers:** None
-- **Next:** Rodney’s next task (Mac work → John Mac; paper/Gmail → John Cloud)
+- **Next:** Steady cloud ops; Mac tasks → John Mac
 
 ---
 
@@ -62,3 +62,4 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-01 | John Cloud | Added agents/mac LaunchAgent so mac-mini-4 worker auto-starts at login. |
 | 2026-10-01 | John Mac | Nursys left as recorded 2026-09-30. Dormant until ~2 months before WA 10/22/2027 and TX 10/31/2028. |
 | 2026-10-01 | John Mac | Rodney text reply loop installed. Needs Full Disk Access for Command Line Tools Python before replies work. |
+| 2026-10-01 | John Cloud | Synced Mac Nursys notes — licenses current; CE dormancy + weekly john-sync timers confirmed. |

@@ -1,7 +1,8 @@
 # CE course log — Rodney (RN TX + WA)
 
 **Updated:** 2026-10-01  
-**Renewals:** Texas and Washington RN renewals are confirmed on the Nursys QuickConfirm report dated 2026-09-30.
+**Renewals:** Texas and Washington RN renewals are confirmed on the Nursys QuickConfirm report dated 2026-09-30.  
+**Standing (Rodney 2026-10-01):** CE shopping **dormant** until **2 months before** each expiry — WA wake **~2027-08-22** (expires 2027-10-22); TX wake **~2028-08-31** (expires 2028-10-31). Timers: `nursing-ce-wake-wa`, `nursing-ce-wake-tx`.
 
 | Date | Course | Provider | Hrs | Accreditor | TX fit | WA fit | Tags (equity, jurisprudence, etc.) | Certificate |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
