@@ -29,6 +29,9 @@ FILL_EVENTS = {"FILLED_LIMIT", "FILLED_BUY", "FILLED_SELL"}
 # Paper daily dividend for SATA (Strive preferred; board-declared; approx).
 SATA_DAILY_DIV = 0.0516  # USD per share per U.S. business day (declared rate context)
 
+# Standing cash floor (Rodney): when cash is below this, sell SATA to top up.
+CASH_FLOOR_USD = 100_000.0
+
 
 def fetch_yahoo(symbol: str) -> dict:
     url = (
@@ -204,6 +207,73 @@ def try_reinvest_dividend_cash(
     )
     events.append(f"{now} dividend_cash ${div:.4f} → SATA reinvest (≥1 share @ ~${sata_mark:.2f})")
     return div
+
+
+def maybe_queue_cash_floor_sata_sell(
+    state: dict, cash: float, sata_mark: float | None, events: list, now: str
+) -> None:
+    """If cash < standing $100k floor, queue SATA SELL_BEST (override) for the shortfall."""
+    rules = state.get("standing_rules") or {}
+    if rules.get("cash_floor_from_sata") is False:
+        return
+    floor = float(rules.get("cash_floor_usd", CASH_FLOOR_USD))
+    shortfall = round(floor - float(cash), 2)
+    if shortfall < 1.0:
+        return
+    if sata_mark is None or sata_mark <= 0:
+        events.append(f"{now} cash floor ${floor:,.0f}: need ${shortfall:.2f} but no SATA mark")
+        return
+    pos = next((p for p in state["positions"] if p["symbol"] == "SATA"), None)
+    qty = float(pos["qty"]) if pos else 0.0
+    if qty <= 0:
+        events.append(
+            f"{now} cash floor ${floor:,.0f}: need ${shortfall:.2f} but no SATA shares to sell"
+        )
+        return
+    max_proceeds = round(qty * float(sata_mark), 2)
+    notional = min(shortfall, max_proceeds)
+    if notional < 1.0:
+        return
+    params = (
+        f"Cash floor ${floor:,.0f}: sell ${{NOTIONAL}} SATA at best "
+        f"(Rodney override; skip profit→SATA)."
+    )
+    for o in state["orders"]:
+        if (
+            o.get("symbol") == "SATA"
+            and o.get("type") == "SELL_BEST"
+            and o.get("status") in {"OPEN", "WORKING"}
+            and o.get("purpose") == "CASH_FLOOR"
+        ):
+            o["notional"] = notional
+            o["allow_sata_sell"] = True
+            o["rodney_override_sata_sell"] = True
+            o["skip_profit_to_sata"] = True
+            o["params_text"] = params.replace("${NOTIONAL}", f"${notional:.2f}")
+            events.append(f"{now} cash floor SATA sell notional → ${notional:.2f}")
+            return
+    n = sum(1 for o in state["orders"] if str(o.get("id", "")).startswith("SB-SATA-")) + 1
+    oid = f"SB-SATA-{n}"
+    state["orders"].append(
+        {
+            "id": oid,
+            "symbol": "SATA",
+            "type": "SELL_BEST",
+            "status": "OPEN",
+            "notional": notional,
+            "purpose": "CASH_FLOOR",
+            "allow_sata_sell": True,
+            "rodney_override_sata_sell": True,
+            "skip_profit_to_sata": True,
+            "source": "cash_floor",
+            "params_text": params.replace("${NOTIONAL}", f"${notional:.2f}"),
+        }
+    )
+    note = f"{now} queued {oid} SELL_BEST SATA ${notional:.2f} (cash floor ${floor:,.0f}"
+    if notional + 1e-9 < shortfall:
+        note += f"; short ${shortfall - notional:.2f} — insufficient SATA"
+    note += ")"
+    events.append(note)
 
 
 def cancel_entry_group(
@@ -730,7 +800,11 @@ def main() -> None:
 
     credit_sata_dividends(state, now, events)
     sata_mark_early = marks.get("SATA", {}).get("mark")
-    cash = round(cash + try_reinvest_dividend_cash(state, sata_mark_early, events, now), 2)
+    rules_early = state.get("standing_rules") or {}
+    floor_early = float(rules_early.get("cash_floor_usd", CASH_FLOOR_USD))
+    # Prefer cash floor over dividend→SATA reinvest when cash is already short.
+    if cash + 1e-9 >= floor_early or rules_early.get("cash_floor_from_sata") is False:
+        cash = round(cash + try_reinvest_dividend_cash(state, sata_mark_early, events, now), 2)
 
     for order in state["orders"]:
         if order.get("status") in {"FILLED", "CANCELLED"}:
@@ -948,6 +1022,50 @@ def main() -> None:
                     "rationale": rationale,
                 }
             )
+
+    # After buys/profit→SATA, restore standing cash floor by selling SATA if needed.
+    sata_mark_floor = marks.get("SATA", {}).get("mark")
+    maybe_queue_cash_floor_sata_sell(state, cash, sata_mark_floor, events, now)
+    for order in state["orders"]:
+        if order.get("status") in {"FILLED", "CANCELLED"}:
+            continue
+        if not (
+            order.get("symbol") == "SATA"
+            and order.get("type") == "SELL_BEST"
+            and order.get("purpose") == "CASH_FLOOR"
+        ):
+            continue
+        quote = marks.get("SATA", {})
+        mark = quote.get("mark")
+        if mark is None:
+            continue
+        pos = ensure_position(pos_by_sym, state, "SATA")
+        if block_sata_sells(order, pos):
+            events.append(f"{now} SATA cash-floor SELL blocked — hold for dividends")
+            order["status"] = "CANCELLED"
+            continue
+        basis_before = float(pos.get("cost_basis") or 0)
+        qty_before = float(pos.get("qty") or 0)
+        ev, cash = apply_buy_sell_order(order, float(mark), pos, cash)
+        if not ev:
+            continue
+        events.append(f"{now} SATA mark={mark:.4f} {ev}")
+        if ev.get("event") in FILL_EVENTS:
+            fills.append(ev)
+            fill_px = float(ev.get("price") or mark)
+            state.setdefault("trade_log", []).append(
+                {
+                    "time": now,
+                    "side": "SELL",
+                    "symbol": "SATA",
+                    "qty": ev["qty"],
+                    "price": fill_px,
+                    "cash_after": cash,
+                    "rationale": f"Cash floor→SATA sell {order['id']} auto-filled",
+                }
+            )
+            # skip_profit_to_sata is set on CASH_FLOOR orders; keep explicit.
+            _ = basis_before, qty_before
 
     state["cash"] = cash
 
