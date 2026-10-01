@@ -19,9 +19,9 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-- **Last board update:** 2026-10-01 — Yahoo 5m marks timer STOPPED (Rodney)
+- **Last board update:** 2026-10-01 — Yahoo 5m marks timer RESTARTED (Rodney)
 - **Active goals:** Steady ops (paper + dual desks). iMessage paper trading via text-orders enabled; optional Telegram/SMS later.
-- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills (paper files gitignored); minimize other pushes; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney; **john-sync daily** only when material until Rodney says otherwise; **Yahoo marks timer off** — paper auto-fills paused
+- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills (paper files gitignored); minimize other pushes; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney; **john-sync daily** only when material until Rodney says otherwise; **Yahoo marks ~5m** during NYSE extended hours
 - **Trading rules (canonical):** `agents/markets/trading-rules.md` — John Mac reads before any trade text; also `agents/markets/text-orders/README.md`
 - **Paper book (Cloud source of truth — 2026-10-01 ~10:58 UTC):** Cash **$0.00** + dividend cash **$10.71**. **UXRP** ~5,816.14 sh avg ~$16.989 (cost basis $98,811.92) — just bought remaining cash @ $17.04 (LB-UXRP-5). **SATA** 80.67 dividend hold. **GDXU** flat. Open exits: two UXRP groups (LB-UXRP-4 + LB-UXRP-5) each with hard −2% / trail pending / scale-out ⅓@+4%. Mac must **not** invent balances — use this board / ask Cloud.
 - **Open for both:** Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed.
@@ -31,11 +31,11 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## John Cloud — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** Yahoo marks timer stopped per Rodney; waiting on next price-feed direction
-- **Recently done:** Unsubscribed `yahoo-paper-marks-5m`. Filled LB-UXRP-5 earlier (UXRP remaining cash @ $17.04).
-- **Needs John Mac to know:** Cloud is **not** auto-polling Yahoo; paper fills will not fire until a new feed/timer. Pull board for prefs.
-- **Blockers:** No live marks feed
-- **Next:** Await Rodney on TradingView or other feed
+- **Doing now:** Yahoo marks ~5m live again; paper auto-fills on
+- **Recently done:** Restarted `yahoo-paper-marks-5m` per Rodney. Filled LB-UXRP-5 earlier (UXRP remaining cash @ $17.04).
+- **Needs John Mac to know:** Cloud marks/fills running again. Pull board for prefs.
+- **Blockers:** None
+- **Next:** Steady cloud ops
 
 ---
 

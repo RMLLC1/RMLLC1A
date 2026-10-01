@@ -11,7 +11,7 @@ John Mac: read this before handling any trade text. John Cloud owns the paper bo
 
 | Desk | Role |
 | --- | --- |
-| **John Cloud** | Yahoo 5m marks **STOPPED** (Rodney 2026-10-01); paper auto-fills paused until a new feed; Gmail on fills only if marks run |
+| **John Cloud** | Yahoo marks every ~5m (NYSE extended hours); applies text-orders; auto-executes fills; Gmail on fills only |
 | **John Mac** | iMessage with Rodney; parse BUY/SELL/CANCEL → `queue_text_order.py` → git push `text-orders/pending/` only |
 | **Rodney** | Approves strategy by text/Cursor; only his number `…8173715555` may text-trade |
 
