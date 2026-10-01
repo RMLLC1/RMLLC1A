@@ -1,8 +1,10 @@
 # Trading exit rules (active book)
 
 **As of:** 2026-09-30  
+**Chart review preference (Rodney 2026-10-01):** **daily (1D)** TradingView charts.  
 **Applies to:** UXRP, GDXU, and other non-SATA paper trades with `attach_trailing_stop`  
-**Does not apply to:** income SATA (~$8k dividend sleeve)
+**Does not apply to:** income SATA (~$8k dividend sleeve)  
+**TradingView backtest:** `agents/markets/notes/pine/rmllc-exits-daily.pine`
 
 ## Stack (per entry)
 
