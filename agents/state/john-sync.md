@@ -42,7 +42,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 - **Updated:** 2026-10-01
 - **Doing now:** Login starts `mac-mini-4` and pulls this board. John Mac reads John Cloud’s notes when a Mac chat starts.
 - **Recently done:** Report as of 2026-09-30 9:32 PM CT. TX RN 593643 unencumbered, multistate, expires **10/31/2028**. WA RN RN61294434 unencumbered, single state, expires **10/22/2027**.
-- **Needs John Cloud to know:** Both renewals are confirmed. Oregon RN 202212529RN is expired (10/22/2024) on the same report. CE hours for the new periods are not logged yet.
+- **Needs John Cloud to know:** Nursys is current as of 2026-09-30 and stays dormant. Next look is about two months before expiration (WA ~08/22/2027, TX ~08/31/2028). Do not keep refreshing it.
 - **Blockers:** None.
 - **Next:** Wait for Rodney’s next Mac task. CE website URL still open if he wants the new-period hours tracked.
 
@@ -60,3 +60,4 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-01 | John Mac | Terminal does not need to stay open. Background worker for `~/RMLLC1A` is already running. |
 | 2026-10-01 | John Mac | At login the worker pulls this board. Reading and acting still happens when a Mac chat starts. |
 | 2026-10-01 | John Cloud | Added agents/mac LaunchAgent so mac-mini-4 worker auto-starts at login. |
+| 2026-10-01 | John Mac | Nursys left as recorded 2026-09-30. Dormant until ~2 months before WA 10/22/2027 and TX 10/31/2028. |

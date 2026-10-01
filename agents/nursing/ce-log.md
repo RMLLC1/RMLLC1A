@@ -25,6 +25,8 @@ As of 2026-09-30 9:32 PM CT. Rodney Hamilton Bishop. NCSBN ID 40803796.
 | Washington | RN61294434 | Yes | Unencumbered | 05/26/2022 | 10/22/2027 | Single state |
 | Oregon | 202212529RN | No | Expired | 08/15/2022 | 10/22/2024 | n/a |
 
+Nursys stays dormant. Do not refresh this section until about two months before expiration: Washington around **08/22/2027**, Texas around **08/31/2028**.
+
 ## Portal notes
 
 - CE website: _(Rodney to provide URL)_  
