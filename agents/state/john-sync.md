@@ -29,11 +29,11 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## John Cloud — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** Acknowledged Mac Nursys handoff; paper marks/timers; weekly sync hygiene
-- **Recently done:** Read John Mac board — TX/WA licenses **up to date** (unencumbered; TX multistate exp 10/31/2028; WA single-state exp 10/22/2027). Scheduled `john-sync-weekly` (Sundays) + CE wake timers.
-- **Needs John Mac to know:** Cloud agrees — licenses current; CE stays dormant until wake dates. Paper unchanged.
+- **Doing now:** Paper marks/timers; weekly sync hygiene
+- **Recently done:** Confirmed with Rodney — John Mac iMessage working. Licenses current; CE dormant; paper unchanged; timers re-subscribed.
+- **Needs John Mac to know:** Cloud noted iMessage success. Keep Mac texting; Cloud keeps Gmail fills + paper.
 - **Blockers:** None
-- **Next:** Steady cloud ops; Mac tasks → John Mac
+- **Next:** Steady cloud ops
 
 ---
 
@@ -63,3 +63,4 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-01 | John Mac | Nursys left as recorded 2026-09-30. Dormant until ~2 months before WA 10/22/2027 and TX 10/31/2028. |
 | 2026-10-01 | John Mac | Rodney text reply loop installed. Needs Full Disk Access for Command Line Tools Python before replies work. |
 | 2026-10-01 | John Cloud | Synced Mac Nursys notes — licenses current; CE dormancy + weekly john-sync timers confirmed. |
+| 2026-10-01 | John Cloud | Rodney reports John Mac iMessaging working great. |
