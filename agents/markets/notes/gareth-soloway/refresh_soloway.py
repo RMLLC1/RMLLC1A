@@ -179,6 +179,10 @@ def extract_highlights(cleaned: str, limit: int = 18) -> list[str]:
         "not financial advice",
         "comment below",
         "like this video",
+        "$10 a month",
+        "epic discounts",
+        "discount code",
+        "swing trade alert",
     )
     for p in parts:
         s = p.strip()
