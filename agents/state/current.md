@@ -72,3 +72,4 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - **Mac reboot auto-start:** Verified OK (Rodney 2026-10-01).
 - **iMessage paper trading (2026-10-01):** Rodney may text John Mac BUY/SELL/CANCEL; Mac queues `agents/markets/text-orders/pending/`; Cloud applies on marks poll. Fills still Gmail only.
 - **Trading rules doc (2026-10-01):** `agents/markets/trading-rules.md` — John Mac must pull + read; Cloud teaches via john-sync.
+- **Chart review (2026-10-01):** Rodney prefers **daily (1D)** TradingView charts; Business account + AI Copilot available. Pine exit stack: `agents/markets/notes/pine/rmllc-exits-daily.pine`.
