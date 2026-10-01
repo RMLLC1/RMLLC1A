@@ -209,25 +209,16 @@ def try_reinvest_dividend_cash(
     return div
 
 
-def _trading_sleeve_qty(state: dict) -> float:
-    """Shares in non-SATA paper positions (open trades)."""
-    total = 0.0
-    for p in state.get("positions") or []:
-        if p.get("symbol") == "SATA":
-            continue
-        total += float(p.get("qty") or 0)
-    return total
-
-
-def _had_trading_exit(fills: list) -> bool:
-    """True if a non-SATA sell filled this poll (a trade completed)."""
+def _had_trading_loss(fills: list) -> bool:
+    """True if a non-SATA sell filled this poll at a realized loss."""
     for ev in fills or []:
         if ev.get("symbol") == "SATA":
             continue
-        if ev.get("event") in {"FILLED_SELL", "FILLED_LIMIT"} and ev.get("side") == "SELL":
-            return True
-        # Hard/trail fills use FILLED_LIMIT with side SELL
-        if ev.get("event") == "FILLED_LIMIT" and float(ev.get("proceeds") or 0) > 0:
+        if ev.get("event") not in {"FILLED_SELL", "FILLED_LIMIT"}:
+            continue
+        if ev.get("side") not in {None, "SELL"}:
+            continue
+        if "realized" in ev and float(ev["realized"]) < 0:
             return True
     return False
 
@@ -241,10 +232,10 @@ def maybe_queue_cash_floor_sata_sell(
     *,
     fills: list | None = None,
 ) -> None:
-    """Restore cash to $100k from SATA after a trade completes (covers losses).
+    """After a trading **loss**, sell SATA to restore cash to the $100k par floor.
 
-    Does **not** sell SATA merely because cash was deployed into open buys.
-    Triggers when cash < floor AND (a non-SATA sell filled this poll, or trading sleeve is flat).
+    Does **not** run on profitable exits, breakeven exits, or while cash is merely
+    deployed into open buys.
     """
     rules = state.get("standing_rules") or {}
     if rules.get("cash_floor_from_sata") is False:
@@ -253,11 +244,7 @@ def maybe_queue_cash_floor_sata_sell(
     shortfall = round(floor - float(cash), 2)
     if shortfall < 1.0:
         return
-
-    trading_exit = _had_trading_exit(fills or [])
-    sleeve_flat = _trading_sleeve_qty(state) <= 1e-9
-    if not trading_exit and not sleeve_flat:
-        # Cash is low because capital is in open trades — leave SATA alone.
+    if not _had_trading_loss(fills or []):
         return
 
     if sata_mark is None or sata_mark <= 0:
@@ -274,9 +261,8 @@ def maybe_queue_cash_floor_sata_sell(
     notional = min(shortfall, max_proceeds)
     if notional < 1.0:
         return
-    reason = "after trade exit" if trading_exit else "trading sleeve flat"
     params = (
-        f"Cash floor ${floor:,.0f} ({reason}): sell ${{NOTIONAL}} SATA at best "
+        f"Cash floor ${floor:,.0f} (trade loss): sell ${{NOTIONAL}} SATA at best "
         f"(Rodney override; skip profit→SATA)."
     )
     for o in state["orders"]:
@@ -291,7 +277,7 @@ def maybe_queue_cash_floor_sata_sell(
             o["rodney_override_sata_sell"] = True
             o["skip_profit_to_sata"] = True
             o["params_text"] = params.replace("${NOTIONAL}", f"${notional:.2f}")
-            events.append(f"{now} cash floor SATA sell notional → ${notional:.2f} ({reason})")
+            events.append(f"{now} cash floor SATA sell notional → ${notional:.2f} (trade loss)")
             return
     n = sum(1 for o in state["orders"] if str(o.get("id", "")).startswith("SB-SATA-")) + 1
     oid = f"SB-SATA-{n}"
@@ -310,7 +296,10 @@ def maybe_queue_cash_floor_sata_sell(
             "params_text": params.replace("${NOTIONAL}", f"${notional:.2f}"),
         }
     )
-    note = f"{now} queued {oid} SELL_BEST SATA ${notional:.2f} (cash floor ${floor:,.0f}, {reason}"
+    note = (
+        f"{now} queued {oid} SELL_BEST SATA ${notional:.2f} "
+        f"(cash floor ${floor:,.0f} after trade loss"
+    )
     if notional + 1e-9 < shortfall:
         note += f"; short ${shortfall - notional:.2f} — insufficient SATA"
     note += ")"
@@ -898,6 +887,7 @@ def main() -> None:
                 )
                 avg_before = basis_before / qty_before if qty_before else 0
                 realized = round(float(ev["proceeds"]) - avg_before * float(ev["qty"]), 2)
+                ev["realized"] = realized
                 if realized > 0:
                     cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
                 cancel_entry_group(
@@ -949,6 +939,7 @@ def main() -> None:
                 )
                 avg_before = basis_before / qty_before if qty_before else 0
                 realized = round(float(ev["proceeds"]) - avg_before * float(ev["qty"]), 2)
+                ev["realized"] = realized
                 if realized > 0:
                     cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
                 cancel_entry_group(
@@ -999,6 +990,7 @@ def main() -> None:
                     # Approx realized on partial/full: use avg cost × qty sold
                     avg_before = basis_before / qty_before if qty_before else 0
                     realized = round(float(ev["proceeds"]) - avg_before * float(ev["qty"]), 2)
+                    ev["realized"] = realized
                     # Skip profit→SATA on explicit redeploy exits (cash needed for other buys).
                     if (
                         realized > 0
@@ -1064,8 +1056,7 @@ def main() -> None:
                 }
             )
 
-    # After a trade exit (or when trading sleeve is flat), restore $100k cash from SATA if needed.
-    # Does not fire merely because cash was spent on open buys.
+    # After a trading loss, restore $100k cash par from SATA if needed.
     sata_mark_floor = marks.get("SATA", {}).get("mark")
     maybe_queue_cash_floor_sata_sell(state, cash, sata_mark_floor, events, now, fills=fills)
     for order in state["orders"]:

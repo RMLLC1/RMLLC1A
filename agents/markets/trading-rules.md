@@ -58,11 +58,11 @@ SATA income / dividend shares: **no stops** (hold).
 
 ---
 
-## Cash floor $100,000
+## Cash floor $100,000 (par)
 
-- Standing target: after a **trade completes**, restore **cash to $100,000** so losses don’t permanently shrink dry powder.
-- When cash is below $100,000 **after a non-SATA sell fill** (or when the trading sleeve is flat), auto-sell enough **SATA** at best to top up (Rodney override; does **not** recycle that sale into profit→SATA).
-- Does **not** sell SATA just because cash was deployed into open buys (e.g. $50k+$50k entries leaving cash at $0).
+- Standing **par cash:** **$100,000**.
+- When a trade closes at a **loss** and cash is then below $100,000, auto-sell enough **SATA** at best to bring cash back to par (Rodney override; does **not** recycle that sale into profit→SATA).
+- Does **not** sell SATA on profitable/breakeven exits, or just because cash was deployed into open buys.
 - If SATA proceeds are not enough to reach $100,000, sell what is available and note the shortfall.
 
 ---
