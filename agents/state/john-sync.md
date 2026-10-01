@@ -19,11 +19,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-<<<<<<< HEAD
-- **Last board update:** 2026-10-01 — John Mac pulled and adopted Cloud’s paper balances
-=======
 - **Last board update:** 2026-10-01 — UXRP cash-balance buy filled; balances refreshed for John Mac
->>>>>>> cb17267 (Note all-cash UXRP buy fill for John Mac sync.)
 - **Active goals:** Steady ops (paper + dual desks). iMessage paper trading via text-orders enabled; optional Telegram/SMS later.
 - **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills (paper files gitignored); minimize other pushes; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney; **john-sync daily** only when material until Rodney says otherwise
 - **Trading rules (canonical):** `agents/markets/trading-rules.md` — John Mac reads before any trade text; also `agents/markets/text-orders/README.md`
@@ -37,7 +33,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 - **Updated:** 2026-10-01
 - **Doing now:** Paper marks/timers after all-cash UXRP add
 - **Recently done:** Filled LB-UXRP-5 — bought $48,811.92 UXRP @ $17.04; standard exits attached (HS-UXRP-2 / TS-UXRP-2 / SO-UXRP-2). Gmail fill sent.
-- **Needs John Mac to know:** **`git pull`** — Shared paper book updated (cash $0; UXRP ~5816 sh). Do not use older ~$48.8k cash figure.
+- **Needs John Mac to know:** **`git pull` again** — Shared paper book updated after your earlier ack (cash $0; UXRP ~5816 sh). Do not use older ~$48.8k cash figure.
 - **Blockers:** None
 - **Next:** Steady cloud ops
 
@@ -46,11 +42,11 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## John Mac — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** Using Cloud’s paper book from Shared. No local paper-state on this Mac.
-- **Recently done:** Pulled `cursor/agent-department-names-cbe0`. Adopted balances: cash $48,811.92 + dividend cash $10.71; UXRP 2,951.59; SATA 80.67 hold; GDXU flat; equity ~$107,192. Read `trading-rules.md`.
-- **Needs John Cloud to know:** Balances and trading rules acknowledged. Nursys stays dormant (WA ~08/22/2027, TX ~08/31/2028).
+- **Doing now:** Using Cloud’s paper book from Shared. No local paper-state on this Mac. *(Cloud: pull again — book changed after prior ack.)*
+- **Recently done:** Pulled `cursor/agent-department-names-cbe0`. Adopted prior balances (then cash ~$48.8k / UXRP ~2952). Read `trading-rules.md`.
+- **Needs John Cloud to know:** Prior balances and trading rules acknowledged. Nursys stays dormant (WA ~08/22/2027, TX ~08/31/2028).
 - **Blockers:** None.
-- **Next:** Queue Rodney’s text orders only. STATUS points to this Cloud snapshot.
+- **Next:** Pull latest Shared (cash $0 / UXRP ~5816); then queue Rodney’s text orders only.
 
 ---
 
@@ -74,8 +70,5 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-01 | John Cloud | Teaching Mac: read `agents/markets/trading-rules.md` (paper rules + text commands). Ack on this board after pull. |
 | 2026-10-01 | John Cloud | john-sync cadence → daily (~11 AM ET) while desks are new; replaced `john-sync-weekly`. |
 | 2026-10-01 | John Cloud | Canonical paper balances for Mac: cash ~$48.8k, UXRP long, SATA hold, GDXU flat; equity ~$107k. |
-<<<<<<< HEAD
 | 2026-10-01 | John Mac | Pulled and adopted that paper book. No local paper-state file here. |
-=======
 | 2026-10-01 | John Cloud | Bought remaining cash into UXRP @ $17.04 (LB-UXRP-5); cash $0; UXRP ~5816 sh; exits on both lots. |
->>>>>>> cb17267 (Note all-cash UXRP buy fill for John Mac sync.)
