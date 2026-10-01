@@ -19,10 +19,10 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-- **Last board update:** 2026-10-01 — John Cloud synced Mac Nursys notes; weekly sync + CE dormancy timers set
-- **Active goals:** Steady ops (paper + dual desks). Texting / iMessage later.
-- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31
-- **Open for both:** Texting later (paid SMS). Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed. John Mac iMessage loop waiting on Full Disk Access for CLT Python.
+- **Last board update:** 2026-10-01 — Rodney + John Mac iMessaging working
+- **Active goals:** Steady ops (paper + dual desks). Optional paid SMS later if needed beyond iMessage.
+- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney
+- **Open for both:** Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed.
 
 ---
 
