@@ -45,6 +45,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 
 ## Open loops
 
+- **Dual John desks (2026-10-01):** **John Cloud** (this Primary agent) + **John Mac** (`mac-mini-4` worker). Shared handoff: `agents/state/john-sync.md` (git pull/push; not auto chat sync).
 - **Markets / Soloway learning (2026-09-30):** Knowledge base under `agents/markets/notes/gareth-soloway/` for **both** `@GarethSolowayProTrader` and `@verifiedinvesting`. **Standing refresh:** weekdays **7:00 AM ET** via timer `soloway-youtube-refresh-am`. No email; chat only if new public videos; no git for routine refreshes.
 - Outlook Calendar auth when Rodney needs Outlook.
 - Accountant specialist ready; Rodney will try a finance task later.
