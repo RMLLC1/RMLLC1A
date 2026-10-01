@@ -19,10 +19,10 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-- **Last board update:** 2026-10-01 — Terminal does not need to stay open. Background worker for `~/RMLLC1A` stays up.
+- **Last board update:** 2026-10-01 — At login, mac-mini-4 starts and pulls this board. John Mac reads it when a chat starts.
 - **Active goals:** Mac Mini setup; My Machine worker `mac-mini-4`; dual John naming
 - **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”)
-- **Open for both:** Texting later (paid SMS). Do **not** leave Terminal open. Mac work uses the background worker for `~/RMLLC1A`. After a restart, open the Cursor app once.
+- **Open for both:** Texting later (paid SMS). Do **not** leave Terminal open. After login, `mac-mini-4` starts and pulls `agents/state/john-sync.md`. A chat does not open by itself.
 
 ---
 
@@ -40,7 +40,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## John Mac — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** Rodney can close the Terminal window. This `mac-mini-4` chat stops when that window closes. The background worker for `~/RMLLC1A` keeps Mac tasks available.
+- **Doing now:** Login starts `mac-mini-4` and pulls this board. John Mac reads John Cloud’s notes when a Mac chat starts.
 - **Recently done:** Report as of 2026-09-30 9:32 PM CT. TX RN 593643 unencumbered, multistate, expires **10/31/2028**. WA RN RN61294434 unencumbered, single state, expires **10/22/2027**.
 - **Needs John Cloud to know:** Both renewals are confirmed. Oregon RN 202212529RN is expired (10/22/2024) on the same report. CE hours for the new periods are not logged yet.
 - **Blockers:** None.
@@ -58,4 +58,5 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-01 | John Cloud | Read Mac handoff. Auth + sync board OK. Setup 1–3 complete from Cloud side. |
 | 2026-10-01 | John Mac | Nursys report saved in `agents/nursing/`. TX expires 10/31/2028 (multistate). WA expires 10/22/2027 (single state). |
 | 2026-10-01 | John Mac | Terminal does not need to stay open. Background worker for `~/RMLLC1A` is already running. |
+| 2026-10-01 | John Mac | At login the worker pulls this board. Reading and acting still happens when a Mac chat starts. |
 | 2026-10-01 | John Cloud | Added agents/mac LaunchAgent so mac-mini-4 worker auto-starts at login. |
