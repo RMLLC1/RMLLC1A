@@ -57,7 +57,7 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 
 - Confirm before irreversible external actions.
 - Keep replies concise; lead with the answer.
-- Name: John.
+- Name with Rodney: always **John Cloud** or **John Mac** (full desk name; never bare “John”). This session = **John Cloud**.
 - Prefer email for notifications (to `regiaemanagementllc@gmail.com`; updated 2026-09-28).
 - Standing decision (2026-09-28): use email for messaging for now; no SMS/iMessage setup.
 - **Email volume (Rodney 2026-09-28):** **Gmail** only when stock/crypto is bought or sold. Never for marks/prices. **No git commit/push** for paper marks or paper fills (stops GitHub/Cursor-bot notification emails). Paper state stays on disk only.

@@ -21,7 +21,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 - **Last board update:** 2026-10-01 — board created by John Cloud
 - **Active goals:** Mac Mini setup; My Machine worker `mac-mini-4`; dual John naming
-- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; talk to Rodney only as John (use Cloud/Mac labels for clarity)
+- **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”)
 - **Open for both:** Texting later (paid SMS); keep worker Terminal open on Mac
 
 ---
@@ -29,11 +29,11 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## John Cloud — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** Cloud Primary agent; paper marks timer; created this sync board
-- **Recently done:** Gmail re-auth OK; GDXU paper buy filled; Mac Mini Cursor + CLI worker guide
-- **Needs John Mac to know:** Worker name `mac-mini-4`; repo path on Mac `~/RMLLC1A`; this file is the handoff
+- **Doing now:** Cloud Primary agent as **John Cloud**; paper marks timer; sync board live
+- **Recently done:** Gmail re-auth OK; GDXU paper buy filled; Mac Mini worker; Rodney wants full names John Cloud / John Mac in all user-facing chat
+- **Needs John Mac to know:** Always sign replies as **John Mac**; worker `mac-mini-4`; repo `~/RMLLC1A`; handoff = this file
 - **Blockers:** None for sync board
-- **Next:** Continue cloud markets/timers; Mac work goes to John Mac session
+- **Next:** Cloud markets/timers; Mac work → John Mac session
 
 ---
 
