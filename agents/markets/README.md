@@ -4,6 +4,7 @@ Research notes and **paper** (simulated) trading for John → **Markets Departme
 
 | Path | Purpose |
 | --- | --- |
+| `trading-rules.md` | **Canonical paper rules** for John Cloud + John Mac (exits, SATA, text commands) |
 | `paper-portfolio.md` | Virtual cash, positions, trade log |
 | `text-orders/` | iMessage → John Mac queue → John Cloud applies (see `text-orders/README.md`) |
 | `queue_text_order.py` | Mac: parse/queue/push a text command |

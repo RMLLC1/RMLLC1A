@@ -1,5 +1,7 @@
 # Text orders (iMessage → John Mac → John Cloud paper)
 
+Full rules (exits, SATA, desks): **`../trading-rules.md`**.
+
 Rodney texts **John Mac**; Mac queues a paper order here; **John Cloud** applies it on the next marks cycle (~5 minutes during NYSE extended hours; cancels/queues apply anytime).
 
 ## Allowed sender

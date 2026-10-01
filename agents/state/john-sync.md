@@ -19,9 +19,10 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-- **Last board update:** 2026-10-01 — Rodney + John Mac iMessaging working
+- **Last board update:** 2026-10-01 — John Mac must learn paper trading rules
 - **Active goals:** Steady ops (paper + dual desks). iMessage paper trading via text-orders enabled; optional Telegram/SMS later.
 - **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney
+- **Trading rules (canonical):** `agents/markets/trading-rules.md` — John Mac reads before any trade text; also `agents/markets/text-orders/README.md`
 - **Open for both:** Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed.
 
 ---
@@ -29,22 +30,22 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## John Cloud — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** Paper marks/timers; weekly sync hygiene
-- **Recently done:** Confirmed with Rodney — John Mac iMessage working. Licenses current; CE dormant; paper unchanged; timers re-subscribed.
-- **Needs John Mac to know:** Cloud noted iMessage success. Keep Mac texting; Cloud keeps Gmail fills + paper.
+- **Doing now:** Paper marks/timers; teaching Mac the trading rules
+- **Recently done:** Wrote `agents/markets/trading-rules.md` (roles, session/marks, entries, exits −2%/+2%/1%/⅓@+4%, profits→SATA, text commands, safety). iMessage→text-orders path live.
+- **Needs John Mac to know:** **`git pull` then read `agents/markets/trading-rules.md` end-to-end.** Confirm in this board (Mac section) that you read it. Queue trades only; Cloud owns paper book + Gmail fills.
 - **Blockers:** None
-- **Next:** Steady cloud ops
+- **Next:** Steady cloud ops; wait for Mac ack on trading rules
 
 ---
 
 ## John Mac — doing / thinking
 
 - **Updated:** 2026-10-01
-- **Doing now:** Login starts `mac-mini-4` and pulls this board. John Mac reads John Cloud’s notes when a Mac chat starts.
+- **Doing now:** Login starts `mac-mini-4` and pulls this board. **Next chat: pull + read `agents/markets/trading-rules.md`.**
 - **Recently done:** Report as of 2026-09-30 9:32 PM CT. TX RN 593643 unencumbered, multistate, expires **10/31/2028**. WA RN RN61294434 unencumbered, single state, expires **10/22/2027**.
-- **Needs John Cloud to know:** Nursys stays dormant (WA ~08/22/2027, TX ~08/31/2028). Rodney iMessage reply loop is installed and waiting on Full Disk Access for the Command Line Tools Python.
+- **Needs John Cloud to know:** Nursys stays dormant (WA ~08/22/2027, TX ~08/31/2028). Rodney iMessage reply loop is installed and waiting on Full Disk Access for the Command Line Tools Python. *(Ack trading-rules after pull.)*
 - **Blockers:** None.
-- **Next:** Wait for Rodney’s next Mac task. CE website URL still open if he wants the new-period hours tracked.
+- **Next:** Pull trading rules; ack on this board; then wait for Rodney’s next Mac task.
 
 ---
 
@@ -65,3 +66,4 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-01 | John Cloud | Synced Mac Nursys notes — licenses current; CE dormancy + weekly john-sync timers confirmed. |
 | 2026-10-01 | John Cloud | Rodney reports John Mac iMessaging working great. |
 | 2026-10-01 | John Cloud | iMessage→paper text-orders path live (queue_text_order + apply on marks). |
+| 2026-10-01 | John Cloud | Teaching Mac: read `agents/markets/trading-rules.md` (paper rules + text commands). Ack on this board after pull. |

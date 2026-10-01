@@ -30,7 +30,7 @@ The worker auto-starts; the John Mac *chat* still needs to be opened once (Recon
 
 A second login item, `com.rmllc1a.rodney-imessage`, watches only Rodney Bishop’s iMessage number. When he sends a new text, John Mac replies to that number.
 
-**Paper trades by text:** If the message looks like `BUY` / `SELL` / `CANCEL` / `STATUS`, John Mac runs `agents/markets/queue_text_order.py`, which commits only `text-orders/pending/` for John Cloud to apply. See `agents/markets/text-orders/README.md`.
+**Paper trades by text:** Read **`agents/markets/trading-rules.md`** first (exits, SATA, who does what). If the message looks like `BUY` / `SELL` / `CANCEL` / `STATUS`, John Mac runs `agents/markets/queue_text_order.py`, which commits only `text-orders/pending/` for John Cloud to apply. Command details: `agents/markets/text-orders/README.md`.
 
 Install:
 
