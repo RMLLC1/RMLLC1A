@@ -3,11 +3,16 @@
   "source": "imessage",
   "from": "+18173715555",
   "created": "2026-10-02T23:55:53Z",
-  "status": "PENDING",
+  "status": "APPLIED",
   "action": "LIMIT_BUY",
   "symbol": "UXRP",
   "notional": 50000.0,
   "limit_price": 16.34,
   "attach_exits": true,
-  "raw_text": "BUY UXRP $50000 LIMIT 16.34"
+  "raw_text": "BUY UXRP $50000 LIMIT 16.34",
+  "applied_at": "2026-10-02T23:55:59Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued LB-UXRP-6"
+  }
 }
