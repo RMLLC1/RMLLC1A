@@ -20,7 +20,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 ## Shared (both read)
 
 - **Last board update:** 2026-10-02 — email hygiene: fills-only Gmail with balances; john-sync daily timer paused
-- **Active goals:** Steady ops (paper + dual desks). iMessage paper trading via text-orders enabled; optional Telegram/SMS later.
+- **Active goals:** Steady ops (paper + dual desks). iMessage paper trading via text-orders enabled; Telegram bridge ready pending bot token secret.
 - **Standing prefs:** **Gmail ONLY on buy/sell** to `regiaemanagementllc@gmail.com` and must include **balances after**; no git for paper marks/fills; **minimize all git pushes** (GitHub emails annoy Rodney); john-sync daily timer **paused** — push board only for material Mac handoff; **always** address Rodney as **John Cloud** or **John Mac**; **Yahoo marks ~5m** in NYSE extended hours; **loss top-off** after losing trades
 - **Trading rules (canonical):** `agents/markets/trading-rules.md` — John Mac reads before any trade text; also `agents/markets/text-orders/README.md`
 - **Paper book (Cloud source of truth — 2026-10-01 ~23:48 UTC):** Cash **$0.00**. **UXRP** ~2,945.89 @ $16.9728 ($50k) — exits: hard $16.6333 / arm $17.3123 / scale $17.6517. **GDXU** ~488.76 @ $102.30 ($50k) — exits: hard $100.254 / arm $104.346 / scale $106.392. **SATA** ~87.85 dividend hold. Mac must **not** invent balances — use this board / ask Cloud.

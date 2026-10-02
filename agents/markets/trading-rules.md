@@ -13,6 +13,7 @@ John Mac: read this before handling any trade text. John Cloud owns the paper bo
 | --- | --- |
 | **John Cloud** | Yahoo marks every ~5m (NYSE extended hours); applies text-orders; auto-executes fills; Gmail on fills only |
 | **John Mac** | iMessage with Rodney; parse BUY/SELL/CANCEL → `queue_text_order.py` → git push `text-orders/pending/` only |
+| **Telegram** | Optional: message John Cloud bot directly (`agents/markets/telegram/README.md`); queues on Cloud disk (`--no-git`) |
 | **Rodney** | Approves strategy by text/Cursor; only his number `…8173715555` may text-trade |
 
 ---

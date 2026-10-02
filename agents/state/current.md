@@ -72,5 +72,6 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - **Paper (Rodney 2026-10-01):** Leave working orders alone unless Rodney asks to change (UXRP $50k @$17 still working; GDXU held with exits).
 - **Mac reboot auto-start:** Verified OK (Rodney 2026-10-01).
 - **iMessage paper trading (2026-10-01):** Rodney may text John Mac BUY/SELL/CANCEL; Mac queues `agents/markets/text-orders/pending/`; Cloud applies on marks poll. Fills still Gmail only.
+- **Telegram (2026-10-02):** Bridge coded (`agents/markets/telegram_bridge.py`). Waiting on Cloud secret `TELEGRAM_BOT_TOKEN` (+ optional `TELEGRAM_CHAT_ID`). Same BUY/SELL/CANCEL/STATUS commands; freeform chat → Cloud replies on poll timer. Fills still Gmail-only with balances.
 - **Trading rules doc (2026-10-01):** `agents/markets/trading-rules.md` — John Mac must pull + read; Cloud teaches via john-sync.
 - **Chart review (2026-10-01):** Rodney prefers **daily (1D)** TradingView, **multi-year** lookback: S/R, parallel channels, Fib, Bollinger, MFI, RSI for entries. Method: `agents/markets/notes/rodney-chart-method.md`. Pine: `notes/pine/` (toolkit + RSI/MFI + exits). Business account + AI Copilot.
