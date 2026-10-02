@@ -19,23 +19,23 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-- **Last board update:** 2026-10-01 — cash floor $100k rule; UXRP+GDXU $50k buys
+- **Last board update:** 2026-10-02 — daily sync; loss top-off rule confirmed; book unchanged overnight
 - **Active goals:** Steady ops (paper + dual desks). iMessage paper trading via text-orders enabled; optional Telegram/SMS later.
 - **Standing prefs:** Gmail fills only to `regiaemanagementllc@gmail.com`; no git for paper marks/fills (paper files gitignored); minimize other pushes; **always** address Rodney as **John Cloud** or **John Mac** (never bare “John”); paper orders unchanged unless asked; **RN licenses current** (Nursys 2026-09-30) — CE/Nursys dormant until WA ~2027-08-22 / TX ~2028-08-31; **John Mac iMessage live** with Rodney; **john-sync daily** only when material until Rodney says otherwise; **Yahoo marks ~5m** during NYSE extended hours; **loss top-off** — after a losing trade, sell SATA equal to the loss so original cost returns to cash
 - **Trading rules (canonical):** `agents/markets/trading-rules.md` — John Mac reads before any trade text; also `agents/markets/text-orders/README.md`
-- **Paper book (Cloud source of truth — 2026-10-01 ~22:33 UTC):** Cash **$0.00**. **UXRP** ~2,945.89 @ $16.9728 ($50k). **GDXU** ~488.76 @ $102.30 ($50k). **SATA** ~87.85 dividend hold. Standard exits on UXRP/GDXU. Mac must **not** invent balances — use this board / ask Cloud.
+- **Paper book (Cloud source of truth — 2026-10-01 ~23:48 UTC):** Cash **$0.00**. **UXRP** ~2,945.89 @ $16.9728 ($50k) — exits: hard $16.6333 / arm $17.3123 / scale $17.6517. **GDXU** ~488.76 @ $102.30 ($50k) — exits: hard $100.254 / arm $104.346 / scale $106.392. **SATA** ~87.85 dividend hold. Mac must **not** invent balances — use this board / ask Cloud.
 - **Open for both:** Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed.
 
 ---
 
 ## John Cloud — doing / thinking
 
-- **Updated:** 2026-10-01
-- **Doing now:** Cash floor $100k rule live; marks/fills on
-- **Recently done:** $50k UXRP + $50k GDXU BEST; SATA sell to cash $100k earlier; cash-floor auto-sell coded.
-- **Needs John Mac to know:** Pull board — cash floor + new paper book. Cash currently $0 after deploys.
+- **Updated:** 2026-10-02
+- **Doing now:** Overnight — Yahoo marks pause outside NYSE extended hours; resume premarket
+- **Recently done:** Loss top-off rule confirmed with Rodney. $50k UXRP + $50k GDXU BEST still on; SATA hold ~87.85.
+- **Needs John Mac to know:** Pull board — paper book is UXRP~2946 / GDXU~489 / SATA~87.85 / cash $0 (not the older ~5816 UXRP figure). Loss top-off = sell SATA equal to loss only.
 - **Blockers:** None
-- **Next:** Steady cloud ops; loss top-off restores trade cost to cash from SATA
+- **Next:** Steady cloud ops through next session
 
 ---
 
