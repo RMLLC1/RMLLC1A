@@ -14,7 +14,7 @@ Details: `../rodney-chart-method.md`
 | --- | --- | --- |
 | `rmllc-chart-toolkit-daily.pine` | Overlay | Multi-year Fib + Bollinger; reminder to draw S/R & channels |
 | `rmllc-rsi-mfi-daily.pine` | Below | RSI + MFI for entry timing |
-| `rmllc-exits-daily.pine` | Overlay strategy | Exit stack: hard −2% / +2% arm / 1% trail / ⅓@+4% |
+| `rmllc-exits-daily.pine` | Overlay strategy | Exit stack: hard −2% / +2% arm / 0.5% trail / ⅓@+2% + ⅓@+5% |
 
 ## How to set up (TradingView Business)
 

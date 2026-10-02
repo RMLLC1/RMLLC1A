@@ -1,6 +1,6 @@
 # Paper trading rules (Rodney / John Cloud / John Mac)
 
-**Updated:** 2026-10-01  
+**Updated:** 2026-10-02  
 **Mode:** PAPER only (simulated). Not live brokerage.
 
 John Mac: read this before handling any trade text. John Cloud owns the paper book on the cloud disk; Mac **queues** text orders only.
@@ -41,8 +41,8 @@ John Mac: read this before handling any trade text. John Cloud owns the paper bo
 Unless Rodney says otherwise on that order:
 
 1. **Hard invalidation −2%** from fill → LIMIT sell at stop (if price **gaps through**, fill at **mark**, not hang above market).
-2. **Arm +2%** from fill → then **trail 1%** → LIMIT sell at trail stop.
-3. **Scale-out ⅓ at +4%** LIMIT; remainder stays on trail/hard until done.
+2. **Arm +2%** from fill → then **trail 0.5%** below high water → **market sell** remainder when reverse >0.5%.
+3. **Scale-out ⅓ at +2%** LIMIT, then **⅓ at +5%** LIMIT; remainder stays on trail/hard until done.
 4. When trail **arms**, hard stop for that entry group is cancelled.
 
 SATA income / dividend shares: **no stops** (hold).

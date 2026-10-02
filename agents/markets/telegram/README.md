@@ -19,7 +19,7 @@ Fills still email Gmail only (with balances). Telegram is for inbound chat + tra
 
 | Text | Effect |
 | --- | --- |
-| `BUY UXRP $50000 LIMIT 17` | Limit buy + standard exits |
+| `BUY UXRP $50000 LIMIT 17` | Limit buy + standard exits (hard −2%; +2% arm / 0.5% trail market; ⅓@+2% + ⅓@+5%) |
 | `BUY UXRP $10000 BEST` | Buy at best |
 | `SELL UXRP ALL BEST` | Sell all at best |
 | `CANCEL LB-UXRP-4` | Cancel order |

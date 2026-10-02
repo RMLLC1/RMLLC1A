@@ -17,7 +17,7 @@
 
 - Default analysis timeframe = **1D**, multi-year context first.  
 - Mention confluence: level (S/R, channel, Fib) **plus** BB / MFI / RSI timing.  
-- Paper exits stay Rodney’s stack (−2% hard / +2% arm / 1% trail / ⅓@+4%) unless he changes them.  
+- Paper exits stay Rodney’s stack (−2% hard / +2% arm / 0.5% trail market / ⅓@+2% + ⅓@+5%) unless he changes them.  
 - Soloway/VI levels are **context**, not auto-entries.  
 - TradingView AI Copilot + Pine helpers under `notes/pine/` support this workflow; John cannot log into TradingView directly.
 
