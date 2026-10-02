@@ -2,7 +2,7 @@
 
 Message **John Cloud** on Telegram for paper trading commands and short questions.
 
-Fills still email Gmail only (with balances). Telegram is for inbound chat + trade commands.
+Fills notify **Gmail and Telegram** (with balances). Telegram is also for inbound chat + trade commands.
 
 ## One-time setup (Rodney)
 

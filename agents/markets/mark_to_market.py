@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import json
+import os
+import subprocess
 import sys
 import urllib.request
 from datetime import datetime, time, timezone
@@ -965,6 +967,32 @@ def format_fill_email(state: dict, marks: dict, fills: list, now: str) -> str:
     return "\n".join(lines)
 
 
+def notify_telegram_fill(body: str) -> dict:
+    """Send fill + balances to Rodney on Telegram (in addition to Gmail). Never raises."""
+    if not (os.environ.get("TELEGRAM_BOT_TOKEN") or "").strip():
+        return {"ok": False, "skipped": "no TELEGRAM_BOT_TOKEN"}
+    bridge = ROOT / "telegram_bridge.py"
+    if not bridge.exists():
+        return {"ok": False, "skipped": "no telegram_bridge.py"}
+    text = "John Cloud PAPER fill\n\n" + body
+    try:
+        proc = subprocess.run(
+            [sys.executable, str(bridge), "send", text[:3900]],
+            cwd=str(ROOT.parent.parent),
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        return {
+            "ok": proc.returncode == 0,
+            "exit_code": proc.returncode,
+            "stdout": (proc.stdout or "")[:500],
+            "stderr": (proc.stderr or "")[:300],
+        }
+    except Exception as exc:  # noqa: BLE001 — fill path must not abort marks
+        return {"ok": False, "error": str(exc)}
+
+
 def render_md(state: dict, marks: dict) -> str:
     now = state["updated"]
     cash = state["cash"]
@@ -978,7 +1006,7 @@ def render_md(state: dict, marks: dict) -> str:
         f"**Dividend cash (SATA collected):** {float(state.get('dividend_cash') or 0):,.4f}  ",
         "**Mode:** PAPER only — **auto-execute** open buy/sell orders on each poll  ",
         "**Price feed:** Yahoo Finance v8 1m chart (near-live poll; premarket + regular; may lag)  ",
-        "**Email:** only on buy/sell fills — never on mark/price updates  ",
+        "**Notify:** Gmail + Telegram on buy/sell fills (with balances) — never on mark/price updates  ",
         "",
         "### Standing fill rule (Rodney)",
         "",
@@ -1283,6 +1311,11 @@ def main() -> None:
                     )
                 # Scale-out partial: leave trail/hard on remaining qty (hard cancels when trail arms).
                 if ev.get("event") == "FILLED_SELL" and order.get("purpose") == "SCALE_OUT":
+                    lvl = int(order.get("scale_level") or 0)
+                    # After 1st scale: raise hard stop to entry (breakeven).
+                    raise_hard_stop_after_scale(
+                        state, order.get("entry_group", ""), lvl, events, now
+                    )
                     # After 2nd scale-out, arm remainder trail at current mark (0.5% HWM).
                     arm_trail_after_scale(
                         state, order.get("entry_group", ""), float(mark), events, now
@@ -1412,7 +1445,10 @@ def main() -> None:
     if fills:
         summary["fill_email_to"] = "regiaemanagementllc@gmail.com"
         summary["fill_email_subject"] = "PAPER fill — balances after trade"
-        summary["fill_email_body"] = format_fill_email(state, marks, fills, now)
+        body = format_fill_email(state, marks, fills, now)
+        summary["fill_email_body"] = body
+        # Rodney 2026-10-02: also Telegram on fills (keep Gmail).
+        summary["telegram_fill"] = notify_telegram_fill(body)
     print(json.dumps(summary, indent=2))
 
 
