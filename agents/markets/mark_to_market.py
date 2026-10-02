@@ -383,21 +383,48 @@ def apply_hard_stop_limit(order: dict, mark: float, position: dict) -> dict:
     return event
 
 
-def _default_scale_out_levels(order: dict, rules: dict) -> list[dict]:
+# Per-symbol exit defaults (Rodney 2026-10-02 — UXRP noise-adjusted).
+# Global default remains hard −2% / arm +1% / trail 0.5% market / ⅓@+2% + ⅓@+5%.
+SYMBOL_EXIT_DEFAULTS: dict[str, dict] = {
+    "UXRP": {
+        "arm_pct": 0.02,
+        "trail_pct": 0.02,
+        "hard_stop_pct": 0.03,
+        # scale-outs same as global
+    },
+}
+
+
+def _default_scale_out_levels(order: dict, rules: dict, sym_rules: dict | None = None) -> list[dict]:
     """Scale-out ladder: ⅓ at +2%, ⅓ at +5% (remainder on trail)."""
-    levels = order.get("scale_out_levels") or rules.get("scale_out_levels")
+    sym_rules = sym_rules or {}
+    levels = (
+        order.get("scale_out_levels")
+        or sym_rules.get("scale_out_levels")
+        or rules.get("scale_out_levels")
+    )
     if levels:
         return [
             {"pct": float(x["pct"]), "fraction": float(x["fraction"])}
             for x in levels
         ]
     # Legacy single-level override still supported.
-    if "scale_out_pct" in order or "scale_out_pct" in rules:
+    if any(k in order or k in sym_rules or k in rules for k in ("scale_out_pct",)):
         return [
             {
-                "pct": float(order.get("scale_out_pct", rules.get("scale_out_pct", 0.02))),
+                "pct": float(
+                    order.get(
+                        "scale_out_pct",
+                        sym_rules.get("scale_out_pct", rules.get("scale_out_pct", 0.02)),
+                    )
+                ),
                 "fraction": float(
-                    order.get("scale_out_fraction", rules.get("scale_out_fraction", 1.0 / 3.0))
+                    order.get(
+                        "scale_out_fraction",
+                        sym_rules.get(
+                            "scale_out_fraction", rules.get("scale_out_fraction", 1.0 / 3.0)
+                        ),
+                    )
                 ),
             }
         ]
@@ -407,15 +434,41 @@ def _default_scale_out_levels(order: dict, rules: dict) -> list[dict]:
     ]
 
 
+def _exit_rule_for(state: dict, order: dict, sym: str) -> tuple[float, float, float, list[dict]]:
+    """Resolve arm/trail/hard/scale for a symbol (order > standing symbol_exits > SYMBOL_EXIT_DEFAULTS > global)."""
+    rules = state.get("standing_rules") or {}
+    sym_rules = dict(SYMBOL_EXIT_DEFAULTS.get(sym) or {})
+    standing_sym = (rules.get("symbol_exits") or {}).get(sym) or {}
+    sym_rules.update(standing_sym)
+
+    arm_pct = float(
+        order.get("arm_pct", sym_rules.get("arm_pct", rules.get("arm_pct", 0.01)))
+    )
+    trail_pct = float(
+        order.get(
+            "trail_pct",
+            sym_rules.get("trail_pct", rules.get("trail_pct_after_arm", 0.005)),
+        )
+    )
+    hard_pct = float(
+        order.get(
+            "hard_stop_pct",
+            sym_rules.get("hard_stop_pct", rules.get("hard_stop_pct", 0.02)),
+        )
+    )
+    scale_levels = _default_scale_out_levels(order, rules, sym_rules)
+    return arm_pct, trail_pct, hard_pct, scale_levels
+
+
 def attach_trading_exits(
     state: dict, order: dict, sym: str, fill_px: float, fill_qty: float, events: list, now: str
 ) -> None:
-    """Attach hard −2%, trail (+1% arm / 0.5% market), scale-outs ⅓@+2% and ⅓@+5%. Not for SATA."""
-    rules = state.get("standing_rules") or {}
-    arm_pct = float(order.get("arm_pct", rules.get("arm_pct", 0.01)))
-    trail_pct = float(order.get("trail_pct", rules.get("trail_pct_after_arm", 0.005)))
-    hard_pct = float(order.get("hard_stop_pct", rules.get("hard_stop_pct", 0.02)))
-    scale_levels = _default_scale_out_levels(order, rules)
+    """Attach hard stop, trail (market on reverse), and dual scale-outs. Not for SATA.
+
+    Global default: hard −2%, arm +1%, trail 0.5% market, ⅓@+2% + ⅓@+5%.
+    UXRP override: hard −3%, arm +2%, trail 2% market (same scale-outs).
+    """
+    arm_pct, trail_pct, hard_pct, scale_levels = _exit_rule_for(state, order, sym)
     entry_group = order["id"]
 
     arm = round(fill_px * (1 + arm_pct), 4)
@@ -816,7 +869,7 @@ def render_md(state: dict, marks: dict) -> str:
         "",
         "- **Buys:** best (lowest) available valid quote.",
         "- **Sells:** best (highest) available valid quote.",
-        "- **Trading exits (UXRP/GDXU etc.):** hard invalidation **−2%** until trail arms; arm **+1%** then trail **0.5%** market; scale-out **⅓ at +2%** and **⅓ at +5%**; remainder on trail.",
+        "- **Trading exits:** default hard **−2%** / arm **+1%** / trail **0.5%** market / scale **⅓@+2%** + **⅓@+5%**. **UXRP:** hard **−3%** / arm **+2%** / trail **2%** market (same scale-outs).",
         "- **Income SATA (~dividends sleeve):** no stops / no scale-outs / no sells unless Rodney overrides.",
         "- Open paper orders auto-fill when conditions hit (no manual confirm).",
         "- **Profits → SATA:** realized **trading** profit buys **SATA** at best; **dividend_cash** reinvests when ≥1 share, else merges into the next profit→SATA buy.",

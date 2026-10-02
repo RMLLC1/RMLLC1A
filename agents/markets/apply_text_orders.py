@@ -102,8 +102,22 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
         events.append(f"{now} TEXT cancel buys {sym}: {cancelled or 'none'}")
         return {"ok": True, "detail": f"cancelled {cancelled}"}
 
+    def _exit_stamps(symbol: str) -> tuple[dict, str]:
+        """Per-symbol exit stamps for new text buys. SATA profits / loss top-off unchanged elsewhere."""
+        if symbol == "UXRP":
+            # Noise-adjusted (Rodney 2026-10-02): hard −3%, arm +2%, trail 2% market.
+            return (
+                {"arm_pct": 0.02, "trail_pct": 0.02, "hard_stop_pct": 0.03},
+                "Exits (UXRP): hard −3%; +2% arm / 2% trail market; scale-out ⅓ at +2% and ⅓ at +5%.",
+            )
+        return (
+            {"arm_pct": 0.01, "trail_pct": 0.005, "hard_stop_pct": 0.02},
+            "Exits: hard −2%; +1% arm / 0.5% trail market; scale-out ⅓ at +2% and ⅓ at +5%.",
+        )
+
     if action == "LIMIT_BUY":
         oid = next_order_id(state, "LB-", sym)
+        stamps, exit_blurb = _exit_stamps(sym)
         order = {
             "id": oid,
             "symbol": sym,
@@ -113,13 +127,12 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
             "notional": float(doc["notional"]),
             "attach_trailing_stop": bool(doc.get("attach_exits", True)),
             "attach_trading_exits": bool(doc.get("attach_exits", True)),
-            "arm_pct": 0.01,
-            "trail_pct": 0.005,
+            **stamps,
             "source": "text_order",
             "text_order_id": doc.get("id"),
             "params_text": (
                 f"Text: buy ${float(doc['notional']):,.0f} {sym} at ${float(doc['limit_price'])} or better. "
-                f"Exits: hard −2%; +1% arm / 0.5% trail market; scale-out ⅓ at +2% and ⅓ at +5%."
+                f"{exit_blurb}"
             ),
         }
         state.setdefault("orders", []).append(order)
@@ -128,6 +141,7 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
 
     if action == "BUY_BEST":
         oid = next_order_id(state, "BB-", sym)
+        stamps, exit_blurb = _exit_stamps(sym)
         order = {
             "id": oid,
             "symbol": sym,
@@ -136,13 +150,12 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
             "notional": float(doc["notional"]),
             "attach_trailing_stop": bool(doc.get("attach_exits", True)),
             "attach_trading_exits": bool(doc.get("attach_exits", True)),
-            "arm_pct": 0.01,
-            "trail_pct": 0.005,
+            **stamps,
             "source": "text_order",
             "text_order_id": doc.get("id"),
             "params_text": (
                 f"Text: buy ${float(doc['notional']):,.0f} {sym} at best. "
-                f"Exits: hard −2%; +1% arm / 0.5% trail market; scale-out ⅓ at +2% and ⅓ at +5%."
+                f"{exit_blurb}"
             ),
         }
         state.setdefault("orders", []).append(order)

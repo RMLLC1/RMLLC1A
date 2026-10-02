@@ -8,8 +8,8 @@
 
 ## Stack (per entry)
 
-1. **Hard invalidation:** LIMIT sell at **entry − 2%** until the trailing stop arms, then cancel.
-2. **Trail:** arm at **entry + 1%**, then trail **0.5%** below high water — **market sell** remainder on reverse.
+1. **Hard invalidation:** LIMIT sell at **entry − 2%** until the trailing stop arms, then cancel (**UXRP: −3%**).
+2. **Trail:** arm at **entry + 1%**, then trail **0.5%** below high water — **market sell** remainder on reverse (**UXRP: arm +2% / trail 2%**).
 3. **Scale-out:** LIMIT sell **⅓** at **entry + 2%**, then **⅓** at **entry + 5%**; remaining **⅓** stays on the trail.
 4. **Profits → SATA:** realized trading P&amp;L buys SATA and holds for dividends (not stop-managed). Reinvest `dividend_cash` when ≥1 share; otherwise merge into the next profit→SATA buy.
 

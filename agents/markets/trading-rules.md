@@ -45,7 +45,15 @@ Unless Rodney says otherwise on that order:
 3. **Scale-out ⅓ at +2%** LIMIT, then **⅓ at +5%** LIMIT; remainder stays on trail/hard until done.
 4. When trail **arms**, hard stop for that entry group is cancelled.
 
-SATA income / dividend shares: **no stops** (hold).
+### UXRP override (noise-adjusted, 2026-10-02)
+
+UXRP (2× daily) uses wider stops to avoid session chop:
+
+1. **Hard −3%** until trail arms.
+2. **Arm +2%**, then **trail 2%** → market sell remainder on reverse.
+3. Same scale-outs: **⅓ at +2%**, **⅓ at +5%**.
+
+SATA income / dividend shares: **no stops** (hold). Profits → SATA and loss top-off rules unchanged.
 
 ---
 
