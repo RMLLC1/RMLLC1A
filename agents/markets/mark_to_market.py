@@ -388,13 +388,13 @@ def apply_hard_stop_limit(order: dict, mark: float, position: dict) -> dict:
 SYMBOL_EXIT_DEFAULTS: dict[str, dict] = {
     "UXRP": {
         "arm_pct": 0.02,
-        "trail_pct": 0.02,
+        "trail_pct": 0.005,
         "hard_stop_pct": 0.03,
         # scale-outs same as global ⅓@+2% + ⅓@+5%
     },
     "GDXU": {
         "arm_pct": 0.03,
-        "trail_pct": 0.03,
+        "trail_pct": 0.005,
         "hard_stop_pct": 0.045,
         "scale_out_levels": [
             {"pct": 0.03, "fraction": 1.0 / 3.0},

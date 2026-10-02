@@ -25,8 +25,8 @@ Only Rodney’s iMessage number ending in **8173715555**.
 SATA sells stay blocked unless the order includes an explicit override (not available by default text).
 
 Default exits on new buys (non-SATA): hard −2%, arm +1% / trail 0.5% market, scale-out ⅓ at +2% and ⅓ at +5%.  
-**UXRP:** hard −3%, arm +2% / trail 2% market (scale ⅓@+2% + ⅓@+5%).  
-**GDXU:** hard −4.5%, arm +3% / trail 3% market, scale ⅓@+3% + ⅓@+7%.  
+**UXRP:** hard −3%, arm +2% / trail 0.5% market (scale ⅓@+2% + ⅓@+5%).  
+**GDXU:** hard −4.5%, arm +3% / trail 0.5% market, scale ⅓@+3% + ⅓@+7%.  
 SATA profit / loss top-off rules unchanged.
 
 ## Files

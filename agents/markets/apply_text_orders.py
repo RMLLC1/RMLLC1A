@@ -105,24 +105,24 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
     def _exit_stamps(symbol: str) -> tuple[dict, str]:
         """Per-symbol exit stamps for new text buys. SATA profits / loss top-off unchanged elsewhere."""
         if symbol == "UXRP":
-            # Noise-adjusted (Rodney 2026-10-02): hard −3%, arm +2%, trail 2% market.
+            # Noise-adjusted (Rodney 2026-10-02): hard −3%, arm +2%; last ⅓ trail 0.5% market.
             return (
-                {"arm_pct": 0.02, "trail_pct": 0.02, "hard_stop_pct": 0.03},
-                "Exits (UXRP): hard −3%; +2% arm / 2% trail market; scale-out ⅓ at +2% and ⅓ at +5%.",
+                {"arm_pct": 0.02, "trail_pct": 0.005, "hard_stop_pct": 0.03},
+                "Exits (UXRP): hard −3%; +2% arm / 0.5% trail market; scale-out ⅓ at +2% and ⅓ at +5%.",
             )
         if symbol == "GDXU":
-            # Noise-adjusted (Rodney 2026-10-02): hard −4.5%, arm +3%, trail 3% market; ⅓@+3% + ⅓@+7%.
+            # Noise-adjusted (Rodney 2026-10-02): hard −4.5%, arm +3%; last ⅓ trail 0.5% market; ⅓@+3% + ⅓@+7%.
             return (
                 {
                     "arm_pct": 0.03,
-                    "trail_pct": 0.03,
+                    "trail_pct": 0.005,
                     "hard_stop_pct": 0.045,
                     "scale_out_levels": [
                         {"pct": 0.03, "fraction": 1.0 / 3.0},
                         {"pct": 0.07, "fraction": 1.0 / 3.0},
                     ],
                 },
-                "Exits (GDXU): hard −4.5%; +3% arm / 3% trail market; scale-out ⅓ at +3% and ⅓ at +7%.",
+                "Exits (GDXU): hard −4.5%; +3% arm / 0.5% trail market; scale-out ⅓ at +3% and ⅓ at +7%.",
             )
         return (
             {"arm_pct": 0.01, "trail_pct": 0.005, "hard_stop_pct": 0.02},
