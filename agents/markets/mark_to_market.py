@@ -327,6 +327,32 @@ def cancel_entry_group(
         events.append(f"{now} cancelled {o['id']} (entry_group={entry_group})")
 
 
+def cancel_symbol_exits(
+    state: dict, symbol: str, events: list, now: str, *, except_ids: set[str] | None = None
+) -> None:
+    """Cancel open protective exits for a symbol (all entry groups). Used when position goes flat."""
+    except_ids = except_ids or set()
+    protective = {
+        "TRAILING_STOP_LIMIT_SELL",
+        "HARD_STOP_LIMIT_SELL",
+    }
+    for o in state["orders"]:
+        if o.get("id") in except_ids:
+            continue
+        if o.get("symbol") != symbol:
+            continue
+        if o.get("status") in {"FILLED", "CANCELLED"}:
+            continue
+        otype = o.get("type")
+        is_scale = o.get("purpose") == "SCALE_OUT"
+        has_group = bool(o.get("entry_group"))
+        if otype not in protective and not (otype == "LIMIT_SELL" and (is_scale or has_group)):
+            continue
+        o["status"] = "CANCELLED"
+        o["params_text"] = (o.get("params_text") or "") + " | Cancelled — position flat"
+        events.append(f"{now} cancelled {o['id']} (symbol flat {symbol})")
+
+
 def apply_hard_stop_limit(order: dict, mark: float, position: dict) -> dict:
     """Fixed stop-limit sell (hard invalidation). Triggers when mark <= stop; LIMIT at stop."""
     if order.get("status") in {"FILLED", "CANCELLED"}:
@@ -1328,6 +1354,11 @@ def main() -> None:
                             now,
                             except_ids={order["id"]},
                         )
+                # Discretionary full/partial sell that flats the symbol: drop orphan exits.
+                elif ev.get("event") == "FILLED_SELL" and float(pos.get("qty") or 0) <= 0:
+                    cancel_symbol_exits(
+                        state, sym, events, now, except_ids={order["id"]}
+                    )
 
     # If profit buys were queued mid-loop, process SATA BUY_BEST once more this poll.
     for order in state["orders"]:
