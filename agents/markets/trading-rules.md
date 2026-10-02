@@ -22,7 +22,7 @@ John Mac: read this before handling any trade text. John Cloud owns the paper bo
 - Poll **Mon–Fri 4:00 AM–8:00 PM America/New_York** only (premarket through after-hours).
 - Outside window: no Yahoo poll (text **queues** still apply anytime Cloud runs the apply step).
 - **No git** for `paper-state.json`, `last_marks.json`, `paper-portfolio.md`, or fills (gitignored; avoids bot email spam).
-- **Gmail** to `regiaemanagementllc@gmail.com` **only** on buy/sell fills — never marks, ARMED, WORKING, stale, UPL, or routine status.
+- **Gmail** to `regiaemanagementllc@gmail.com` **only** on buy/sell fills — body must include **balances after** (cash, positions, approx equity). Never email marks, ARMED, WORKING, stale, UPL, status, or git activity.
 
 ---
 

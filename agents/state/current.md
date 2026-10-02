@@ -61,7 +61,8 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 - Name with Rodney: always **John Cloud** or **John Mac** (full desk name; never bare “John”). This session = **John Cloud**.
 - Prefer email for notifications (to `regiaemanagementllc@gmail.com`; updated 2026-09-28).
 - Standing decision (2026-09-28): email for Cloud fill alerts. **Updated 2026-10-01:** John Mac iMessage with Rodney is working (Mac desk).
-- **Email volume (Rodney 2026-09-28; reaffirmed 2026-10-01):** **Gmail** only when stock/crypto is bought or sold. Never for marks/prices/status. **No git commit/push** for paper marks or paper fills. Paper files gitignored (`paper-state.json`, `last_marks.json`, `paper-portfolio.md`). Minimize other pushes; john-sync daily only commits when material.
+- **Email volume (Rodney 2026-10-02):** **Only** Gmail on buy/sell fills, and that email **must include balances after** the trade. No emails for marks/status/git/Cursor noise. **No git commit/push** for paper marks/fills or routine john-sync (daily sync timer paused). Paper files gitignored. Commit/push only when Rodney asks for code/docs or a rare Mac handoff.
+- **john-sync-daily timer:** **paused** 2026-10-02 to cut GitHub push emails. Update `john-sync.md` + push only when Mac needs a material handoff.
 - Free AT&T texting: failed (carrier gateway shut down). Prefer email.
 - Markets paper: **auto-execute**; trail **+2% arm / 1% trail** limit stops. **Realized profits → buy SATA**; **hold for daily dividends — never sell**. **Reinvest `dividend_cash`** when ≥1 SATA share; else pool into next profit→SATA buy. **Loss top-off:** after a losing trade, sell SATA equal to the loss so original trade cost returns to cash (Rodney 2026-10-01).
 - **Price feed (Rodney 2026-10-01):** Yahoo poll every **5 minutes** during **NYSE extended hours** (Mon–Fri **4:00 AM–8:00 PM ET**) — timer `yahoo-paper-marks-5m` **restarted**. Gmail **only on buy/sell fills**.

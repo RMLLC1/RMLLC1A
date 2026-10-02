@@ -705,6 +705,50 @@ def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) 
     return {}, cash
 
 
+def format_fill_email(state: dict, marks: dict, fills: list, now: str) -> str:
+    """Plain-text Gmail body: each fill + book balances after. Only call when fills non-empty."""
+    lines = [f"John Cloud — PAPER fill(s) {now}", ""]
+    for ev in fills:
+        side = ev.get("side") or ("BUY" if ev.get("event") == "FILLED_BUY" else "SELL")
+        sym = ev.get("symbol", "?")
+        qty = float(ev.get("qty") or 0)
+        px = float(ev.get("price") or ev.get("limit") or 0)
+        oid = ev.get("id", "")
+        lines.append(f"{side} {sym} ({oid})")
+        lines.append(f"  qty {qty:.4f} @ ${px:.4f}")
+        if ev.get("cost") is not None:
+            lines.append(f"  cost ${float(ev['cost']):,.2f}")
+        if ev.get("proceeds") is not None:
+            lines.append(f"  proceeds ${float(ev['proceeds']):,.2f}")
+        if ev.get("realized") is not None:
+            lines.append(f"  realized ${float(ev['realized']):,.2f}")
+        lines.append("")
+    cash = float(state.get("cash") or 0)
+    div = float(state.get("dividend_cash") or 0)
+    lines.append("Balances after:")
+    lines.append(f"  Cash ${cash:,.2f}")
+    lines.append(f"  Dividend cash ${div:,.4f}")
+    equity = cash + div
+    for p in state.get("positions") or []:
+        qty = float(p.get("qty") or 0)
+        if qty <= 0:
+            continue
+        sym = p["symbol"]
+        avg = float(p.get("avg_cost") or 0)
+        basis = float(p.get("cost_basis") or 0)
+        mk = marks.get(sym, {}).get("mark")
+        if mk is not None:
+            mv = qty * float(mk)
+            equity += mv
+            lines.append(
+                f"  {sym}: {qty:.4f} sh @ avg ${avg:.4f} | mkt ${mv:,.2f} (mark ${float(mk):.4f})"
+            )
+        else:
+            lines.append(f"  {sym}: {qty:.4f} sh @ avg ${avg:.4f} | basis ${basis:,.2f}")
+    lines.append(f"  Approx equity ${equity:,.2f}")
+    return "\n".join(lines)
+
+
 def render_md(state: dict, marks: dict) -> str:
     now = state["updated"]
     cash = state["cash"]
@@ -1131,6 +1175,10 @@ def main() -> None:
         "events_tail": events[-5:],
         "note": "Never email on mark updates; email only if big_items non-empty",
     }
+    if fills:
+        summary["fill_email_to"] = "regiaemanagementllc@gmail.com"
+        summary["fill_email_subject"] = "PAPER fill — balances after trade"
+        summary["fill_email_body"] = format_fill_email(state, marks, fills, now)
     print(json.dumps(summary, indent=2))
 
 
