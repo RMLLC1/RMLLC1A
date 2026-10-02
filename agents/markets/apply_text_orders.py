@@ -73,6 +73,61 @@ def next_order_id(state: dict, prefix: str, symbol: str) -> str:
     return f"{prefix}{symbol}-{n}"
 
 
+def _already_applied_text_id(state: dict, text_id: str | None) -> str | None:
+    """Return existing order id if this text_order_id was already applied."""
+    if not text_id:
+        return None
+    for o in state.get("orders", []):
+        if o.get("text_order_id") == text_id and o.get("status") not in {"CANCELLED"}:
+            return str(o.get("id"))
+    return None
+
+
+def git_push_processed() -> list[str]:
+    """Commit pending→processed moves so remote sync does not re-apply orders."""
+    notes: list[str] = []
+    try:
+        subprocess.run(
+            ["git", "add", "-A", "agents/markets/text-orders"],
+            cwd=REPO,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        staged = subprocess.run(
+            ["git", "diff", "--cached", "--name-only"],
+            cwd=REPO,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        if not staged.stdout.strip():
+            notes.append("no text-orders git changes to push")
+            return notes
+        subprocess.run(
+            ["git", "commit", "-m", "Text orders: move applied files pending→processed"],
+            cwd=REPO,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        branch = subprocess.check_output(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=REPO, text=True
+        ).strip()
+        subprocess.run(
+            ["git", "push", "-u", "origin", branch],
+            cwd=REPO,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        notes.append(f"pushed text-orders processed to origin/{branch}")
+    except Exception as exc:  # noqa: BLE001 — best effort on timer
+        notes.append(f"processed git push skipped: {exc}")
+    return notes
+
+
 def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
     """Mutate state; return result dict."""
     action = doc.get("action")
@@ -136,6 +191,9 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
         )
 
     if action == "LIMIT_BUY":
+        existing = _already_applied_text_id(state, doc.get("id"))
+        if existing:
+            return {"ok": True, "detail": f"skip duplicate; already {existing}", "skipped": True}
         oid = next_order_id(state, "LB-", sym)
         stamps, exit_blurb = _exit_stamps(sym)
         order = {
@@ -160,6 +218,9 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
         return {"ok": True, "detail": f"queued {oid}"}
 
     if action == "BUY_BEST":
+        existing = _already_applied_text_id(state, doc.get("id"))
+        if existing:
+            return {"ok": True, "detail": f"skip duplicate; already {existing}", "skipped": True}
         oid = next_order_id(state, "BB-", sym)
         stamps, exit_blurb = _exit_stamps(sym)
         order = {
@@ -263,6 +324,10 @@ def process_pending(state: dict | None = None) -> dict:
         state["updated"] = now
         if own_state:
             STATE_PATH.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+
+    # Always try to clear remote pending after local apply/move so timers don't re-queue.
+    if applied or errors or any(PROCESSED.glob("TO-*.json")):
+        sync_notes.extend(git_push_processed())
 
     return {
         "updated": now,
