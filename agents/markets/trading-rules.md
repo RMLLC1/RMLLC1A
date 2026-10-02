@@ -44,6 +44,7 @@ Unless Rodney says otherwise on that order:
 2. **Arm +1%** from fill → then **trail 0.5%** below high water → **market sell** remainder when reverse >0.5%.
 3. **Scale-out ⅓ at +2%** LIMIT, then **⅓ at +5%** LIMIT; remainder stays on trail/hard until done.
 4. When trail **arms**, hard stop for that entry group is cancelled.
+5. **After 1st scale-out fills:** raise hard stop on the remainder to **breakeven (entry)** so a reversal can’t erase the banked third (UXRP/GDXU and default stack).
 
 ### UXRP override (noise-adjusted, 2026-10-02)
 

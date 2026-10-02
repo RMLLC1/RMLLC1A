@@ -11,7 +11,8 @@
 1. **Hard invalidation:** LIMIT sell at **entry − 2%** until the trailing stop arms, then cancel (**UXRP: −3%**; **GDXU: −4.5%**).
 2. **Trail:** default arm at **entry + 1%**, then trail **0.5%** below high water — **market sell** remainder on reverse. **UXRP/GDXU:** trail waits until **2nd scale-out fills**, then arms at mark with **0.5%** HWM trail.
 3. **Scale-out:** LIMIT sell **⅓** at **entry + 2%**, then **⅓** at **entry + 5%** (**GDXU: ⅓@+3% + ⅓@+7%**); remaining **⅓** stays on the trail.
-4. **Profits → SATA:** realized trading P&amp;L buys SATA and holds for dividends (not stop-managed). Reinvest `dividend_cash` when ≥1 share; otherwise merge into the next profit→SATA buy.
+4. **After 1st scale-out:** raise hard stop to **entry (breakeven)** on the remaining size.
+5. **Profits → SATA:** realized trading P&amp;L buys SATA and holds for dividends (not stop-managed). Reinvest `dividend_cash` when ≥1 share; otherwise merge into the next profit→SATA buy.
 
 ## Income sleeve
 

@@ -27,6 +27,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 - **Paper book (Cloud source of truth — 2026-10-02 restack):** Cash **$0.00**. **UXRP** ~2,945.89 @ $16.9728 ($50k) — exits restacked: hard **$16.4636 (−3%)** / arm **$17.3123 (+2%)** / trail **0.5%** market / scale **⅓ @ $17.3123 (+2%)** + **⅓ @ $17.8214 (+5%)**. **GDXU** ~488.76 @ $102.30 ($50k) — exits restacked: hard **$97.6965 (−4.5%)** / arm **$105.369 (+3%)** / trail **0.5%** / scale **⅓ @ $105.369 (+3%)** + **⅓ @ $109.461 (+7%)**. **SATA** ~87.85 dividend hold. Mac must **not** invent balances — use this board / ask Cloud.
 - **UXRP exit override (2026-10-02):** hard −3% / arm +2% / trail 0.5% market; scale-outs unchanged; profits→SATA + loss top-off unchanged.
 - **GDXU exit override (2026-10-02):** hard −4.5% / arm +3% / trail 0.5% market; scale ⅓@+3% + ⅓@+7%; profits→SATA + loss top-off unchanged.
+- **Breakeven after scale1 (2026-10-02):** after first ⅓ scale fills, hard stop on remainder rises to entry; trail still arms only after 2nd scale.
 - **Remainder rule (2026-10-02):** UXRP + GDXU last ⅓ trail arms **only after 2nd scale-out fills**, then market sell on **0.5% pullback** from high-water mark.
 - **Open for both:** Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed.
 
