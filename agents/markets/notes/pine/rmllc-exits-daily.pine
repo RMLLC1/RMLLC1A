@@ -1,10 +1,10 @@
 // RMLLC paper exit stack — Daily chart Strategy Tester
-// Mirrors Rodney / John Cloud rules: hard −2% until arm; +2% arm / 0.5% trail market;
+// Mirrors Rodney / John Cloud rules: hard −2% until arm; +1% arm / 0.5% trail market;
 // scale-out ⅓ at +2% and ⅓ at +5%; remainder on trail.
 // Not financial advice. Paper / educational backtest only.
 //@version=5
 strategy(
-     title                 = "RMLLC Exits Daily (−2% / +2% arm / 0.5% trail / ⅓@+2%+⅓@+5%)",
+     title                 = "RMLLC Exits Daily (−2% / +1% arm / 0.5% trail / ⅓@+2%+⅓@+5%)",
      shorttitle            = "RMLLC Exits D",
      overlay               = true,
      initial_capital       = 100000,
@@ -19,7 +19,7 @@ strategy(
 
 // ── Inputs ──────────────────────────────────────────────────────────────────
 hardPct    = input.float(2.0, "Hard stop %", minval=0.1, step=0.1) / 100.0
-armPct     = input.float(2.0, "Trail arm %", minval=0.1, step=0.1) / 100.0
+armPct     = input.float(1.0, "Trail arm %", minval=0.1, step=0.1) / 100.0
 trailPct   = input.float(0.5, "Trail % after arm", minval=0.1, step=0.1) / 100.0
 scalePct1  = input.float(2.0, "Scale-out 1 %", minval=0.1, step=0.1) / 100.0
 scalePct2  = input.float(5.0, "Scale-out 2 %", minval=0.1, step=0.1) / 100.0
@@ -82,7 +82,7 @@ if strategy.position_size > 0
 
     // Visuals
     plot(hardPx, "Hard −2%", color=color.new(color.red, 0), style=plot.style_linebr)
-    plot(armPx, "Arm +2%", color=color.new(color.orange, 0), style=plot.style_linebr)
+    plot(armPx, "Arm +1%", color=color.new(color.orange, 0), style=plot.style_linebr)
     plot(scalePx1, "Scale +2%", color=color.new(color.teal, 0), style=plot.style_linebr)
     plot(scalePx2, "Scale +5%", color=color.new(color.green, 0), style=plot.style_linebr)
     plot(armed ? highWater * (1.0 - trailPct) : na, "Trail stop", color=color.new(color.blue, 0), style=plot.style_linebr)

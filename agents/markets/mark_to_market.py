@@ -410,9 +410,9 @@ def _default_scale_out_levels(order: dict, rules: dict) -> list[dict]:
 def attach_trading_exits(
     state: dict, order: dict, sym: str, fill_px: float, fill_qty: float, events: list, now: str
 ) -> None:
-    """Attach hard −2%, trail (+2% arm / 0.5% market), scale-outs ⅓@+2% and ⅓@+5%. Not for SATA."""
+    """Attach hard −2%, trail (+1% arm / 0.5% market), scale-outs ⅓@+2% and ⅓@+5%. Not for SATA."""
     rules = state.get("standing_rules") or {}
-    arm_pct = float(order.get("arm_pct", rules.get("arm_pct", 0.02)))
+    arm_pct = float(order.get("arm_pct", rules.get("arm_pct", 0.01)))
     trail_pct = float(order.get("trail_pct", rules.get("trail_pct_after_arm", 0.005)))
     hard_pct = float(order.get("hard_stop_pct", rules.get("hard_stop_pct", 0.02)))
     scale_levels = _default_scale_out_levels(order, rules)
@@ -816,7 +816,7 @@ def render_md(state: dict, marks: dict) -> str:
         "",
         "- **Buys:** best (lowest) available valid quote.",
         "- **Sells:** best (highest) available valid quote.",
-        "- **Trading exits (UXRP/GDXU etc.):** hard invalidation **−2%** until trail arms; arm **+2%** then trail **0.5%** market; scale-out **⅓ at +2%** and **⅓ at +5%**; remainder on trail.",
+        "- **Trading exits (UXRP/GDXU etc.):** hard invalidation **−2%** until trail arms; arm **+1%** then trail **0.5%** market; scale-out **⅓ at +2%** and **⅓ at +5%**; remainder on trail.",
         "- **Income SATA (~dividends sleeve):** no stops / no scale-outs / no sells unless Rodney overrides.",
         "- Open paper orders auto-fill when conditions hit (no manual confirm).",
         "- **Profits → SATA:** realized **trading** profit buys **SATA** at best; **dividend_cash** reinvests when ≥1 share, else merges into the next profit→SATA buy.",
@@ -1091,7 +1091,7 @@ def main() -> None:
                         and order.get("purpose") != "OVERNIGHT_REDEPLOY"
                     ):
                         cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
-                # Trading exits: hard −2% until arm; +2% arm / 0.5% trail market; ⅓@+2% + ⅓@+5%.
+                # Trading exits: hard −2% until arm; +1% arm / 0.5% trail market; ⅓@+2% + ⅓@+5%.
                 if (
                     ev.get("event") == "FILLED_BUY"
                     and order.get("attach_trailing_stop", False)

@@ -113,13 +113,13 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
             "notional": float(doc["notional"]),
             "attach_trailing_stop": bool(doc.get("attach_exits", True)),
             "attach_trading_exits": bool(doc.get("attach_exits", True)),
-            "arm_pct": 0.02,
+            "arm_pct": 0.01,
             "trail_pct": 0.005,
             "source": "text_order",
             "text_order_id": doc.get("id"),
             "params_text": (
                 f"Text: buy ${float(doc['notional']):,.0f} {sym} at ${float(doc['limit_price'])} or better. "
-                f"Exits: hard −2%; +2% arm / 0.5% trail market; scale-out ⅓ at +2% and ⅓ at +5%."
+                f"Exits: hard −2%; +1% arm / 0.5% trail market; scale-out ⅓ at +2% and ⅓ at +5%."
             ),
         }
         state.setdefault("orders", []).append(order)
@@ -136,13 +136,13 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
             "notional": float(doc["notional"]),
             "attach_trailing_stop": bool(doc.get("attach_exits", True)),
             "attach_trading_exits": bool(doc.get("attach_exits", True)),
-            "arm_pct": 0.02,
+            "arm_pct": 0.01,
             "trail_pct": 0.005,
             "source": "text_order",
             "text_order_id": doc.get("id"),
             "params_text": (
                 f"Text: buy ${float(doc['notional']):,.0f} {sym} at best. "
-                f"Exits: hard −2%; +2% arm / 0.5% trail market; scale-out ⅓ at +2% and ⅓ at +5%."
+                f"Exits: hard −2%; +1% arm / 0.5% trail market; scale-out ⅓ at +2% and ⅓ at +5%."
             ),
         }
         state.setdefault("orders", []).append(order)
