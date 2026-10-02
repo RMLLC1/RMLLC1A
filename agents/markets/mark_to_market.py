@@ -390,7 +390,16 @@ SYMBOL_EXIT_DEFAULTS: dict[str, dict] = {
         "arm_pct": 0.02,
         "trail_pct": 0.02,
         "hard_stop_pct": 0.03,
-        # scale-outs same as global
+        # scale-outs same as global ⅓@+2% + ⅓@+5%
+    },
+    "GDXU": {
+        "arm_pct": 0.03,
+        "trail_pct": 0.03,
+        "hard_stop_pct": 0.045,
+        "scale_out_levels": [
+            {"pct": 0.03, "fraction": 1.0 / 3.0},
+            {"pct": 0.07, "fraction": 1.0 / 3.0},
+        ],
     },
 }
 
@@ -467,6 +476,7 @@ def attach_trading_exits(
 
     Global default: hard −2%, arm +1%, trail 0.5% market, ⅓@+2% + ⅓@+5%.
     UXRP override: hard −3%, arm +2%, trail 2% market (same scale-outs).
+    GDXU override: hard −4.5%, arm +3%, trail 3% market, ⅓@+3% + ⅓@+7%.
     """
     arm_pct, trail_pct, hard_pct, scale_levels = _exit_rule_for(state, order, sym)
     entry_group = order["id"]
@@ -869,7 +879,7 @@ def render_md(state: dict, marks: dict) -> str:
         "",
         "- **Buys:** best (lowest) available valid quote.",
         "- **Sells:** best (highest) available valid quote.",
-        "- **Trading exits:** default hard **−2%** / arm **+1%** / trail **0.5%** market / scale **⅓@+2%** + **⅓@+5%**. **UXRP:** hard **−3%** / arm **+2%** / trail **2%** market (same scale-outs).",
+        "- **Trading exits:** default hard **−2%** / arm **+1%** / trail **0.5%** market / scale **⅓@+2%** + **⅓@+5%**. **UXRP:** hard **−3%** / arm **+2%** / trail **2%**. **GDXU:** hard **−4.5%** / arm **+3%** / trail **3%** / scale **⅓@+3%** + **⅓@+7%**.",
         "- **Income SATA (~dividends sleeve):** no stops / no scale-outs / no sells unless Rodney overrides.",
         "- Open paper orders auto-fill when conditions hit (no manual confirm).",
         "- **Profits → SATA:** realized **trading** profit buys **SATA** at best; **dividend_cash** reinvests when ≥1 share, else merges into the next profit→SATA buy.",

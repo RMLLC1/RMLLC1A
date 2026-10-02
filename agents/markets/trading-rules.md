@@ -53,6 +53,14 @@ UXRP (2× daily) uses wider stops to avoid session chop:
 2. **Arm +2%**, then **trail 2%** → market sell remainder on reverse.
 3. Same scale-outs: **⅓ at +2%**, **⅓ at +5%**.
 
+### GDXU override (noise-adjusted, 2026-10-02)
+
+GDXU (3× daily gold-miners ETN) is wider still:
+
+1. **Hard −4.5%** until trail arms.
+2. **Arm +3%**, then **trail 3%** → market sell remainder on reverse.
+3. Scale-outs: **⅓ at +3%**, **⅓ at +7%**.
+
 SATA income / dividend shares: **no stops** (hold). Profits → SATA and loss top-off rules unchanged.
 
 ---

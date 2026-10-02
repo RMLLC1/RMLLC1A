@@ -24,20 +24,21 @@ Not automatic chat sync — each John reads this file, updates his section, then
 - **Standing prefs:** **Gmail ONLY on buy/sell** to `regiaemanagementllc@gmail.com` and must include **balances after**; no git for paper marks/fills; **minimize all git pushes** (GitHub emails annoy Rodney); john-sync daily timer **paused** — push board only for material Mac handoff; **always** address Rodney as **John Cloud** or **John Mac**; **Yahoo marks ~5m** in NYSE extended hours; **loss top-off** after losing trades
 - **Trading rules (canonical):** `agents/markets/trading-rules.md` — John Mac reads before any trade text; also `agents/markets/text-orders/README.md`
 - **Cycle research (Rodney 2026-10-02):** Anna Macko *Before the Run* Workbook 5 PDF at `agents/research/workbook-5-before-the-run.pdf` + digest `agents/research/workbook-5-before-the-run-digest.md` (also pointed from markets + marketing notes). Focus: **4-year / halving cycle** for trade advice — 2028=halving not auto-peak; historical peak lag ~17–18 months → ~fall 2029 (loose); staged exits > calendar tops.
-- **Paper book (Cloud source of truth — 2026-10-02 restack):** Cash **$0.00**. **UXRP** ~2,945.89 @ $16.9728 ($50k) — exits restacked: hard **$16.4636 (−3%)** / arm **$17.3123 (+2%)** / trail **2%** market / scale **⅓ @ $17.3123 (+2%)** + **⅓ @ $17.8214 (+5%)**. **GDXU** ~488.76 @ $102.30 ($50k) — default exits. **SATA** ~87.85 dividend hold. Mac must **not** invent balances — use this board / ask Cloud.
+- **Paper book (Cloud source of truth — 2026-10-02 restack):** Cash **$0.00**. **UXRP** ~2,945.89 @ $16.9728 ($50k) — exits restacked: hard **$16.4636 (−3%)** / arm **$17.3123 (+2%)** / trail **2%** market / scale **⅓ @ $17.3123 (+2%)** + **⅓ @ $17.8214 (+5%)**. **GDXU** ~488.76 @ $102.30 ($50k) — exits restacked: hard **$97.6965 (−4.5%)** / arm **$105.369 (+3%)** / trail **3%** / scale **⅓ @ $105.369 (+3%)** + **⅓ @ $109.461 (+7%)**. **SATA** ~87.85 dividend hold. Mac must **not** invent balances — use this board / ask Cloud.
 - **UXRP exit override (2026-10-02):** hard −3% / arm +2% / trail 2% market; scale-outs unchanged; profits→SATA + loss top-off unchanged.
+- **GDXU exit override (2026-10-02):** hard −4.5% / arm +3% / trail 3% market; scale ⅓@+3% + ⅓@+7%; profits→SATA + loss top-off unchanged.
 - **Open for both:** Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed.
 
 ---
 
 ## John Cloud — doing / thinking
 
-- **Updated:** 2026-10-02 ~05:00 UTC
-- **Doing now:** Telegram poll on night cadence (10m); marks pause overnight
-- **Recently done:** Started Telegram poll; updated exit stack per Rodney; saved Macko workbook + digest to research/markets/marketing; asked Mac to pull PDF onto Mini
-- **Needs John Mac to know:** `git pull` then copy/keep `agents/research/workbook-5-before-the-run.pdf` on the Mini. Digest for advice: `agents/research/workbook-5-before-the-run-digest.md`. Google Drive department folders were not reachable from Cloud MCP this turn — repo is source of truth for now.
-- **Blockers:** Drive department upload empty/unavailable from this environment
-- **Next:** Steady cloud ops; use cycle digest when Rodney asks trade timing questions
+- **Updated:** 2026-10-02 ~06:25 UTC
+- **Doing now:** Telegram night poll (10m); UXRP exits restacked on Cloud paper-state
+- **Recently done:** UXRP noise study; set UXRP override hard −3%/arm +2%/trail 2%; rebuilt local paper-state from john-sync (prior disk had no paper-state) and attached new UXRP protective orders; GDXU kept default exits; SATA profit rules unchanged
+- **Needs John Mac to know:** Pull for rule docs. Paper marks stay Cloud-local. UXRP open trade now on new exit stack.
+- **Blockers:** None (note: paper-state was missing on this VM — rebuilt from Shared board snapshot)
+- **Next:** Confirm with Rodney; marks resume premarket
 
 ---
 
