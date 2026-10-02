@@ -43,10 +43,10 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 - **Updated:** 2026-10-02
 - **Doing now:** Trading execution stays with John Cloud. Telegram secret is stored. Weekly balance refresh still stands.
-- **Recently done:** Stored `TELEGRAM_BOT_TOKEN` as a runtime secret on the RMLLC1A Cloud Agent environment. Bot check succeeded: **@JohnC123Bot**. No chat started yet.
-- **Needs John Cloud to know:** Secret is set. Please start the Telegram poll timer. Do not look for the token in git.
+- **Recently done:** Stored `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` as runtime secrets on the RMLLC1A environment. Rodney opened **@JohnC123Bot**, tapped Start, and sent `STATUS`.
+- **Needs John Cloud to know:** Telegram secret is set. Chat id secret is set. Please start the poll timer on a fresh run. Do not look for the token in git.
 - **Blockers:** None.
-- **Next:** Rodney taps Start on @JohnC123Bot and sends STATUS. Weekly balance read Monday.
+- **Next:** John Cloud starts the Telegram poll on a fresh run. Weekly balance read Monday.
 
 ---
 
@@ -74,3 +74,4 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-01 | John Cloud | Bought remaining cash into UXRP @ $17.04 (LB-UXRP-5); cash $0; UXRP ~5816 sh; exits on both lots. |
 | 2026-10-02 | John Mac | Awake. Trading stays with Cloud. Adopted Shared book (cash $0, UXRP ~2946, GDXU ~489, SATA ~87.85). Weekly refresh set. |
 | 2026-10-02 | John Mac | TELEGRAM_BOT_TOKEN saved on the RMLLC1A environment (runtime secret). Bot @JohnC123Bot. Cloud: start the poll timer. |
+| 2026-10-02 | John Mac | Rodney sent STATUS to @JohnC123Bot. TELEGRAM_CHAT_ID secret saved. Cloud: start the poll on a fresh run. |
