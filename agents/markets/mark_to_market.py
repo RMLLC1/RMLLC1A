@@ -390,12 +390,14 @@ SYMBOL_EXIT_DEFAULTS: dict[str, dict] = {
         "arm_pct": 0.02,
         "trail_pct": 0.005,
         "hard_stop_pct": 0.03,
-        # scale-outs same as global ⅓@+2% + ⅓@+5%
+        # Last ⅓ trail arms only after 2nd scale-out fills (Rodney 2026-10-02).
+        "arm_after_scale_level": 2,
     },
     "GDXU": {
         "arm_pct": 0.03,
         "trail_pct": 0.005,
         "hard_stop_pct": 0.045,
+        "arm_after_scale_level": 2,
         "scale_out_levels": [
             {"pct": 0.03, "fraction": 1.0 / 3.0},
             {"pct": 0.07, "fraction": 1.0 / 3.0},
@@ -443,8 +445,8 @@ def _default_scale_out_levels(order: dict, rules: dict, sym_rules: dict | None =
     ]
 
 
-def _exit_rule_for(state: dict, order: dict, sym: str) -> tuple[float, float, float, list[dict]]:
-    """Resolve arm/trail/hard/scale for a symbol (order > standing symbol_exits > SYMBOL_EXIT_DEFAULTS > global)."""
+def _exit_rule_for(state: dict, order: dict, sym: str) -> tuple[float, float, float, list[dict], int | None]:
+    """Resolve arm/trail/hard/scale/arm_after for a symbol."""
     rules = state.get("standing_rules") or {}
     sym_rules = dict(SYMBOL_EXIT_DEFAULTS.get(sym) or {})
     standing_sym = (rules.get("symbol_exits") or {}).get(sym) or {}
@@ -466,7 +468,9 @@ def _exit_rule_for(state: dict, order: dict, sym: str) -> tuple[float, float, fl
         )
     )
     scale_levels = _default_scale_out_levels(order, rules, sym_rules)
-    return arm_pct, trail_pct, hard_pct, scale_levels
+    arm_after = order.get("arm_after_scale_level", sym_rules.get("arm_after_scale_level"))
+    arm_after_i = int(arm_after) if arm_after is not None else None
+    return arm_pct, trail_pct, hard_pct, scale_levels, arm_after_i
 
 
 def attach_trading_exits(
@@ -475,10 +479,10 @@ def attach_trading_exits(
     """Attach hard stop, trail (market on reverse), and dual scale-outs. Not for SATA.
 
     Global default: hard −2%, arm +1%, trail 0.5% market, ⅓@+2% + ⅓@+5%.
-    UXRP override: hard −3%, arm +2%, trail 2% market (same scale-outs).
-    GDXU override: hard −4.5%, arm +3%, trail 3% market, ⅓@+3% + ⅓@+7%.
+    UXRP override: hard −3%, arm +2%, trail 0.5% market after 2nd scale-out (same scale-outs).
+    GDXU override: hard −4.5%, arm +3%, trail 0.5% market after 2nd scale-out, ⅓@+3% + ⅓@+7%.
     """
-    arm_pct, trail_pct, hard_pct, scale_levels = _exit_rule_for(state, order, sym)
+    arm_pct, trail_pct, hard_pct, scale_levels, arm_after = _exit_rule_for(state, order, sym)
     entry_group = order["id"]
 
     arm = round(fill_px * (1 + arm_pct), 4)
@@ -503,6 +507,11 @@ def attach_trading_exits(
             f"⅓ at +{scale_levels[1]['pct']*100:.0f}%"
         )
 
+    trail_note = (
+        f"Trail 0.5% market arms only after scale-out #{arm_after} fills."
+        if arm_after
+        else f"Arm +{arm_pct*100:.0f}% → ${arm}. Trail {trail_pct*100:.1f}% → market sell on reverse."
+    )
     ts = {
         "id": f"TS-{sym}-{n_ts}",
         "symbol": sym,
@@ -513,11 +522,11 @@ def attach_trading_exits(
         "fill_at_market": True,
         "entry_group": entry_group,
         "entry_price": fill_px,
-        "params_text": (
-            f"Arm +{arm_pct*100:.0f}% → ${arm}. Trail {trail_pct*100:.1f}% → market sell on reverse. "
-            f"(group {entry_group})"
-        ),
+        "params_text": f"{trail_note} (group {entry_group})",
     }
+    if arm_after is not None:
+        ts["arm_after_scale_level"] = arm_after
+        ts["status"] = "WAITING_SCALE"  # not armed until 2nd ⅓ sells
     hs = {
         "id": f"HS-{sym}-{n_hs}",
         "symbol": sym,
@@ -534,7 +543,10 @@ def attach_trading_exits(
         ),
     }
     attached = [ts, hs]
-    events.append(f"{now} {sym} attached {ts['id']} PENDING_ARM arm={arm}")
+    events.append(
+        f"{now} {sym} attached {ts['id']} "
+        f"{'WAITING_SCALE#'+str(arm_after) if arm_after else 'PENDING_ARM arm='+str(arm)}"
+    )
     events.append(f"{now} {sym} attached {hs['id']} HARD_STOP stop={hard}")
 
     for i, lvl in enumerate(scale_levels):
@@ -562,6 +574,53 @@ def attach_trading_exits(
         )
 
     state["orders"].extend(attached)
+
+
+def scale_out_filled(state: dict, entry_group: str, level: int) -> bool:
+    """True if SCALE_OUT at the given level for this entry group is FILLED."""
+    for o in state.get("orders") or []:
+        if (
+            o.get("entry_group") == entry_group
+            and o.get("purpose") == "SCALE_OUT"
+            and int(o.get("scale_level") or 0) == int(level)
+            and o.get("status") == "FILLED"
+        ):
+            return True
+    return False
+
+
+def arm_trail_after_scale(
+    state: dict, entry_group: str, mark: float, events: list, now: str
+) -> None:
+    """Arm waiting trails once required scale-out has filled; cancel hard stops."""
+    for order in state.get("orders") or []:
+        if order.get("entry_group") != entry_group:
+            continue
+        if order.get("type") != "TRAILING_STOP_LIMIT_SELL":
+            continue
+        if order.get("status") not in {"WAITING_SCALE", "PENDING_ARM"}:
+            continue
+        need = order.get("arm_after_scale_level")
+        if need is not None and not scale_out_filled(state, entry_group, int(need)):
+            continue
+        trail = float(order.get("trail_pct", 0.005))
+        order["status"] = "ARMED"
+        order["high_water"] = mark
+        order["stop"] = round(mark * (1 - trail), 4)
+        order["armed_at_mark"] = mark
+        events.append(
+            f"{now} {order['symbol']} {order['id']} ARMED after scale-out "
+            f"hw={mark:.4f} stop={order['stop']:.4f}"
+        )
+        for o in state["orders"]:
+            if (
+                o.get("entry_group") == entry_group
+                and o.get("type") == "HARD_STOP_LIMIT_SELL"
+                and o.get("cancel_when_trail_armed")
+                and o.get("status") not in {"FILLED", "CANCELLED"}
+            ):
+                o["status"] = "CANCELLED"
+                events.append(f"{now} cancelled {o['id']} — trail {order['id']} ARMED")
 
 
 def block_sata_sells(order: dict, pos: dict) -> bool:
@@ -592,6 +651,13 @@ def apply_trailing_stop(order: dict, mark: float, position: dict) -> dict:
     """
     if order.get("status") in {"FILLED", "CANCELLED"}:
         return {}
+    if order.get("status") == "WAITING_SCALE":
+        return {
+            "id": order["id"],
+            "symbol": order["symbol"],
+            "event": "WAITING_SCALE",
+            "need_scale_level": order.get("arm_after_scale_level"),
+        }
     arm = float(order["arm_price"])
     trail = float(order.get("trail_pct", 0.005))
     fill_at_market = bool(order.get("fill_at_market", True))
@@ -879,7 +945,7 @@ def render_md(state: dict, marks: dict) -> str:
         "",
         "- **Buys:** best (lowest) available valid quote.",
         "- **Sells:** best (highest) available valid quote.",
-        "- **Trading exits:** default hard **−2%** / arm **+1%** / trail **0.5%** market / scale **⅓@+2%** + **⅓@+5%**. **UXRP:** hard **−3%** / arm **+2%** / trail **2%**. **GDXU:** hard **−4.5%** / arm **+3%** / trail **3%** / scale **⅓@+3%** + **⅓@+7%**.",
+        "- **Trading exits:** default hard **−2%** / arm **+1%** / trail **0.5%** market / scale **⅓@+2%** + **⅓@+5%**. **UXRP:** hard **−3%** / arm **+2%** / trail **0.5%**. **GDXU:** hard **−4.5%** / arm **+3%** / trail **0.5%** / scale **⅓@+3%** + **⅓@+7%**.",
         "- **Income SATA (~dividends sleeve):** no stops / no scale-outs / no sells unless Rodney overrides.",
         "- Open paper orders auto-fill when conditions hit (no manual confirm).",
         "- **Profits → SATA:** realized **trading** profit buys **SATA** at best; **dividend_cash** reinvests when ≥1 share, else merges into the next profit→SATA buy.",
@@ -1059,10 +1125,23 @@ def main() -> None:
                 events.append(f"{now} {sym} SELL blocked — hold for dividends")
                 order["status"] = "CANCELLED"
                 continue
+            # UXRP/GDXU: trail waits until 2nd scale-out fills, then arms at mark.
+            if order.get("status") == "WAITING_SCALE":
+                need = order.get("arm_after_scale_level")
+                if need is not None and scale_out_filled(
+                    state, order.get("entry_group", ""), int(need)
+                ):
+                    arm_trail_after_scale(
+                        state, order.get("entry_group", ""), float(mark), events, now
+                    )
+                else:
+                    continue
             qty_before = float(pos.get("qty") or 0)
             basis_before = float(pos.get("cost_basis") or 0)
             ev = apply_trailing_stop(order, float(mark), pos)
             if not ev:
+                continue
+            if ev.get("event") == "WAITING_SCALE":
                 continue
             msg = f"{now} {sym} mark={mark:.4f} {ev}"
             events.append(msg)
@@ -1164,14 +1243,19 @@ def main() -> None:
                         state, order, sym, fill_px, float(ev["qty"]), events, now
                     )
                 # Scale-out partial: leave trail/hard on remaining qty (hard cancels when trail arms).
-                if (
-                    ev.get("event") == "FILLED_SELL"
-                    and order.get("purpose") == "SCALE_OUT"
-                    and float(pos.get("qty") or 0) <= 0
-                ):
-                    cancel_entry_group(
-                        state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
+                if ev.get("event") == "FILLED_SELL" and order.get("purpose") == "SCALE_OUT":
+                    # After 2nd scale-out, arm remainder trail at current mark (0.5% HWM).
+                    arm_trail_after_scale(
+                        state, order.get("entry_group", ""), float(mark), events, now
                     )
+                    if float(pos.get("qty") or 0) <= 0:
+                        cancel_entry_group(
+                            state,
+                            order.get("entry_group", ""),
+                            events,
+                            now,
+                            except_ids={order["id"]},
+                        )
 
     # If profit buys were queued mid-loop, process SATA BUY_BEST once more this poll.
     for order in state["orders"]:
