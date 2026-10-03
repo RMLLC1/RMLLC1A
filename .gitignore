@@ -4,6 +4,7 @@ agents/markets/notes/gareth-soloway/spoken-digests/
 agents/markets/paper-state.json
 agents/markets/last_marks.json
 agents/markets/paper-portfolio.md
+agents/markets/level-alerts-state.json
 agents/markets/telegram/state.json
 agents/markets/telegram/inbox.jsonl
 agents/markets/__pycache__/
