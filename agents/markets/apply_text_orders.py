@@ -157,6 +157,20 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
         events.append(f"{now} TEXT cancel buys {sym}: {cancelled or 'none'}")
         return {"ok": True, "detail": f"cancelled {cancelled}"}
 
+    if action == "CANCEL_SHORTS":
+        cancelled = []
+        for o in state.get("orders", []):
+            if (
+                o.get("symbol") == sym
+                and o.get("type") == "LIMIT_SHORT"
+                and o.get("status") in {"OPEN", "WORKING"}
+            ):
+                o["status"] = "CANCELLED"
+                o["params_text"] = (o.get("params_text") or "") + " | Cancelled via text CANCEL SHORTS"
+                cancelled.append(o["id"])
+        events.append(f"{now} TEXT cancel shorts {sym}: {cancelled or 'none'}")
+        return {"ok": True, "detail": f"cancelled {cancelled}"}
+
     def _exit_stamps(symbol: str) -> tuple[dict, str]:
         """Per-symbol exit stamps for new text buys. SATA profits / loss top-off unchanged elsewhere."""
         if symbol == "UXRP":
@@ -188,6 +202,24 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
         return (
             {"arm_pct": 0.01, "trail_pct": 0.005, "hard_stop_pct": 0.02},
             "Exits: hard −2%; +1% arm / 0.5% trail market; scale-out ⅓ at +2% and ⅓ at +5%.",
+        )
+
+    def _exit_stamps_short(symbol: str) -> tuple[dict, str]:
+        """Per-symbol exit stamps for new text shorts (mirrored pct numbers, inverted wording)."""
+        stamps, _ = _exit_stamps(symbol)
+        if symbol == "UXRP":
+            return (
+                stamps,
+                "Short exits (UXRP): hard +3%; scale ⅓@−2% + ⅓@−5%; last ⅓ trail 0.5% market AFTER 2nd scale.",
+            )
+        if symbol == "GDXU":
+            return (
+                stamps,
+                "Short exits (GDXU): hard +4.5%; scale ⅓@−3% + ⅓@−7%; last ⅓ trail 0.5% market AFTER 2nd scale.",
+            )
+        return (
+            stamps,
+            "Short exits: hard +2%; −1% arm / 0.5% trail market; scale-out ⅓ at −2% and ⅓ at −5%.",
         )
 
     if action == "LIMIT_BUY":
@@ -241,6 +273,90 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
         }
         state.setdefault("orders", []).append(order)
         events.append(f"{now} TEXT queued {oid} BUY_BEST {sym} ${doc['notional']}")
+        return {"ok": True, "detail": f"queued {oid}"}
+
+    if action == "LIMIT_SHORT":
+        if sym == "SATA":
+            return {"ok": False, "detail": "SATA shorts blocked (dividend hold)"}
+        existing = _already_applied_text_id(state, doc.get("id"))
+        if existing:
+            return {"ok": True, "detail": f"skip duplicate; already {existing}", "skipped": True}
+        oid = next_order_id(state, "LSH-", sym)
+        stamps, exit_blurb = _exit_stamps_short(sym)
+        order = {
+            "id": oid,
+            "symbol": sym,
+            "type": "LIMIT_SHORT",
+            "status": "OPEN",
+            "limit_price": float(doc["limit_price"]),
+            "notional": float(doc["notional"]),
+            "attach_trailing_stop": bool(doc.get("attach_exits", True)),
+            "attach_trading_exits": bool(doc.get("attach_exits", True)),
+            **stamps,
+            "source": "text_order",
+            "text_order_id": doc.get("id"),
+            "params_text": (
+                f"Text: short ${float(doc['notional']):,.0f} {sym} at ${float(doc['limit_price'])} or better. "
+                f"{exit_blurb}"
+            ),
+        }
+        state.setdefault("orders", []).append(order)
+        events.append(
+            f"{now} TEXT queued {oid} LIMIT_SHORT {sym} @{doc['limit_price']} ${doc['notional']}"
+        )
+        return {"ok": True, "detail": f"queued {oid}"}
+
+    if action == "SHORT_BEST":
+        if sym == "SATA":
+            return {"ok": False, "detail": "SATA shorts blocked (dividend hold)"}
+        existing = _already_applied_text_id(state, doc.get("id"))
+        if existing:
+            return {"ok": True, "detail": f"skip duplicate; already {existing}", "skipped": True}
+        oid = next_order_id(state, "SHB-", sym)
+        stamps, exit_blurb = _exit_stamps_short(sym)
+        order = {
+            "id": oid,
+            "symbol": sym,
+            "type": "SHORT_BEST",
+            "status": "OPEN",
+            "notional": float(doc["notional"]),
+            "attach_trailing_stop": bool(doc.get("attach_exits", True)),
+            "attach_trading_exits": bool(doc.get("attach_exits", True)),
+            **stamps,
+            "source": "text_order",
+            "text_order_id": doc.get("id"),
+            "params_text": (
+                f"Text: short ${float(doc['notional']):,.0f} {sym} at best. "
+                f"{exit_blurb}"
+            ),
+        }
+        state.setdefault("orders", []).append(order)
+        events.append(f"{now} TEXT queued {oid} SHORT_BEST {sym} ${doc['notional']}")
+        return {"ok": True, "detail": f"queued {oid}"}
+
+    if action in {"LIMIT_COVER", "COVER_BEST"}:
+        if sym == "SATA":
+            return {"ok": False, "detail": "SATA covers blocked (dividend hold)"}
+        oid = next_order_id(state, "CB-" if action == "COVER_BEST" else "LC-", sym)
+        order = {
+            "id": oid,
+            "symbol": sym,
+            "type": action,
+            "status": "OPEN",
+            "source": "text_order",
+            "text_order_id": doc.get("id"),
+        }
+        if doc.get("qty_all"):
+            order["qty_all"] = True
+            order["params_text"] = f"Text: cover ALL {sym} ({action})"
+        else:
+            order["qty"] = float(doc["qty"])
+            order["params_text"] = f"Text: cover {sym} qty={doc['qty']} ({action})"
+        if action == "LIMIT_COVER":
+            order["limit_price"] = float(doc["limit_price"])
+            order["params_text"] += f" limit={doc['limit_price']}"
+        state.setdefault("orders", []).append(order)
+        events.append(f"{now} TEXT queued {oid} {action} {sym}")
         return {"ok": True, "detail": f"queued {oid}"}
 
     if action in {"LIMIT_SELL", "SELL_BEST"}:

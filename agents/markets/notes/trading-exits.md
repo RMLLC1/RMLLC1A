@@ -14,7 +14,17 @@
 4. **After 1st scale-out:** raise hard stop to **entry (breakeven)** on the remaining size.
 5. **Profits → SATA:** realized trading P&amp;L buys SATA and holds for dividends (not stop-managed). Reinvest `dividend_cash` when ≥1 share; otherwise merge into the next profit→SATA buy.
 
+## Short stack (mirrored)
+
+Per short entry (`attach_trading_exits_short`):
+
+1. **Hard invalidation:** LIMIT cover at **entry + 2%** until trail arms, then cancel (**UXRP: +3%**; **GDXU: +4.5%**).
+2. **Trail:** default arm at **entry − 1%**, then trail **0.5%** above low water — **market cover** on reverse up. **UXRP/GDXU:** trail waits until **2nd scale-out fills**, then arms at mark with **0.5%** LWM trail.
+3. **Scale-out:** LIMIT cover **⅓** at **entry − 2%**, then **⅓** at **entry − 5%** (**GDXU: ⅓@−3% + ⅓@−7%**); remaining **⅓** stays on trail.
+4. **After 1st scale-out:** lower hard cover stop to **entry (breakeven)** on remaining size.
+
 ## Income sleeve
 
 - Keep dividend / long-hold SATA on `hold_for_dividends` / `no_sell`.
 - No hard stops, trails, or scale-outs on that sleeve unless Rodney overrides.
+- **SHORT/COVER blocked** on SATA.
