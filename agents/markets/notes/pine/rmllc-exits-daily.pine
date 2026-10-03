@@ -1,0 +1,86 @@
+// RMLLC paper exit stack — Daily chart Strategy Tester
+// Mirrors Rodney / John Cloud rules: hard −2% until arm; +2% arm / 1% trail; scale-out ⅓ at +4%.
+// Not financial advice. Paper / educational backtest only.
+//@version=5
+strategy(
+     title                 = "RMLLC Exits Daily (−2% / +2% arm / 1% trail / ⅓@+4%)",
+     shorttitle            = "RMLLC Exits D",
+     overlay               = true,
+     initial_capital       = 100000,
+     default_qty_type      = strategy.percent_of_equity,
+     default_qty_value     = 50,
+     commission_type       = strategy.commission.percent,
+     commission_value      = 0,
+     pyramiding            = 0,
+     calc_on_every_tick    = false,
+     process_orders_on_close = true
+ )
+
+// ── Inputs ──────────────────────────────────────────────────────────────────
+hardPct   = input.float(2.0, "Hard stop %", minval=0.1, step=0.1) / 100.0
+armPct    = input.float(2.0, "Trail arm %", minval=0.1, step=0.1) / 100.0
+trailPct  = input.float(1.0, "Trail % after arm", minval=0.1, step=0.1) / 100.0
+scalePct  = input.float(4.0, "Scale-out %", minval=0.1, step=0.1) / 100.0
+scaleFrac = input.float(33.0, "Scale-out fraction %", minval=1, maxval=99, step=1) / 100.0
+
+useEmaEntry = input.bool(true, "Entry: close crosses above EMA")
+emaLen      = input.int(20, "EMA length", minval=2)
+// Optional: leave false and use chart "Add order" / strategy.entry from elsewhere.
+useManualLong = input.bool(false, "Also allow long when close > prior high (simple breakout)")
+
+// ── Entry (simple daily test harness — change to match your theory) ─────────
+ema = ta.ema(close, emaLen)
+longSignal = false
+if useEmaEntry
+    longSignal := ta.crossover(close, ema)
+if useManualLong
+    longSignal := longSignal or (close > high[1])
+
+if longSignal and strategy.position_size == 0
+    strategy.entry("Long", strategy.long)
+
+// ── Exit stack (only when in a long) ────────────────────────────────────────
+var float entryPx   = na
+var float highWater = na
+var bool  armed     = false
+var bool  scaled    = false
+
+if strategy.position_size > 0
+    if na(entryPx) or strategy.position_size[1] <= 0
+        entryPx   := strategy.position_avg_price
+        highWater := high
+        armed     := false
+        scaled    := false
+    else
+        highWater := math.max(nz(highWater, high), high)
+
+    hardPx  = entryPx * (1.0 - hardPct)
+    armPx   = entryPx * (1.0 + armPct)
+    scalePx = entryPx * (1.0 + scalePct)
+
+    if not armed and high >= armPx
+        armed := true
+
+    // Scale-out ⅓ at +4% (limit-style: fill when high reaches target on daily)
+    if not scaled and high >= scalePx
+        strategy.close("Long", qty_percent = scaleFrac * 100.0, comment = "Scale ⅓ @+4%")
+        scaled := true
+
+    if armed
+        trailStop = highWater * (1.0 - trailPct)
+        strategy.exit("Trail", from_entry = "Long", stop = trailStop, comment = "1% trail")
+    else
+        strategy.exit("Hard", from_entry = "Long", stop = hardPx, comment = "Hard −2%")
+
+    // Visuals
+    plot(hardPx, "Hard −2%", color=color.new(color.red, 0), style=plot.style_linebr)
+    plot(armPx, "Arm +2%", color=color.new(color.orange, 0), style=plot.style_linebr)
+    plot(scalePx, "Scale +4%", color=color.new(color.teal, 0), style=plot.style_linebr)
+    plot(armed ? highWater * (1.0 - trailPct) : na, "Trail stop", color=color.new(color.blue, 0), style=plot.style_linebr)
+else
+    entryPx   := na
+    highWater := na
+    armed     := false
+    scaled    := false
+
+plot(ema, "EMA", color=color.new(color.gray, 30))

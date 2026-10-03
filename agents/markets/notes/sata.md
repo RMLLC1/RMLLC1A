@@ -37,6 +37,7 @@
 ## Paper portfolio policy (Rodney)
 
 - Realized trading profits → buy SATA at best price.
+- **Dividend cash:** when balance alone buys ≥1 share, reinvest into SATA; otherwise pool with the next profit→SATA buy.
 - **Hold for daily dividends — do not sell** (unless Rodney overrides).
 
 *Not investment advice. Simulated paper use only.*
