@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import json
+import os
+import subprocess
 import sys
 import urllib.request
 from datetime import datetime, time, timezone
@@ -24,7 +26,14 @@ SESSION_CLOSE = time(20, 0)  # inclusive through 8:00 PM ET
 SYMBOLS = ["UXRP", "GDXU", "SATA", "BTC-USD", "XRP-USD"]
 
 # Email / chat notify ONLY on these fill events — never on marks or price updates.
-FILL_EVENTS = {"FILLED_LIMIT", "FILLED_BUY", "FILLED_SELL"}
+FILL_EVENTS = {
+    "FILLED_LIMIT",
+    "FILLED_BUY",
+    "FILLED_SELL",
+    "FILLED_MARKET",
+    "FILLED_SHORT",
+    "FILLED_COVER",
+}
 
 # Paper daily dividend for SATA (Strive preferred; board-declared; approx).
 SATA_DAILY_DIV = 0.0516  # USD per share per U.S. business day (declared rate context)
@@ -92,6 +101,27 @@ def ensure_position(pos_by_sym: dict, state: dict, symbol: str) -> dict:
     state["positions"].append(pos)
     pos_by_sym[symbol] = pos
     return pos
+
+
+def position_side(pos: dict) -> str:
+    """LONG (default) or SHORT."""
+    return str(pos.get("side") or "LONG")
+
+
+def clear_position(pos: dict) -> None:
+    """Zero qty/basis/avg and remove side when flat."""
+    pos["qty"] = 0.0
+    pos["cost_basis"] = 0.0
+    pos["avg_cost"] = 0.0
+    pos.pop("side", None)
+
+
+def assert_side_ok(pos: dict, wanted: str) -> bool:
+    """True if position is flat or already on wanted side; False if opposite side has qty."""
+    qty = float(pos.get("qty") or 0)
+    if qty <= 0:
+        return True
+    return position_side(pos) == wanted
 
 
 def is_us_business_day(dt: datetime) -> bool:
@@ -210,14 +240,19 @@ def try_reinvest_dividend_cash(
 
 
 def _trading_loss_total(fills: list) -> float:
-    """Sum of realized losses on non-SATA sells this poll (positive dollars lost)."""
+    """Sum of realized losses on non-SATA sells/covers this poll (positive dollars lost)."""
     lost = 0.0
     for ev in fills or []:
         if ev.get("symbol") == "SATA":
             continue
-        if ev.get("event") not in {"FILLED_SELL", "FILLED_LIMIT"}:
-            continue
-        if ev.get("side") not in {None, "SELL"}:
+        evt = ev.get("event")
+        side = ev.get("side")
+        is_exit = (
+            evt in {"FILLED_SELL", "FILLED_COVER"}
+            or (evt == "FILLED_LIMIT" and side in {None, "SELL", "COVER"})
+            or (evt == "FILLED_MARKET" and side in {"SELL", "COVER"})
+        )
+        if not is_exit:
             continue
         realized = ev.get("realized")
         if realized is None:
@@ -325,6 +360,36 @@ def cancel_entry_group(
         events.append(f"{now} cancelled {o['id']} (entry_group={entry_group})")
 
 
+def cancel_symbol_exits(
+    state: dict, symbol: str, events: list, now: str, *, except_ids: set[str] | None = None
+) -> None:
+    """Cancel open protective exits for a symbol (all entry groups). Used when position goes flat."""
+    except_ids = except_ids or set()
+    protective = {
+        "TRAILING_STOP_LIMIT_SELL",
+        "HARD_STOP_LIMIT_SELL",
+        "TRAILING_STOP_LIMIT_COVER",
+        "HARD_STOP_LIMIT_COVER",
+    }
+    for o in state["orders"]:
+        if o.get("id") in except_ids:
+            continue
+        if o.get("symbol") != symbol:
+            continue
+        if o.get("status") in {"FILLED", "CANCELLED"}:
+            continue
+        otype = o.get("type")
+        is_scale = o.get("purpose") == "SCALE_OUT"
+        has_group = bool(o.get("entry_group"))
+        if otype not in protective and not (
+            otype in {"LIMIT_SELL", "LIMIT_COVER"} and (is_scale or has_group)
+        ):
+            continue
+        o["status"] = "CANCELLED"
+        o["params_text"] = (o.get("params_text") or "") + " | Cancelled — position flat"
+        events.append(f"{now} cancelled {o['id']} (symbol flat {symbol})")
+
+
 def apply_hard_stop_limit(order: dict, mark: float, position: dict) -> dict:
     """Fixed stop-limit sell (hard invalidation). Triggers when mark <= stop; LIMIT at stop."""
     if order.get("status") in {"FILLED", "CANCELLED"}:
@@ -383,27 +448,135 @@ def apply_hard_stop_limit(order: dict, mark: float, position: dict) -> dict:
     return event
 
 
+# Per-symbol exit defaults (Rodney 2026-10-02 — UXRP noise-adjusted).
+# Global default remains hard −2% / arm +1% / trail 0.5% market / ⅓@+2% + ⅓@+5%.
+SYMBOL_EXIT_DEFAULTS: dict[str, dict] = {
+    "UXRP": {
+        "arm_pct": 0.02,
+        "trail_pct": 0.005,
+        "hard_stop_pct": 0.03,
+        # Last ⅓ trail arms only after 2nd scale-out fills (Rodney 2026-10-02).
+        "arm_after_scale_level": 2,
+    },
+    "GDXU": {
+        "arm_pct": 0.03,
+        "trail_pct": 0.005,
+        "hard_stop_pct": 0.045,
+        "arm_after_scale_level": 2,
+        "scale_out_levels": [
+            {"pct": 0.03, "fraction": 1.0 / 3.0},
+            {"pct": 0.07, "fraction": 1.0 / 3.0},
+        ],
+    },
+}
+
+
+def _default_scale_out_levels(order: dict, rules: dict, sym_rules: dict | None = None) -> list[dict]:
+    """Scale-out ladder: ⅓ at +2%, ⅓ at +5% (remainder on trail)."""
+    sym_rules = sym_rules or {}
+    levels = (
+        order.get("scale_out_levels")
+        or sym_rules.get("scale_out_levels")
+        or rules.get("scale_out_levels")
+    )
+    if levels:
+        return [
+            {"pct": float(x["pct"]), "fraction": float(x["fraction"])}
+            for x in levels
+        ]
+    # Legacy single-level override still supported.
+    if any(k in order or k in sym_rules or k in rules for k in ("scale_out_pct",)):
+        return [
+            {
+                "pct": float(
+                    order.get(
+                        "scale_out_pct",
+                        sym_rules.get("scale_out_pct", rules.get("scale_out_pct", 0.02)),
+                    )
+                ),
+                "fraction": float(
+                    order.get(
+                        "scale_out_fraction",
+                        sym_rules.get(
+                            "scale_out_fraction", rules.get("scale_out_fraction", 1.0 / 3.0)
+                        ),
+                    )
+                ),
+            }
+        ]
+    return [
+        {"pct": 0.02, "fraction": 1.0 / 3.0},
+        {"pct": 0.05, "fraction": 1.0 / 3.0},
+    ]
+
+
+def _exit_rule_for(state: dict, order: dict, sym: str) -> tuple[float, float, float, list[dict], int | None]:
+    """Resolve arm/trail/hard/scale/arm_after for a symbol."""
+    rules = state.get("standing_rules") or {}
+    sym_rules = dict(SYMBOL_EXIT_DEFAULTS.get(sym) or {})
+    standing_sym = (rules.get("symbol_exits") or {}).get(sym) or {}
+    sym_rules.update(standing_sym)
+
+    arm_pct = float(
+        order.get("arm_pct", sym_rules.get("arm_pct", rules.get("arm_pct", 0.01)))
+    )
+    trail_pct = float(
+        order.get(
+            "trail_pct",
+            sym_rules.get("trail_pct", rules.get("trail_pct_after_arm", 0.005)),
+        )
+    )
+    hard_pct = float(
+        order.get(
+            "hard_stop_pct",
+            sym_rules.get("hard_stop_pct", rules.get("hard_stop_pct", 0.02)),
+        )
+    )
+    scale_levels = _default_scale_out_levels(order, rules, sym_rules)
+    arm_after = order.get("arm_after_scale_level", sym_rules.get("arm_after_scale_level"))
+    arm_after_i = int(arm_after) if arm_after is not None else None
+    return arm_pct, trail_pct, hard_pct, scale_levels, arm_after_i
+
+
 def attach_trading_exits(
     state: dict, order: dict, sym: str, fill_px: float, fill_qty: float, events: list, now: str
 ) -> None:
-    """Attach hard stop (−2%), trail (+2% arm / 1%), and scale-out (⅓ at +4%). Not for SATA."""
-    rules = state.get("standing_rules") or {}
-    arm_pct = float(order.get("arm_pct", rules.get("arm_pct", 0.02)))
-    trail_pct = float(order.get("trail_pct", rules.get("trail_pct_after_arm", 0.01)))
-    hard_pct = float(order.get("hard_stop_pct", rules.get("hard_stop_pct", 0.02)))
-    scale_pct = float(order.get("scale_out_pct", rules.get("scale_out_pct", 0.04)))
-    scale_frac = float(order.get("scale_out_fraction", rules.get("scale_out_fraction", 1.0 / 3.0)))
+    """Attach hard stop, trail (market on reverse), and dual scale-outs. Not for SATA.
+
+    Global default: hard −2%, arm +1%, trail 0.5% market, ⅓@+2% + ⅓@+5%.
+    UXRP override: hard −3%, arm +2%, trail 0.5% market after 2nd scale-out (same scale-outs).
+    GDXU override: hard −4.5%, arm +3%, trail 0.5% market after 2nd scale-out, ⅓@+3% + ⅓@+7%.
+    """
+    arm_pct, trail_pct, hard_pct, scale_levels, arm_after = _exit_rule_for(state, order, sym)
     entry_group = order["id"]
 
     arm = round(fill_px * (1 + arm_pct), 4)
     hard = round(fill_px * (1 - hard_pct), 4)
-    scale_px = round(fill_px * (1 + scale_pct), 4)
-    scale_qty = fill_qty * scale_frac
 
     n_ts = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "TRAILING_STOP_LIMIT_SELL") + 1
     n_hs = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "HARD_STOP_LIMIT_SELL") + 1
     n_so = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("purpose") == "SCALE_OUT") + 1
 
+    scale_blurb = "; ".join(
+        f"⅓ at +{lvl['pct']*100:.1f}%".replace(".0%", "%")
+        if abs(lvl["fraction"] - 1.0 / 3.0) < 1e-9
+        else f"{lvl['fraction']*100:.0f}% at +{lvl['pct']*100:.1f}%"
+        for lvl in scale_levels
+    )
+    # Prefer clean fractions in params text for the standard ladder.
+    if len(scale_levels) == 2 and all(
+        abs(lvl["fraction"] - 1.0 / 3.0) < 1e-9 for lvl in scale_levels
+    ):
+        scale_blurb = (
+            f"⅓ at +{scale_levels[0]['pct']*100:.0f}%, "
+            f"⅓ at +{scale_levels[1]['pct']*100:.0f}%"
+        )
+
+    trail_note = (
+        f"Trail 0.5% market arms only after scale-out #{arm_after} fills."
+        if arm_after
+        else f"Arm +{arm_pct*100:.0f}% → ${arm}. Trail {trail_pct*100:.1f}% → market sell on reverse."
+    )
     ts = {
         "id": f"TS-{sym}-{n_ts}",
         "symbol": sym,
@@ -411,13 +584,14 @@ def attach_trading_exits(
         "status": "PENDING_ARM",
         "arm_price": arm,
         "trail_pct": trail_pct,
+        "fill_at_market": True,
         "entry_group": entry_group,
         "entry_price": fill_px,
-        "params_text": (
-            f"Arm +{arm_pct*100:.0f}% → ${arm}. Trail {trail_pct*100:.0f}%. LIMIT sell at stop. "
-            f"(group {entry_group})"
-        ),
+        "params_text": f"{trail_note} (group {entry_group})",
     }
+    if arm_after is not None:
+        ts["arm_after_scale_level"] = arm_after
+        ts["status"] = "WAITING_SCALE"  # not armed until 2nd ⅓ sells
     hs = {
         "id": f"HS-{sym}-{n_hs}",
         "symbol": sym,
@@ -433,25 +607,339 @@ def attach_trading_exits(
             f"(group {entry_group})"
         ),
     }
-    so = {
-        "id": f"SO-{sym}-{n_so}",
+    attached = [ts, hs]
+    events.append(
+        f"{now} {sym} attached {ts['id']} "
+        f"{'WAITING_SCALE#'+str(arm_after) if arm_after else 'PENDING_ARM arm='+str(arm)}"
+    )
+    events.append(f"{now} {sym} attached {hs['id']} HARD_STOP stop={hard}")
+
+    for i, lvl in enumerate(scale_levels):
+        scale_px = round(fill_px * (1 + float(lvl["pct"])), 4)
+        scale_qty = fill_qty * float(lvl["fraction"])
+        so = {
+            "id": f"SO-{sym}-{n_so + i}",
+            "symbol": sym,
+            "type": "LIMIT_SELL",
+            "status": "OPEN",
+            "limit_price": scale_px,
+            "qty": scale_qty,
+            "purpose": "SCALE_OUT",
+            "scale_level": i + 1,
+            "entry_group": entry_group,
+            "entry_price": fill_px,
+            "params_text": (
+                f"Scale-out {float(lvl['fraction'])*100:.0f}% at +{float(lvl['pct'])*100:.0f}% "
+                f"→ ${scale_px} LIMIT. (group {entry_group}; {scale_blurb})"
+            ),
+        }
+        attached.append(so)
+        events.append(
+            f"{now} {sym} attached {so['id']} SCALE_OUT qty={scale_qty:.4f} @ {scale_px}"
+        )
+
+    state["orders"].extend(attached)
+
+
+def attach_trading_exits_short(
+    state: dict, order: dict, sym: str, fill_px: float, fill_qty: float, events: list, now: str
+) -> None:
+    """Attach hard cover, trail (market on reverse up), and dual scale-outs for shorts."""
+    arm_pct, trail_pct, hard_pct, scale_levels, arm_after = _exit_rule_for(state, order, sym)
+    entry_group = order["id"]
+
+    arm = round(fill_px * (1 - arm_pct), 4)
+    hard = round(fill_px * (1 + hard_pct), 4)
+
+    n_ts = sum(
+        1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "TRAILING_STOP_LIMIT_COVER"
+    ) + 1
+    n_hs = sum(
+        1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "HARD_STOP_LIMIT_COVER"
+    ) + 1
+    n_so = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("purpose") == "SCALE_OUT") + 1
+
+    scale_blurb = "; ".join(
+        f"⅓ at −{lvl['pct']*100:.1f}%".replace(".0%", "%")
+        if abs(lvl["fraction"] - 1.0 / 3.0) < 1e-9
+        else f"{lvl['fraction']*100:.0f}% at −{lvl['pct']*100:.1f}%"
+        for lvl in scale_levels
+    )
+    if len(scale_levels) == 2 and all(
+        abs(lvl["fraction"] - 1.0 / 3.0) < 1e-9 for lvl in scale_levels
+    ):
+        scale_blurb = (
+            f"⅓ at −{scale_levels[0]['pct']*100:.0f}%, "
+            f"⅓ at −{scale_levels[1]['pct']*100:.0f}%"
+        )
+
+    trail_note = (
+        f"Trail 0.5% market arms only after scale-out #{arm_after} fills."
+        if arm_after
+        else f"Arm −{arm_pct*100:.0f}% → ${arm}. Trail {trail_pct*100:.1f}% → market cover on reverse up."
+    )
+    ts = {
+        "id": f"TSC-{sym}-{n_ts}",
         "symbol": sym,
-        "type": "LIMIT_SELL",
-        "status": "OPEN",
-        "limit_price": scale_px,
-        "qty": scale_qty,
-        "purpose": "SCALE_OUT",
+        "type": "TRAILING_STOP_LIMIT_COVER",
+        "status": "PENDING_ARM",
+        "arm_price": arm,
+        "trail_pct": trail_pct,
+        "fill_at_market": True,
         "entry_group": entry_group,
         "entry_price": fill_px,
+        "params_text": f"{trail_note} (group {entry_group})",
+    }
+    if arm_after is not None:
+        ts["arm_after_scale_level"] = arm_after
+        ts["status"] = "WAITING_SCALE"
+    hs = {
+        "id": f"HSC-{sym}-{n_hs}",
+        "symbol": sym,
+        "type": "HARD_STOP_LIMIT_COVER",
+        "status": "OPEN",
+        "stop_price": hard,
+        "limit_price": hard,
+        "entry_group": entry_group,
+        "entry_price": fill_px,
+        "cancel_when_trail_armed": True,
         "params_text": (
-            f"Scale-out {scale_frac*100:.0f}% at +{scale_pct*100:.0f}% → ${scale_px} LIMIT. "
+            f"Hard invalidation +{hard_pct*100:.0f}% → ${hard} LIMIT until trail arms. "
             f"(group {entry_group})"
         ),
     }
-    state["orders"].extend([ts, hs, so])
-    events.append(f"{now} {sym} attached {ts['id']} PENDING_ARM arm={arm}")
-    events.append(f"{now} {sym} attached {hs['id']} HARD_STOP stop={hard}")
-    events.append(f"{now} {sym} attached {so['id']} SCALE_OUT qty={scale_qty:.4f} @ {scale_px}")
+    attached = [ts, hs]
+    events.append(
+        f"{now} {sym} attached {ts['id']} "
+        f"{'WAITING_SCALE#'+str(arm_after) if arm_after else 'PENDING_ARM arm='+str(arm)}"
+    )
+    events.append(f"{now} {sym} attached {hs['id']} HARD_STOP_COVER stop={hard}")
+
+    for i, lvl in enumerate(scale_levels):
+        scale_px = round(fill_px * (1 - float(lvl["pct"])), 4)
+        scale_qty = fill_qty * float(lvl["fraction"])
+        so = {
+            "id": f"SC-{sym}-{n_so + i}",
+            "symbol": sym,
+            "type": "LIMIT_COVER",
+            "status": "OPEN",
+            "limit_price": scale_px,
+            "qty": scale_qty,
+            "purpose": "SCALE_OUT",
+            "scale_level": i + 1,
+            "entry_group": entry_group,
+            "entry_price": fill_px,
+            "params_text": (
+                f"Scale-out {float(lvl['fraction'])*100:.0f}% at −{float(lvl['pct'])*100:.0f}% "
+                f"→ ${scale_px} LIMIT. (group {entry_group}; {scale_blurb})"
+            ),
+        }
+        attached.append(so)
+        events.append(
+            f"{now} {sym} attached {so['id']} SCALE_OUT qty={scale_qty:.4f} @ {scale_px}"
+        )
+
+    state["orders"].extend(attached)
+
+
+def scale_out_filled(state: dict, entry_group: str, level: int) -> bool:
+    """True if SCALE_OUT at the given level for this entry group is FILLED."""
+    for o in state.get("orders") or []:
+        if (
+            o.get("entry_group") == entry_group
+            and o.get("purpose") == "SCALE_OUT"
+            and int(o.get("scale_level") or 0) == int(level)
+            and o.get("status") == "FILLED"
+        ):
+            return True
+    return False
+
+
+def raise_hard_stop_after_scale(
+    state: dict, entry_group: str, scale_level: int, events: list, now: str
+) -> None:
+    """After 1st scale-out fills, raise hard stop to entry (breakeven) on remaining size.
+
+    Rodney 2026-10-02: don't give back the win after banking the first ⅓.
+    """
+    if int(scale_level) != 1:
+        return
+    entry_px = None
+    for o in state.get("orders") or []:
+        if o.get("entry_group") == entry_group and o.get("entry_price") is not None:
+            entry_px = float(o["entry_price"])
+            break
+    if entry_px is None or entry_px <= 0:
+        return
+    for o in state.get("orders") or []:
+        if (
+            o.get("entry_group") == entry_group
+            and o.get("type") == "HARD_STOP_LIMIT_SELL"
+            and o.get("status") not in {"FILLED", "CANCELLED"}
+        ):
+            old = o.get("stop_price")
+            # Only raise (never loosen) the stop.
+            if old is not None and float(old) >= entry_px - 1e-9:
+                continue
+            o["stop_price"] = round(entry_px, 4)
+            o["limit_price"] = round(entry_px, 4)
+            o["breakeven_after_scale1"] = True
+            o["params_text"] = (
+                f"Hard stop raised to breakeven ${entry_px:.4f} after 1st scale-out. "
+                f"(was {old}; group {entry_group})"
+            )
+            events.append(
+                f"{now} {o.get('symbol')} {o['id']} hard stop → breakeven ${entry_px:.4f} "
+                f"(after scale #1; was {old})"
+            )
+    for o in state.get("orders") or []:
+        if (
+            o.get("entry_group") == entry_group
+            and o.get("type") == "HARD_STOP_LIMIT_COVER"
+            and o.get("status") not in {"FILLED", "CANCELLED"}
+        ):
+            old = o.get("stop_price")
+            # Only tighten (move stop down toward entry for shorts).
+            if old is not None and float(old) <= entry_px + 1e-9:
+                continue
+            o["stop_price"] = round(entry_px, 4)
+            o["limit_price"] = round(entry_px, 4)
+            o["breakeven_after_scale1"] = True
+            o["params_text"] = (
+                f"Hard cover stop lowered to breakeven ${entry_px:.4f} after 1st scale-out. "
+                f"(was {old}; group {entry_group})"
+            )
+            events.append(
+                f"{now} {o.get('symbol')} {o['id']} hard cover stop → breakeven ${entry_px:.4f} "
+                f"(after scale #1; was {old})"
+            )
+
+
+def arm_trail_after_scale(
+    state: dict, entry_group: str, mark: float, events: list, now: str
+) -> None:
+    """Arm waiting trails once required scale-out has filled; cancel hard stops."""
+    for order in state.get("orders") or []:
+        if order.get("entry_group") != entry_group:
+            continue
+        if order.get("type") == "TRAILING_STOP_LIMIT_SELL":
+            if order.get("status") not in {"WAITING_SCALE", "PENDING_ARM"}:
+                continue
+            need = order.get("arm_after_scale_level")
+            if need is not None and not scale_out_filled(state, entry_group, int(need)):
+                continue
+            trail = float(order.get("trail_pct", 0.005))
+            order["status"] = "ARMED"
+            order["high_water"] = mark
+            order["stop"] = round(mark * (1 - trail), 4)
+            order["armed_at_mark"] = mark
+            events.append(
+                f"{now} {order['symbol']} {order['id']} ARMED after scale-out "
+                f"hw={mark:.4f} stop={order['stop']:.4f}"
+            )
+            for o in state["orders"]:
+                if (
+                    o.get("entry_group") == entry_group
+                    and o.get("type") == "HARD_STOP_LIMIT_SELL"
+                    and o.get("cancel_when_trail_armed")
+                    and o.get("status") not in {"FILLED", "CANCELLED"}
+                ):
+                    o["status"] = "CANCELLED"
+                    events.append(f"{now} cancelled {o['id']} — trail {order['id']} ARMED")
+        elif order.get("type") == "TRAILING_STOP_LIMIT_COVER":
+            if order.get("status") not in {"WAITING_SCALE", "PENDING_ARM"}:
+                continue
+            need = order.get("arm_after_scale_level")
+            if need is not None and not scale_out_filled(state, entry_group, int(need)):
+                continue
+            trail = float(order.get("trail_pct", 0.005))
+            order["status"] = "ARMED"
+            order["low_water"] = mark
+            order["stop"] = round(mark * (1 + trail), 4)
+            order["armed_at_mark"] = mark
+            events.append(
+                f"{now} {order['symbol']} {order['id']} ARMED after scale-out "
+                f"lw={mark:.4f} stop={order['stop']:.4f}"
+            )
+            for o in state["orders"]:
+                if (
+                    o.get("entry_group") == entry_group
+                    and o.get("type") == "HARD_STOP_LIMIT_COVER"
+                    and o.get("cancel_when_trail_armed")
+                    and o.get("status") not in {"FILLED", "CANCELLED"}
+                ):
+                    o["status"] = "CANCELLED"
+                    events.append(f"{now} cancelled {o['id']} — trail {order['id']} ARMED")
+
+
+def apply_hard_stop_limit_cover(order: dict, mark: float, position: dict) -> dict:
+    """Fixed stop-limit cover (hard invalidation for shorts). Triggers when mark >= stop."""
+    if order.get("status") in {"FILLED", "CANCELLED"}:
+        return {}
+    stop = float(order["stop_price"])
+    limit = float(order.get("limit_price") or stop)
+    event = {"id": order["id"], "symbol": order["symbol"]}
+    status = order.get("status", "OPEN")
+
+    def _fill_hard_cover(fill_px: float) -> dict:
+        qty = float(position["qty"])
+        if qty <= 0 or position_side(position) != "SHORT":
+            order["status"] = "CANCELLED"
+            event["event"] = "CANCELLED_NO_QTY"
+            return event
+        cost = round(qty * fill_px, 2)
+        avg = float(position.get("avg_cost") or 0)
+        order["status"] = "FILLED"
+        order["fill_price"] = fill_px
+        order["fill_qty"] = qty
+        realized = round((avg - fill_px) * qty, 2)
+        clear_position(position)
+        event.update(
+            {
+                "event": "FILLED_LIMIT",
+                "side": "COVER",
+                "limit": limit,
+                "qty": qty,
+                "price": fill_px,
+                "cost": cost,
+                "basis_released": round(avg * qty, 2),
+                "realized": realized,
+            }
+        )
+        return event
+
+    if status == "WORKING_LIMIT":
+        limit = float(order["limit_price"])
+        if mark <= limit + 1e-9:
+            return _fill_hard_cover(limit)
+        if mark >= stop - 1e-9:
+            return _fill_hard_cover(mark)
+        event["event"] = "WORKING_LIMIT"
+        event["limit"] = limit
+        return event
+
+    if mark >= stop - 1e-9:
+        if mark <= limit + 1e-9:
+            return _fill_hard_cover(limit)
+        return _fill_hard_cover(mark)
+
+    event["event"] = "HARD_STOP_HOLD"
+    event["stop"] = stop
+    return event
+
+
+def block_sata_short_covers(order: dict) -> bool:
+    """True if this short/cover must be skipped on SATA."""
+    if order.get("symbol") != "SATA":
+        return False
+    return order.get("type", "") in {
+        "SHORT_BEST",
+        "LIMIT_SHORT",
+        "COVER_BEST",
+        "LIMIT_COVER",
+        "TRAILING_STOP_LIMIT_COVER",
+        "HARD_STOP_LIMIT_COVER",
+    }
 
 
 def block_sata_sells(order: dict, pos: dict) -> bool:
@@ -475,12 +963,48 @@ def block_sata_sells(order: dict, pos: dict) -> bool:
 
 
 def apply_trailing_stop(order: dict, mark: float, position: dict) -> dict:
-    """Mutate order/position; return event dict or empty."""
+    """Mutate order/position; return event dict or empty.
+
+    Default fill_at_market=True: when price reverses through the trail stop, sell
+    remaining qty at the current mark (Rodney: market on >0.5% reverse).
+    """
     if order.get("status") in {"FILLED", "CANCELLED"}:
         return {}
+    if order.get("status") == "WAITING_SCALE":
+        return {
+            "id": order["id"],
+            "symbol": order["symbol"],
+            "event": "WAITING_SCALE",
+            "need_scale_level": order.get("arm_after_scale_level"),
+        }
     arm = float(order["arm_price"])
-    trail = float(order.get("trail_pct", 0.01))
+    trail = float(order.get("trail_pct", 0.005))
+    fill_at_market = bool(order.get("fill_at_market", True))
     event = {"id": order["id"], "symbol": order["symbol"]}
+
+    def _fill_trail(fill_px: float, *, limit: float | None = None) -> dict:
+        qty = float(position["qty"])
+        if qty <= 0:
+            order["status"] = "CANCELLED"
+            event["event"] = "CANCELLED_NO_QTY"
+            return event
+        proceeds = round(qty * fill_px, 2)
+        order["status"] = "FILLED"
+        order["fill_price"] = fill_px
+        order["fill_qty"] = qty
+        event.update(
+            {
+                "event": "FILLED_LIMIT" if not fill_at_market else "FILLED_MARKET",
+                "side": "SELL",
+                "limit": limit if limit is not None else fill_px,
+                "price": fill_px,
+                "qty": qty,
+                "proceeds": proceeds,
+            }
+        )
+        position["qty"] = 0.0
+        position["cost_basis"] = 0.0
+        return event
 
     if order["status"] == "PENDING_ARM":
         if mark >= arm:
@@ -505,30 +1029,15 @@ def apply_trailing_stop(order: dict, mark: float, position: dict) -> dict:
             return event
         stop = float(order["stop"])
         if mark <= stop:
-            # Limit sell at stop: paper-fill only if mark >= stop (limit or better for sells).
-            limit = stop
-            if mark + 1e-9 >= limit:
-                qty = float(position["qty"])
-                proceeds = round(qty * limit, 2)
-                order["status"] = "FILLED"
-                order["fill_price"] = limit
-                order["fill_qty"] = qty
-                event.update(
-                    {
-                        "event": "FILLED_LIMIT",
-                        "side": "SELL",
-                        "limit": limit,
-                        "qty": qty,
-                        "proceeds": proceeds,
-                    }
-                )
-                position["qty"] = 0.0
-                position["cost_basis"] = 0.0
-                return event
+            if fill_at_market:
+                return _fill_trail(mark, limit=stop)
+            # Legacy limit-at-stop path.
+            if mark + 1e-9 >= stop:
+                return _fill_trail(stop, limit=stop)
             order["status"] = "WORKING_LIMIT"
-            order["limit_price"] = limit
+            order["limit_price"] = stop
             event["event"] = "WORKING_LIMIT"
-            event["limit"] = limit
+            event["limit"] = stop
             event["mark"] = mark
             return event
         event["event"] = "ARMED_HOLD"
@@ -537,23 +1046,102 @@ def apply_trailing_stop(order: dict, mark: float, position: dict) -> dict:
 
     if order["status"] == "WORKING_LIMIT":
         limit = float(order["limit_price"])
+        if fill_at_market and mark <= float(order.get("stop") or limit) + 1e-9:
+            return _fill_trail(mark, limit=limit)
         if mark + 1e-9 >= limit:
-            qty = float(position["qty"])
-            proceeds = round(qty * limit, 2)
-            order["status"] = "FILLED"
-            order["fill_price"] = limit
-            event.update(
-                {
-                    "event": "FILLED_LIMIT",
-                    "side": "SELL",
-                    "limit": limit,
-                    "qty": qty,
-                    "proceeds": proceeds,
-                }
-            )
-            position["qty"] = 0.0
-            position["cost_basis"] = 0.0
+            return _fill_trail(limit, limit=limit)
+        event["event"] = "WORKING_LIMIT"
+        event["limit"] = limit
+        return event
+
+    return {}
+
+
+def apply_trailing_stop_cover(order: dict, mark: float, position: dict) -> dict:
+    """Mutate order/position for short trail; cover at market when price reverses up through stop."""
+    if order.get("status") in {"FILLED", "CANCELLED"}:
+        return {}
+    if order.get("status") == "WAITING_SCALE":
+        return {
+            "id": order["id"],
+            "symbol": order["symbol"],
+            "event": "WAITING_SCALE",
+            "need_scale_level": order.get("arm_after_scale_level"),
+        }
+    arm = float(order["arm_price"])
+    trail = float(order.get("trail_pct", 0.005))
+    fill_at_market = bool(order.get("fill_at_market", True))
+    event = {"id": order["id"], "symbol": order["symbol"]}
+
+    def _fill_trail_cover(fill_px: float, *, limit: float | None = None) -> dict:
+        qty = float(position["qty"])
+        if qty <= 0 or position_side(position) != "SHORT":
+            order["status"] = "CANCELLED"
+            event["event"] = "CANCELLED_NO_QTY"
             return event
+        cost = round(qty * fill_px, 2)
+        avg = float(position.get("avg_cost") or 0)
+        order["status"] = "FILLED"
+        order["fill_price"] = fill_px
+        order["fill_qty"] = qty
+        realized = round((avg - fill_px) * qty, 2)
+        clear_position(position)
+        event.update(
+            {
+                "event": "FILLED_LIMIT" if not fill_at_market else "FILLED_MARKET",
+                "side": "COVER",
+                "limit": limit if limit is not None else fill_px,
+                "price": fill_px,
+                "qty": qty,
+                "cost": cost,
+                "realized": realized,
+            }
+        )
+        return event
+
+    if order["status"] == "PENDING_ARM":
+        if mark <= arm + 1e-9:
+            order["status"] = "ARMED"
+            order["low_water"] = mark
+            order["stop"] = round(mark * (1 + trail), 4)
+            event["event"] = "ARMED"
+            event["low_water"] = order["low_water"]
+            event["stop"] = order["stop"]
+            return event
+        event["event"] = "PENDING_ARM"
+        return event
+
+    if order["status"] == "ARMED":
+        lw = float(order.get("low_water") or mark)
+        if mark < lw:
+            order["low_water"] = mark
+            order["stop"] = round(mark * (1 + trail), 4)
+            event["event"] = "TRAILED"
+            event["low_water"] = order["low_water"]
+            event["stop"] = order["stop"]
+            return event
+        stop = float(order["stop"])
+        if mark >= stop - 1e-9:
+            if fill_at_market:
+                return _fill_trail_cover(mark, limit=stop)
+            if mark <= stop + 1e-9:
+                return _fill_trail_cover(stop, limit=stop)
+            order["status"] = "WORKING_LIMIT"
+            order["limit_price"] = stop
+            event["event"] = "WORKING_LIMIT"
+            event["limit"] = stop
+            event["mark"] = mark
+            return event
+        event["event"] = "ARMED_HOLD"
+        event["stop"] = stop
+        return event
+
+    if order["status"] == "WORKING_LIMIT":
+        limit = float(order["limit_price"])
+        if fill_at_market and mark >= float(order.get("stop") or limit) - 1e-9:
+            return _fill_trail_cover(mark, limit=limit)
+        if mark <= limit + 1e-9:
+            return _fill_trail_cover(limit, limit=limit)
         event["event"] = "WORKING_LIMIT"
         event["limit"] = limit
         return event
@@ -572,6 +1160,9 @@ def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) 
 
     # Immediate best-price buy (uses current fresh mark as best available print).
     if otype in {"BUY_BEST", "MARKET_BUY"} and status in {"OPEN", "WORKING"}:
+        if not assert_side_ok(position, "LONG"):
+            event["event"] = "BUY_BLOCKED_SHORT"
+            return event, cash
         notional = order.get("notional")
         qty = order.get("qty")
         if notional is not None:
@@ -590,6 +1181,7 @@ def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) 
         position["qty"] = new_qty
         position["cost_basis"] = round(new_basis, 2)
         position["avg_cost"] = round(new_basis / new_qty, 6) if new_qty else 0.0
+        position.pop("side", None)
         cash = round(cash - cost, 2)
         order["status"] = "FILLED"
         order["fill_price"] = mark
@@ -599,6 +1191,9 @@ def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) 
 
     # Limit buy: fill when mark <= limit (best price at or below limit).
     if otype == "LIMIT_BUY" and status in {"OPEN", "WORKING"}:
+        if not assert_side_ok(position, "LONG"):
+            event["event"] = "BUY_BLOCKED_SHORT"
+            return event, cash
         limit = float(order["limit_price"])
         if mark <= limit + 1e-9:
             fill_px = mark  # best (lowest) available at or under limit
@@ -619,6 +1214,7 @@ def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) 
             position["qty"] = new_qty
             position["cost_basis"] = round(new_basis, 2)
             position["avg_cost"] = round(new_basis / new_qty, 6) if new_qty else 0.0
+            position.pop("side", None)
             cash = round(cash - cost, 2)
             order["status"] = "FILLED"
             order["fill_price"] = fill_px
@@ -631,8 +1227,183 @@ def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) 
         event["limit"] = limit
         return event, cash
 
+    # Immediate best-price short.
+    if otype in {"SHORT_BEST", "MARKET_SHORT"} and status in {"OPEN", "WORKING"}:
+        if not assert_side_ok(position, "SHORT"):
+            event["event"] = "SHORT_BLOCKED_LONG"
+            return event, cash
+        notional = order.get("notional")
+        qty = order.get("qty")
+        if notional is not None:
+            qty = float(notional) / mark
+        else:
+            qty = float(qty or 0)
+        if qty <= 0:
+            event["event"] = "SHORT_BLOCKED_QTY"
+            return event, cash
+        fill_px = mark
+        proceeds = round(qty * fill_px, 2)
+        prev_qty = float(position["qty"]) if position_side(position) == "SHORT" else 0.0
+        prev_basis = float(position["cost_basis"]) if prev_qty > 0 else 0.0
+        new_qty = prev_qty + qty
+        new_basis = prev_basis + proceeds
+        position["qty"] = new_qty
+        position["cost_basis"] = round(new_basis, 2)
+        position["avg_cost"] = round(new_basis / new_qty, 6) if new_qty else 0.0
+        position["side"] = "SHORT"
+        cash = round(cash + proceeds, 2)
+        order["status"] = "FILLED"
+        order["fill_price"] = fill_px
+        order["fill_qty"] = qty
+        event.update(
+            {"event": "FILLED_SHORT", "side": "SHORT", "qty": qty, "price": fill_px, "proceeds": proceeds}
+        )
+        return event, cash
+
+    # Limit short: fill when mark >= limit (at or above, like sell).
+    if otype == "LIMIT_SHORT" and status in {"OPEN", "WORKING"}:
+        if not assert_side_ok(position, "SHORT"):
+            event["event"] = "SHORT_BLOCKED_LONG"
+            return event, cash
+        limit = float(order["limit_price"])
+        if mark + 1e-9 >= limit:
+            fill_px = mark
+            notional = order.get("notional")
+            qty = order.get("qty")
+            if notional is not None:
+                qty = float(notional) / fill_px
+            else:
+                qty = float(qty or 0)
+            if qty <= 0:
+                event["event"] = "SHORT_BLOCKED_QTY"
+                return event, cash
+            proceeds = round(qty * fill_px, 2)
+            prev_qty = float(position["qty"]) if position_side(position) == "SHORT" else 0.0
+            prev_basis = float(position["cost_basis"]) if prev_qty > 0 else 0.0
+            new_qty = prev_qty + qty
+            new_basis = prev_basis + proceeds
+            position["qty"] = new_qty
+            position["cost_basis"] = round(new_basis, 2)
+            position["avg_cost"] = round(new_basis / new_qty, 6) if new_qty else 0.0
+            position["side"] = "SHORT"
+            cash = round(cash + proceeds, 2)
+            order["status"] = "FILLED"
+            order["fill_price"] = fill_px
+            order["fill_qty"] = qty
+            event.update(
+                {
+                    "event": "FILLED_SHORT",
+                    "side": "SHORT",
+                    "qty": qty,
+                    "price": fill_px,
+                    "proceeds": proceeds,
+                    "limit": limit,
+                }
+            )
+            return event, cash
+        event["event"] = "WORKING_SHORT"
+        event["limit"] = limit
+        return event, cash
+
+    # Immediate best-price cover.
+    if otype in {"COVER_BEST", "MARKET_COVER"} and status in {"OPEN", "WORKING"}:
+        if position_side(position) != "SHORT" or float(position["qty"]) <= 0:
+            event["event"] = "COVER_BLOCKED_NOT_SHORT"
+            return event, cash
+        avail = float(position["qty"])
+        if order.get("qty_all"):
+            qty = avail
+        elif order.get("notional") is not None and order.get("qty") is None:
+            qty = float(order["notional"]) / mark
+        else:
+            qty = float(order.get("qty") or avail)
+        if qty <= 0 or qty > avail + 1e-9:
+            event["event"] = "COVER_BLOCKED_QTY"
+            return event, cash
+        fill_px = mark
+        cost = round(qty * fill_px, 2)
+        if cost > cash + 1e-9:
+            event["event"] = "COVER_BLOCKED_CASH"
+            return event, cash
+        avg = float(position["avg_cost"])
+        rem = avail - qty
+        position["qty"] = rem
+        position["cost_basis"] = round(avg * rem, 2) if rem > 0 else 0.0
+        if rem <= 0:
+            clear_position(position)
+        else:
+            position["side"] = "SHORT"
+        cash = round(cash - cost, 2)
+        order["status"] = "FILLED"
+        order["fill_price"] = fill_px
+        order["fill_qty"] = qty
+        realized = round((avg - fill_px) * qty, 2)
+        event.update(
+            {
+                "event": "FILLED_COVER",
+                "side": "COVER",
+                "qty": qty,
+                "price": fill_px,
+                "cost": cost,
+                "realized": realized,
+            }
+        )
+        return event, cash
+
+    # Limit cover: fill when mark <= limit (like buy).
+    if otype == "LIMIT_COVER" and status in {"OPEN", "WORKING"}:
+        if position_side(position) != "SHORT" or float(position["qty"]) <= 0:
+            event["event"] = "COVER_BLOCKED_NOT_SHORT"
+            return event, cash
+        limit = float(order["limit_price"])
+        if mark <= limit + 1e-9:
+            fill_px = mark
+            avail = float(position["qty"])
+            if order.get("qty_all"):
+                qty = avail
+            else:
+                qty = float(order.get("qty") or avail)
+            if qty <= 0 or qty > avail + 1e-9:
+                event["event"] = "COVER_BLOCKED_QTY"
+                return event, cash
+            cost = round(qty * fill_px, 2)
+            if cost > cash + 1e-9:
+                event["event"] = "COVER_BLOCKED_CASH"
+                return event, cash
+            avg = float(position["avg_cost"])
+            rem = avail - qty
+            position["qty"] = rem
+            position["cost_basis"] = round(avg * rem, 2) if rem > 0 else 0.0
+            if rem <= 0:
+                clear_position(position)
+            else:
+                position["side"] = "SHORT"
+            cash = round(cash - cost, 2)
+            order["status"] = "FILLED"
+            order["fill_price"] = fill_px
+            order["fill_qty"] = qty
+            realized = round((avg - fill_px) * qty, 2)
+            event.update(
+                {
+                    "event": "FILLED_COVER",
+                    "side": "COVER",
+                    "qty": qty,
+                    "price": fill_px,
+                    "cost": cost,
+                    "limit": limit,
+                    "realized": realized,
+                }
+            )
+            return event, cash
+        event["event"] = "WORKING_COVER"
+        event["limit"] = limit
+        return event, cash
+
     # Immediate best-price sell.
     if otype in {"SELL_BEST", "MARKET_SELL"} and status in {"OPEN", "WORKING"}:
+        if position_side(position) == "SHORT":
+            event["event"] = "SELL_BLOCKED_SHORT"
+            return event, cash
         avail = float(position["qty"])
         if order.get("notional") is not None and order.get("qty") is None:
             qty = float(order["notional"]) / mark
@@ -649,7 +1420,7 @@ def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) 
         position["qty"] = rem
         position["cost_basis"] = round(avg * rem, 2) if rem > 0 else 0.0
         if rem <= 0:
-            position["avg_cost"] = 0.0
+            clear_position(position)
         cash = round(cash + proceeds, 2)
         order["status"] = "FILLED"
         order["fill_price"] = mark
@@ -668,6 +1439,9 @@ def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) 
 
     # Limit sell: fill when mark >= limit (best price at or above limit).
     if otype == "LIMIT_SELL" and status in {"OPEN", "WORKING"}:
+        if position_side(position) == "SHORT":
+            event["event"] = "SELL_BLOCKED_SHORT"
+            return event, cash
         limit = float(order["limit_price"])
         if mark + 1e-9 >= limit:
             fill_px = mark  # best (highest) available at or over limit
@@ -682,7 +1456,7 @@ def apply_buy_sell_order(order: dict, mark: float, position: dict, cash: float) 
             position["qty"] = rem
             position["cost_basis"] = round(avg * rem, 2) if rem > 0 else 0.0
             if rem <= 0:
-                position["avg_cost"] = 0.0
+                clear_position(position)
             cash = round(cash + proceeds, 2)
             order["status"] = "FILLED"
             order["fill_price"] = fill_px
@@ -709,7 +1483,15 @@ def format_fill_email(state: dict, marks: dict, fills: list, now: str) -> str:
     """Plain-text Gmail body: each fill + book balances after. Only call when fills non-empty."""
     lines = [f"John Cloud — PAPER fill(s) {now}", ""]
     for ev in fills:
-        side = ev.get("side") or ("BUY" if ev.get("event") == "FILLED_BUY" else "SELL")
+        side = ev.get("side") or (
+            "BUY"
+            if ev.get("event") == "FILLED_BUY"
+            else "SHORT"
+            if ev.get("event") == "FILLED_SHORT"
+            else "COVER"
+            if ev.get("event") == "FILLED_COVER"
+            else "SELL"
+        )
         sym = ev.get("symbol", "?")
         qty = float(ev.get("qty") or 0)
         px = float(ev.get("price") or ev.get("limit") or 0)
@@ -734,19 +1516,56 @@ def format_fill_email(state: dict, marks: dict, fills: list, now: str) -> str:
         if qty <= 0:
             continue
         sym = p["symbol"]
+        side = position_side(p)
         avg = float(p.get("avg_cost") or 0)
         basis = float(p.get("cost_basis") or 0)
         mk = marks.get(sym, {}).get("mark")
         if mk is not None:
-            mv = qty * float(mk)
-            equity += mv
-            lines.append(
-                f"  {sym}: {qty:.4f} sh @ avg ${avg:.4f} | mkt ${mv:,.2f} (mark ${float(mk):.4f})"
-            )
+            if side == "SHORT":
+                mv = -qty * float(mk)
+                upl = (avg - float(mk)) * qty
+                equity += mv
+                lines.append(
+                    f"  {sym} SHORT: {qty:.4f} sh @ avg ${avg:.4f} | mkt ${mv:,.2f} "
+                    f"(mark ${float(mk):.4f}, UPL ${upl:,.2f})"
+                )
+            else:
+                mv = qty * float(mk)
+                equity += mv
+                lines.append(
+                    f"  {sym}: {qty:.4f} sh @ avg ${avg:.4f} | mkt ${mv:,.2f} (mark ${float(mk):.4f})"
+                )
         else:
-            lines.append(f"  {sym}: {qty:.4f} sh @ avg ${avg:.4f} | basis ${basis:,.2f}")
+            label = f"{sym} SHORT" if side == "SHORT" else sym
+            lines.append(f"  {label}: {qty:.4f} sh @ avg ${avg:.4f} | basis ${basis:,.2f}")
     lines.append(f"  Approx equity ${equity:,.2f}")
     return "\n".join(lines)
+
+
+def notify_telegram_fill(body: str) -> dict:
+    """Send fill + balances to Rodney on Telegram (in addition to Gmail). Never raises."""
+    if not (os.environ.get("TELEGRAM_BOT_TOKEN") or "").strip():
+        return {"ok": False, "skipped": "no TELEGRAM_BOT_TOKEN"}
+    bridge = ROOT / "telegram_bridge.py"
+    if not bridge.exists():
+        return {"ok": False, "skipped": "no telegram_bridge.py"}
+    text = "John Cloud PAPER fill\n\n" + body
+    try:
+        proc = subprocess.run(
+            [sys.executable, str(bridge), "send", text[:3900]],
+            cwd=str(ROOT.parent.parent),
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        return {
+            "ok": proc.returncode == 0,
+            "exit_code": proc.returncode,
+            "stdout": (proc.stdout or "")[:500],
+            "stderr": (proc.stderr or "")[:300],
+        }
+    except Exception as exc:  # noqa: BLE001 — fill path must not abort marks
+        return {"ok": False, "error": str(exc)}
 
 
 def render_md(state: dict, marks: dict) -> str:
@@ -762,13 +1581,13 @@ def render_md(state: dict, marks: dict) -> str:
         f"**Dividend cash (SATA collected):** {float(state.get('dividend_cash') or 0):,.4f}  ",
         "**Mode:** PAPER only — **auto-execute** open buy/sell orders on each poll  ",
         "**Price feed:** Yahoo Finance v8 1m chart (near-live poll; premarket + regular; may lag)  ",
-        "**Email:** only on buy/sell fills — never on mark/price updates  ",
+        "**Notify:** Gmail + Telegram on buy/sell fills (with balances) — never on mark/price updates  ",
         "",
         "### Standing fill rule (Rodney)",
         "",
         "- **Buys:** best (lowest) available valid quote.",
         "- **Sells:** best (highest) available valid quote.",
-        "- **Trading exits (UXRP/GDXU etc.):** hard invalidation **−2%** until trail arms; arm **+2%** then trail **1%** LIMIT; scale-out **⅓ at +4%**; remainder on trail.",
+        "- **Trading exits:** default hard **−2%** / arm **+1%** / trail **0.5%** market / scale **⅓@+2%** + **⅓@+5%**. **UXRP:** hard **−3%** / arm **+2%** / trail **0.5%**. **GDXU:** hard **−4.5%** / arm **+3%** / trail **0.5%** / scale **⅓@+3%** + **⅓@+7%**.",
         "- **Income SATA (~dividends sleeve):** no stops / no scale-outs / no sells unless Rodney overrides.",
         "- Open paper orders auto-fill when conditions hit (no manual confirm).",
         "- **Profits → SATA:** realized **trading** profit buys **SATA** at best; **dividend_cash** reinvests when ≥1 share, else merges into the next profit→SATA buy.",
@@ -779,17 +1598,29 @@ def render_md(state: dict, marks: dict) -> str:
     for sym, m in marks.items():
         if m.get("mark") is not None:
             lines.append(f"- {sym}: **${m['mark']:.4f}** ({m.get('source')})")
-    lines += ["", "## Positions", "", "| Symbol | Qty | Avg cost | Cost basis | Mark | UPL |", "| --- | ---: | ---: | ---: | ---: | ---: |"]
+    lines += [
+        "",
+        "## Positions",
+        "",
+        "| Symbol | Side | Qty | Avg cost | Cost basis | Mark | UPL |",
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
     for p in state["positions"]:
         sym = p["symbol"]
         qty = float(p["qty"])
         if qty <= 0:
             continue
+        side = position_side(p)
         avg = float(p["avg_cost"])
         basis = float(p["cost_basis"])
         mark = float(marks.get(sym, {}).get("mark") or avg)
-        upl = round(qty * mark - basis, 2)
-        lines.append(f"| {sym} | {qty:.4f} | {avg:.4f} | {basis:,.2f} | {mark:.4f} | {upl:,.2f} |")
+        if side == "SHORT":
+            upl = round((avg - mark) * qty, 2)
+        else:
+            upl = round(qty * mark - basis, 2)
+        lines.append(
+            f"| {sym} | {side} | {qty:.4f} | {avg:.4f} | {basis:,.2f} | {mark:.4f} | {upl:,.2f} |"
+        )
 
     lines += ["", "## Open orders (PAPER)", "", "| ID | Symbol | Type | Status | Params |", "| --- | --- | --- | --- | --- |"]
     for o in state["orders"]:
@@ -893,7 +1724,20 @@ def main() -> None:
         otype = order.get("type", "")
 
         # Stops stay blocked on stale quotes. Directed best-price buys/sells may use latest mark.
-        allow_on_stale = {"BUY_BEST", "MARKET_BUY", "LIMIT_BUY", "SELL_BEST", "MARKET_SELL", "LIMIT_SELL"}
+        allow_on_stale = {
+            "BUY_BEST",
+            "MARKET_BUY",
+            "LIMIT_BUY",
+            "SELL_BEST",
+            "MARKET_SELL",
+            "LIMIT_SELL",
+            "SHORT_BEST",
+            "MARKET_SHORT",
+            "LIMIT_SHORT",
+            "COVER_BEST",
+            "MARKET_COVER",
+            "LIMIT_COVER",
+        }
         if not quote.get("fresh", True) and otype not in allow_on_stale:
             events.append(
                 f"{now} {sym} STALE_QUOTE age={quote.get('quote_age_sec')}s mark={mark} — order logic skipped"
@@ -948,10 +1792,23 @@ def main() -> None:
                 events.append(f"{now} {sym} SELL blocked — hold for dividends")
                 order["status"] = "CANCELLED"
                 continue
+            # UXRP/GDXU: trail waits until 2nd scale-out fills, then arms at mark.
+            if order.get("status") == "WAITING_SCALE":
+                need = order.get("arm_after_scale_level")
+                if need is not None and scale_out_filled(
+                    state, order.get("entry_group", ""), int(need)
+                ):
+                    arm_trail_after_scale(
+                        state, order.get("entry_group", ""), float(mark), events, now
+                    )
+                else:
+                    continue
             qty_before = float(pos.get("qty") or 0)
             basis_before = float(pos.get("cost_basis") or 0)
             ev = apply_trailing_stop(order, float(mark), pos)
             if not ev:
+                continue
+            if ev.get("event") == "WAITING_SCALE":
                 continue
             msg = f"{now} {sym} mark={mark:.4f} {ev}"
             events.append(msg)
@@ -974,12 +1831,12 @@ def main() -> None:
                 state.setdefault("trade_log", []).append(
                     {
                         "time": now,
-                        "side": "SELL_LIMIT",
+                        "side": "SELL_LIMIT" if ev.get("event") == "FILLED_LIMIT" else "SELL_MARKET",
                         "symbol": sym,
                         "qty": ev["qty"],
-                        "price": ev["limit"],
+                        "price": float(ev.get("price") or ev.get("limit")),
                         "cash_after": cash,
-                        "rationale": f"Trailing stop-limit {order['id']} auto-filled",
+                        "rationale": f"Trailing stop {order['id']} auto-filled",
                     }
                 )
                 avg_before = basis_before / qty_before if qty_before else 0
@@ -992,8 +1849,126 @@ def main() -> None:
                 )
             continue
 
-        if otype in {"BUY_BEST", "MARKET_BUY", "LIMIT_BUY", "SELL_BEST", "MARKET_SELL", "LIMIT_SELL"}:
+        if otype == "HARD_STOP_LIMIT_COVER":
             pos = ensure_position(pos_by_sym, state, sym)
+            if float(pos["qty"]) <= 0 or position_side(pos) != "SHORT":
+                order["status"] = "CANCELLED"
+                continue
+            if block_sata_short_covers(order):
+                events.append(f"{now} {sym} COVER blocked — hold for dividends")
+                order["status"] = "CANCELLED"
+                continue
+            qty_before = float(pos.get("qty") or 0)
+            avg_before = float(pos.get("avg_cost") or 0)
+            ev = apply_hard_stop_limit_cover(order, float(mark), pos)
+            if not ev:
+                continue
+            msg = f"{now} {sym} mark={mark:.4f} {ev}"
+            events.append(msg)
+            if ev.get("event") in FILL_EVENTS:
+                fills.append(ev)
+                cash = round(cash - float(ev["cost"]), 2)
+                state.setdefault("trade_log", []).append(
+                    {
+                        "time": now,
+                        "side": "COVER_LIMIT",
+                        "symbol": sym,
+                        "qty": ev["qty"],
+                        "price": ev["limit"],
+                        "cash_after": cash,
+                        "rationale": f"Hard stop-limit cover {order['id']} auto-filled",
+                    }
+                )
+                realized = float(ev.get("realized") or round((avg_before - float(ev["price"])) * float(ev["qty"]), 2))
+                ev["realized"] = realized
+                if realized > 0:
+                    cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
+                cancel_entry_group(
+                    state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
+                )
+            continue
+
+        if otype == "TRAILING_STOP_LIMIT_COVER":
+            pos = ensure_position(pos_by_sym, state, sym)
+            if float(pos["qty"]) <= 0 or position_side(pos) != "SHORT":
+                continue
+            if block_sata_short_covers(order):
+                events.append(f"{now} {sym} COVER blocked — hold for dividends")
+                order["status"] = "CANCELLED"
+                continue
+            if order.get("status") == "WAITING_SCALE":
+                need = order.get("arm_after_scale_level")
+                if need is not None and scale_out_filled(
+                    state, order.get("entry_group", ""), int(need)
+                ):
+                    arm_trail_after_scale(
+                        state, order.get("entry_group", ""), float(mark), events, now
+                    )
+                else:
+                    continue
+            qty_before = float(pos.get("qty") or 0)
+            avg_before = float(pos.get("avg_cost") or 0)
+            ev = apply_trailing_stop_cover(order, float(mark), pos)
+            if not ev:
+                continue
+            if ev.get("event") == "WAITING_SCALE":
+                continue
+            msg = f"{now} {sym} mark={mark:.4f} {ev}"
+            events.append(msg)
+            if ev.get("event") == "ARMED":
+                for o in state["orders"]:
+                    if (
+                        o.get("entry_group") == order.get("entry_group")
+                        and o.get("type") == "HARD_STOP_LIMIT_COVER"
+                        and o.get("cancel_when_trail_armed")
+                        and o.get("status") not in {"FILLED", "CANCELLED"}
+                    ):
+                        o["status"] = "CANCELLED"
+                        events.append(
+                            f"{now} cancelled {o['id']} — trail {order['id']} ARMED"
+                        )
+            if ev.get("event") in FILL_EVENTS:
+                fills.append(ev)
+                cash = round(cash - float(ev["cost"]), 2)
+                state.setdefault("trade_log", []).append(
+                    {
+                        "time": now,
+                        "side": "COVER_LIMIT" if ev.get("event") == "FILLED_LIMIT" else "COVER_MARKET",
+                        "symbol": sym,
+                        "qty": ev["qty"],
+                        "price": float(ev.get("price") or ev.get("limit")),
+                        "cash_after": cash,
+                        "rationale": f"Trailing stop cover {order['id']} auto-filled",
+                    }
+                )
+                realized = float(ev.get("realized") or round((avg_before - float(ev["price"])) * float(ev["qty"]), 2))
+                ev["realized"] = realized
+                if realized > 0:
+                    cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
+                cancel_entry_group(
+                    state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
+                )
+            continue
+
+        if otype in {
+            "BUY_BEST",
+            "MARKET_BUY",
+            "LIMIT_BUY",
+            "SELL_BEST",
+            "MARKET_SELL",
+            "LIMIT_SELL",
+            "SHORT_BEST",
+            "MARKET_SHORT",
+            "LIMIT_SHORT",
+            "COVER_BEST",
+            "MARKET_COVER",
+            "LIMIT_COVER",
+        }:
+            pos = ensure_position(pos_by_sym, state, sym)
+            if block_sata_short_covers(order):
+                events.append(f"{now} {sym} SHORT/COVER blocked — hold for dividends")
+                order["status"] = "CANCELLED"
+                continue
             if block_sata_sells(order, pos):
                 events.append(f"{now} {sym} SELL blocked — hold for dividends")
                 order["status"] = "CANCELLED"
@@ -1007,7 +1982,14 @@ def main() -> None:
             events.append(msg)
             if ev.get("event") in FILL_EVENTS:
                 fills.append(ev)
-                side = "BUY" if ev["event"] == "FILLED_BUY" else "SELL"
+                if ev["event"] == "FILLED_BUY":
+                    side = "BUY"
+                elif ev["event"] == "FILLED_SHORT":
+                    side = "SHORT"
+                elif ev["event"] == "FILLED_COVER":
+                    side = "COVER"
+                else:
+                    side = "SELL"
                 fill_px = float(ev.get("price") or ev.get("limit"))
                 state.setdefault("trade_log", []).append(
                     {
@@ -1043,7 +2025,15 @@ def main() -> None:
                         and order.get("purpose") != "OVERNIGHT_REDEPLOY"
                     ):
                         cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
-                # Trading exits: hard −2% until arm, +2% arm / 1% trail, scale-out ⅓ at +4%.
+                if ev.get("event") == "FILLED_COVER":
+                    realized = float(ev.get("realized") or 0)
+                    if (
+                        realized > 0
+                        and not order.get("skip_profit_to_sata")
+                        and order.get("purpose") != "OVERNIGHT_REDEPLOY"
+                    ):
+                        cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
+                # Trading exits: hard −2% until arm; +1% arm / 0.5% trail market; ⅓@+2% + ⅓@+5%.
                 if (
                     ev.get("event") == "FILLED_BUY"
                     and order.get("attach_trailing_stop", False)
@@ -1052,14 +2042,53 @@ def main() -> None:
                     attach_trading_exits(
                         state, order, sym, fill_px, float(ev["qty"]), events, now
                     )
-                # Scale-out partial: leave trail/hard on remaining qty (hard cancels when trail arms).
                 if (
-                    ev.get("event") == "FILLED_SELL"
-                    and order.get("purpose") == "SCALE_OUT"
-                    and float(pos.get("qty") or 0) <= 0
+                    ev.get("event") == "FILLED_SHORT"
+                    and order.get("attach_trailing_stop", False)
+                    and sym != "SATA"
                 ):
-                    cancel_entry_group(
-                        state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
+                    attach_trading_exits_short(
+                        state, order, sym, fill_px, float(ev["qty"]), events, now
+                    )
+                # Scale-out partial: leave trail/hard on remaining qty (hard cancels when trail arms).
+                if ev.get("event") == "FILLED_SELL" and order.get("purpose") == "SCALE_OUT":
+                    lvl = int(order.get("scale_level") or 0)
+                    # After 1st scale: raise hard stop to entry (breakeven).
+                    raise_hard_stop_after_scale(
+                        state, order.get("entry_group", ""), lvl, events, now
+                    )
+                    # After 2nd scale-out, arm remainder trail at current mark (0.5% HWM).
+                    arm_trail_after_scale(
+                        state, order.get("entry_group", ""), float(mark), events, now
+                    )
+                    if float(pos.get("qty") or 0) <= 0:
+                        cancel_entry_group(
+                            state,
+                            order.get("entry_group", ""),
+                            events,
+                            now,
+                            except_ids={order["id"]},
+                        )
+                if ev.get("event") == "FILLED_COVER" and order.get("purpose") == "SCALE_OUT":
+                    lvl = int(order.get("scale_level") or 0)
+                    raise_hard_stop_after_scale(
+                        state, order.get("entry_group", ""), lvl, events, now
+                    )
+                    arm_trail_after_scale(
+                        state, order.get("entry_group", ""), float(mark), events, now
+                    )
+                    if float(pos.get("qty") or 0) <= 0:
+                        cancel_entry_group(
+                            state,
+                            order.get("entry_group", ""),
+                            events,
+                            now,
+                            except_ids={order["id"]},
+                        )
+                # Discretionary full/partial sell/cover that flats the symbol: drop orphan exits.
+                elif ev.get("event") in {"FILLED_SELL", "FILLED_COVER"} and float(pos.get("qty") or 0) <= 0:
+                    cancel_symbol_exits(
+                        state, sym, events, now, except_ids={order["id"]}
                     )
 
     # If profit buys were queued mid-loop, process SATA BUY_BEST once more this poll.
@@ -1155,7 +2184,10 @@ def main() -> None:
         if mark is None:
             continue
         basis = float(p["cost_basis"])
-        upl_pct = (qty * mark - basis) / basis * 100 if basis else 0
+        if position_side(p) == "SHORT":
+            upl_pct = ((float(p.get("avg_cost") or 0) - mark) * qty) / basis * 100 if basis else 0
+        else:
+            upl_pct = (qty * mark - basis) / basis * 100 if basis else 0
         p["last_upl_pct"] = round(upl_pct, 2)
         # Marks / UPL are never email-worthy.
 
@@ -1178,7 +2210,10 @@ def main() -> None:
     if fills:
         summary["fill_email_to"] = "regiaemanagementllc@gmail.com"
         summary["fill_email_subject"] = "PAPER fill — balances after trade"
-        summary["fill_email_body"] = format_fill_email(state, marks, fills, now)
+        body = format_fill_email(state, marks, fills, now)
+        summary["fill_email_body"] = body
+        # Rodney 2026-10-02: also Telegram on fills (keep Gmail).
+        summary["telegram_fill"] = notify_telegram_fill(body)
     print(json.dumps(summary, indent=2))
 
 

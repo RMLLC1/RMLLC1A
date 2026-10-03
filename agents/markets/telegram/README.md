@@ -2,7 +2,7 @@
 
 Message **John Cloud** on Telegram for paper trading commands and short questions.
 
-Fills still email Gmail only (with balances). Telegram is for inbound chat + trade commands.
+Fills notify **Gmail and Telegram** (with balances). Telegram is also for inbound chat + trade commands.
 
 ## One-time setup (Rodney)
 
@@ -19,10 +19,13 @@ Fills still email Gmail only (with balances). Telegram is for inbound chat + tra
 
 | Text | Effect |
 | --- | --- |
-| `BUY UXRP $50000 LIMIT 17` | Limit buy + standard exits |
+| `BUY UXRP $50000 LIMIT 17` | Limit buy + standard exits (hard −2%; +1% arm / 0.5% trail market; ⅓@+2% + ⅓@+5%) |
 | `BUY UXRP $10000 BEST` | Buy at best |
 | `SELL UXRP ALL BEST` | Sell all at best |
+| `SHORT UXRP $1000 LIMIT 16` | Limit short + mirrored exits |
+| `COVER UXRP ALL BEST` | Cover full short at best |
 | `CANCEL LB-UXRP-4` | Cancel order |
+| `CANCEL SHORTS UXRP` | Cancel open limit shorts |
 | `STATUS` | Short how-to / book pointer |
 
 Freeform texts (not BUY/SELL/CANCEL/STATUS) go to John Cloud’s inbox; he replies on the next Telegram poll cycle.

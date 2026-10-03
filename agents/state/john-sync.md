@@ -19,23 +19,28 @@ Not automatic chat sync — each John reads this file, updates his section, then
 
 ## Shared (both read)
 
-- **Last board update:** 2026-10-02 — Telegram bot secret stored on the RMLLC1A environment
-- **Active goals:** Steady ops (paper + dual desks). iMessage paper trading via text-orders enabled. Telegram secret `TELEGRAM_BOT_TOKEN` is set (runtime secret, not in git). Bot is **@JohnC123Bot**. John Cloud should start the Telegram poll timer. Rodney still needs to tap Start in that chat.
-- **Standing prefs:** **Gmail ONLY on buy/sell** to `regiaemanagementllc@gmail.com` and must include **balances after**; no git for paper marks/fills; **minimize all git pushes** (GitHub emails annoy Rodney); john-sync daily timer **paused** — push board only for material Mac handoff; **always** address Rodney as **John Cloud** or **John Mac**; **Yahoo marks ~5m** in NYSE extended hours; **loss top-off** after losing trades
+- **Last board update:** 2026-10-02 — Cycle workbook saved for Research / Markets / Marketing; Mac please pull
+- **Active goals:** Steady ops (paper + dual desks). Telegram poll live on @JohnC123Bot (Cloud). Paper exits updated: hard −2%; arm +1%; trail 0.5% market; scale ⅓@+2% + ⅓@+5%.
+- **Standing prefs:** **Gmail + Telegram on buy/sell fills** (`regiaemanagementllc@gmail.com` + `@JohnC123Bot`) and must include **balances after**; no notify on marks/status/git; no git for paper marks/fills; **minimize all git pushes**; john-sync daily timer **paused**; **always** address Rodney as **John Cloud** or **John Mac**; **Yahoo marks ~5m** in NYSE extended hours; **loss top-off** after losing trades
 - **Trading rules (canonical):** `agents/markets/trading-rules.md` — John Mac reads before any trade text; also `agents/markets/text-orders/README.md`
-- **Paper book (Cloud source of truth — 2026-10-01 ~23:48 UTC):** Cash **$0.00**. **UXRP** ~2,945.89 @ $16.9728 ($50k) — exits: hard $16.6333 / arm $17.3123 / scale $17.6517. **GDXU** ~488.76 @ $102.30 ($50k) — exits: hard $100.254 / arm $104.346 / scale $106.392. **SATA** ~87.85 dividend hold. Mac must **not** invent balances — use this board / ask Cloud.
+- **Cycle research (Rodney 2026-10-02):** Anna Macko *Before the Run* Workbook 5 PDF at `agents/research/workbook-5-before-the-run.pdf` + digest `agents/research/workbook-5-before-the-run-digest.md` (also pointed from markets + marketing notes). Focus: **4-year / halving cycle** for trade advice — 2028=halving not auto-peak; historical peak lag ~17–18 months → ~fall 2029 (loose); staged exits > calendar tops.
+- **Paper book (Cloud source of truth — 2026-10-02 restack):** Cash **$0.00**. **UXRP** ~2,945.89 @ $16.9728 ($50k) — exits restacked: hard **$16.4636 (−3%)** / arm **$17.3123 (+2%)** / trail **0.5%** market / scale **⅓ @ $17.3123 (+2%)** + **⅓ @ $17.8214 (+5%)**. **GDXU** ~488.76 @ $102.30 ($50k) — exits restacked: hard **$97.6965 (−4.5%)** / arm **$105.369 (+3%)** / trail **0.5%** / scale **⅓ @ $105.369 (+3%)** + **⅓ @ $109.461 (+7%)**. **SATA** ~87.85 dividend hold. Mac must **not** invent balances — use this board / ask Cloud.
+- **UXRP exit override (2026-10-02):** hard −3% / arm +2% / trail 0.5% market; scale-outs unchanged; profits→SATA + loss top-off unchanged.
+- **GDXU exit override (2026-10-02):** hard −4.5% / arm +3% / trail 0.5% market; scale ⅓@+3% + ⅓@+7%; profits→SATA + loss top-off unchanged.
+- **Breakeven after scale1 (2026-10-02):** after first ⅓ scale fills, hard stop on remainder rises to entry; trail still arms only after 2nd scale.
+- **Remainder rule (2026-10-02):** UXRP + GDXU last ⅓ trail arms **only after 2nd scale-out fills**, then market sell on **0.5% pullback** from high-water mark.
 - **Open for both:** Mac worker auto-starts at login (`mac-mini-4`) and pulls this board. After restart, open Cursor app once if needed.
 
 ---
 
 ## John Cloud — doing / thinking
 
-- **Updated:** 2026-10-02
-- **Doing now:** Overnight — Yahoo marks pause outside NYSE extended hours; resume premarket
-- **Recently done:** Loss top-off rule confirmed with Rodney. $50k UXRP + $50k GDXU BEST still on; SATA hold ~87.85.
-- **Needs John Mac to know:** Pull board — paper book is UXRP~2946 / GDXU~489 / SATA~87.85 / cash $0 (not the older ~5816 UXRP figure). Loss top-off = sell SATA equal to loss only.
-- **Blockers:** None
-- **Next:** Steady cloud ops through next session
+- **Updated:** 2026-10-02 ~06:25 UTC
+- **Doing now:** Telegram night poll (10m); UXRP exits restacked on Cloud paper-state
+- **Recently done:** UXRP noise study; set UXRP override hard −3%/arm +2%/trail 2%; rebuilt local paper-state from john-sync (prior disk had no paper-state) and attached new UXRP protective orders; GDXU kept default exits; SATA profit rules unchanged
+- **Needs John Mac to know:** Pull for rule docs. Paper marks stay Cloud-local. UXRP open trade now on new exit stack.
+- **Blockers:** None (note: paper-state was missing on this VM — rebuilt from Shared board snapshot)
+- **Next:** Confirm with Rodney; marks resume premarket
 
 ---
 
@@ -46,7 +51,7 @@ Not automatic chat sync — each John reads this file, updates his section, then
 - **Recently done:** Stored `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` as runtime secrets on the RMLLC1A environment. Rodney opened **@JohnC123Bot**, tapped Start, and sent `STATUS`.
 - **Needs John Cloud to know:** Telegram secret is set. Chat id secret is set. Please start the poll timer on a fresh run. Do not look for the token in git.
 - **Blockers:** None.
-- **Next:** John Cloud starts the Telegram poll on a fresh run. Weekly balance read Monday.
+- **Next:** Pull latest — save Macko workbook PDF from `agents/research/` onto Mac Mini if not already present. Weekly balance read Monday.
 
 ---
 
@@ -75,3 +80,4 @@ Not automatic chat sync — each John reads this file, updates his section, then
 | 2026-10-02 | John Mac | Awake. Trading stays with Cloud. Adopted Shared book (cash $0, UXRP ~2946, GDXU ~489, SATA ~87.85). Weekly refresh set. |
 | 2026-10-02 | John Mac | TELEGRAM_BOT_TOKEN saved on the RMLLC1A environment (runtime secret). Bot @JohnC123Bot. Cloud: start the poll timer. |
 | 2026-10-02 | John Mac | Rodney sent STATUS to @JohnC123Bot. TELEGRAM_CHAT_ID secret saved. Cloud: start the poll on a fresh run. |
+| 2026-10-02 | John Cloud | Saved Macko *Before the Run* PDF + cycle digest under `agents/research/` (pointers in markets + marketing). Mac: git pull to land PDF on Mini. |
