@@ -23,6 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 WATCH_PATH = ROOT / "notes" / "research" / "level-watch.json"
 STATE_PATH = ROOT / "level-alerts-state.json"
+PAUSE_PATH = ROOT / "level-alerts-paused.json"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; JohnLevelAlert/1.0)"}
 
 
@@ -93,6 +94,24 @@ def main() -> int:
         save_state({"fired": {}})
         print(json.dumps({"ok": True, "reset": True}))
         return 0
+
+    if PAUSE_PATH.exists() and not args.dry_run:
+        try:
+            pause = json.loads(PAUSE_PATH.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            pause = {"paused": True}
+        if pause.get("paused"):
+            print(
+                json.dumps(
+                    {
+                        "ok": True,
+                        "skipped": "paused",
+                        "resume_at_et": pause.get("resume_at_et"),
+                        "updated": utc_now(),
+                    }
+                )
+            )
+            return 0
 
     watch = json.loads(WATCH_PATH.read_text(encoding="utf-8"))
     tol = float(watch.get("tolerance_pct") or 0.004)
