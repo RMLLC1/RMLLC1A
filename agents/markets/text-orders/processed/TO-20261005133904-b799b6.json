@@ -1,0 +1,17 @@
+{
+  "id": "TO-20261005133904-b799b6",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-05T13:39:04Z",
+  "status": "APPLIED",
+  "action": "BUY_BEST",
+  "symbol": "GDXU",
+  "notional": 50000.0,
+  "attach_exits": true,
+  "raw_text": "BUY GDXU $50000 BEST",
+  "applied_at": "2026-10-05T13:39:04Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued BB-GDXU-2"
+  }
+}
