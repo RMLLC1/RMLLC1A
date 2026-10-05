@@ -222,6 +222,13 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
             "Short exits: hard +2%; −1% arm / 0.5% trail market; scale-out ⅓ at −2% and ⅓ at −5%.",
         )
 
+    def _apply_exit_flags(order: dict, doc: dict, exit_blurb: str) -> str:
+        """Honor no_hard_stop / attach_exits from text/auto docs."""
+        if doc.get("no_hard_stop"):
+            order["no_hard_stop"] = True
+            exit_blurb = f"{exit_blurb} NO hard stop (DCA stage)."
+        return exit_blurb
+
     if action == "LIMIT_BUY":
         existing = _already_applied_text_id(state, doc.get("id"))
         if existing:
@@ -240,11 +247,12 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
             **stamps,
             "source": "text_order",
             "text_order_id": doc.get("id"),
-            "params_text": (
-                f"Text: buy ${float(doc['notional']):,.0f} {sym} at ${float(doc['limit_price'])} or better. "
-                f"{exit_blurb}"
-            ),
         }
+        exit_blurb = _apply_exit_flags(order, doc, exit_blurb)
+        order["params_text"] = (
+            f"Text: buy ${float(doc['notional']):,.0f} {sym} at ${float(doc['limit_price'])} or better. "
+            f"{exit_blurb}"
+        )
         state.setdefault("orders", []).append(order)
         events.append(f"{now} TEXT queued {oid} LIMIT_BUY {sym} @{doc['limit_price']} ${doc['notional']}")
         return {"ok": True, "detail": f"queued {oid}"}
@@ -266,11 +274,11 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
             **stamps,
             "source": "text_order",
             "text_order_id": doc.get("id"),
-            "params_text": (
-                f"Text: buy ${float(doc['notional']):,.0f} {sym} at best. "
-                f"{exit_blurb}"
-            ),
         }
+        exit_blurb = _apply_exit_flags(order, doc, exit_blurb)
+        order["params_text"] = (
+            f"Text: buy ${float(doc['notional']):,.0f} {sym} at best. {exit_blurb}"
+        )
         state.setdefault("orders", []).append(order)
         events.append(f"{now} TEXT queued {oid} BUY_BEST {sym} ${doc['notional']}")
         return {"ok": True, "detail": f"queued {oid}"}

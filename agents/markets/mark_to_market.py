@@ -552,6 +552,7 @@ def attach_trading_exits(
 
     arm = round(fill_px * (1 + arm_pct), 4)
     hard = round(fill_px * (1 - hard_pct), 4)
+    skip_hard = bool(order.get("no_hard_stop"))
 
     n_ts = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "TRAILING_STOP_LIMIT_SELL") + 1
     n_hs = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "HARD_STOP_LIMIT_SELL") + 1
@@ -592,27 +593,31 @@ def attach_trading_exits(
     if arm_after is not None:
         ts["arm_after_scale_level"] = arm_after
         ts["status"] = "WAITING_SCALE"  # not armed until 2nd ⅓ sells
-    hs = {
-        "id": f"HS-{sym}-{n_hs}",
-        "symbol": sym,
-        "type": "HARD_STOP_LIMIT_SELL",
-        "status": "OPEN",
-        "stop_price": hard,
-        "limit_price": hard,
-        "entry_group": entry_group,
-        "entry_price": fill_px,
-        "cancel_when_trail_armed": True,
-        "params_text": (
-            f"Hard invalidation −{hard_pct*100:.0f}% → ${hard} LIMIT until trail arms. "
-            f"(group {entry_group})"
-        ),
-    }
-    attached = [ts, hs]
+    attached = [ts]
     events.append(
         f"{now} {sym} attached {ts['id']} "
         f"{'WAITING_SCALE#'+str(arm_after) if arm_after else 'PENDING_ARM arm='+str(arm)}"
     )
-    events.append(f"{now} {sym} attached {hs['id']} HARD_STOP stop={hard}")
+    if skip_hard:
+        events.append(f"{now} {sym} no hard stop (Rodney DCA / no_hard_stop) group={entry_group}")
+    else:
+        hs = {
+            "id": f"HS-{sym}-{n_hs}",
+            "symbol": sym,
+            "type": "HARD_STOP_LIMIT_SELL",
+            "status": "OPEN",
+            "stop_price": hard,
+            "limit_price": hard,
+            "entry_group": entry_group,
+            "entry_price": fill_px,
+            "cancel_when_trail_armed": True,
+            "params_text": (
+                f"Hard invalidation −{hard_pct*100:.0f}% → ${hard} LIMIT until trail arms. "
+                f"(group {entry_group})"
+            ),
+        }
+        attached.append(hs)
+        events.append(f"{now} {sym} attached {hs['id']} HARD_STOP stop={hard}")
 
     for i, lvl in enumerate(scale_levels):
         scale_px = round(fill_px * (1 + float(lvl["pct"])), 4)

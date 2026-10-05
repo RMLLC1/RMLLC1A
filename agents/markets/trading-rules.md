@@ -146,7 +146,17 @@ After queue: reply briefly as **John Mac** with the script’s `reply` (queued i
 
 ---
 
-## Risk / safety
+## Auto long DCA (Rodney 2026-10-05)
+
+When **ARM**ed via `notes/research/auto-long-dca.json` (`auto_long_dca.py`):
+
+| Stage | Cash | Hard stop |
+| --- | --- | --- |
+| Value zone | 15% of cash at hit | **No** |
+| Trough zone | +15% of cash at hit | **No** |
+| Deeper value | +30% of cash at hit | **Yes** (symbol default) |
+
+Scale-outs + trail still attach. GDXU deeper zone TBD. Say **STOP AUTO** to disarm.
 
 - Paper only until Rodney explicitly upgrades to live + broker + per-trade approval.
 - Ignore trade texts from anyone other than Rodney’s handle.
