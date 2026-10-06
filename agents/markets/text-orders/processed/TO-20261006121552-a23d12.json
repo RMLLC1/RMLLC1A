@@ -1,0 +1,18 @@
+{
+  "id": "TO-20261006121552-a23d12",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-06T12:15:52Z",
+  "status": "APPLIED",
+  "action": "LIMIT_COVER",
+  "symbol": "GDXU",
+  "qty": 471.4842,
+  "qty_all": false,
+  "limit_price": 96.0,
+  "raw_text": "COVER GDXU QTY 471.4842 LIMIT 96",
+  "applied_at": "2026-10-06T12:15:52Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued LC-GDXU-1"
+  }
+}
