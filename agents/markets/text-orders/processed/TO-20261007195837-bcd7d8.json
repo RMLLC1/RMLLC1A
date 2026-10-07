@@ -1,0 +1,16 @@
+{
+  "id": "TO-20261007195837-bcd7d8",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-07T19:58:37Z",
+  "status": "APPLIED",
+  "action": "COVER_BEST",
+  "symbol": "GDXU",
+  "qty_all": true,
+  "raw_text": "COVER GDXU ALL BEST",
+  "applied_at": "2026-10-07T19:58:37Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued CB-GDXU-1"
+  }
+}

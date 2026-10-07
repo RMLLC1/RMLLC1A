@@ -1,0 +1,15 @@
+{
+  "id": "TO-20261007195836-15c72e",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-07T19:58:36Z",
+  "status": "APPLIED",
+  "action": "CANCEL",
+  "cancel_order_id": "LC-GDXU-2",
+  "raw_text": "CANCEL LC-GDXU-2",
+  "applied_at": "2026-10-07T19:58:37Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "cancelled LC-GDXU-2"
+  }
+}
