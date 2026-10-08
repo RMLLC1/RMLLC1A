@@ -1,0 +1,18 @@
+{
+  "id": "TO-20261007195837-599226",
+  "source": "telegram",
+  "from": "+18173715555",
+  "created": "2026-10-07T19:58:37Z",
+  "status": "APPLIED",
+  "action": "SELL_BEST",
+  "symbol": "SATA",
+  "qty_all": true,
+  "allow_sata_sell": true,
+  "skip_profit_to_sata": true,
+  "raw_text": "SELL SATA ALL BEST (Rodney: cover and sell everything)",
+  "applied_at": "2026-10-07T19:58:37Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued SB-SATA-4"
+  }
+}

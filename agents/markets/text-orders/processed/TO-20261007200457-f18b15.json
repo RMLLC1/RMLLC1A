@@ -1,0 +1,17 @@
+{
+  "id": "TO-20261007200457-f18b15",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-07T20:04:57Z",
+  "status": "APPLIED",
+  "action": "BUY_BEST",
+  "symbol": "UXRP",
+  "notional": 100000.0,
+  "attach_exits": true,
+  "raw_text": "BUY UXRP $100000 BEST",
+  "applied_at": "2026-10-07T20:04:57Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued BB-UXRP-4"
+  }
+}

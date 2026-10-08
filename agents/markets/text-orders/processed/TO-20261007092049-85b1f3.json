@@ -1,0 +1,19 @@
+{
+  "id": "TO-20261007092049-85b1f3",
+  "source": "auto_long_dca",
+  "from": "+18173715555",
+  "created": "2026-10-07T09:20:49Z",
+  "status": "APPLIED",
+  "action": "BUY_BEST",
+  "symbol": "UXRP",
+  "notional": 25500.02,
+  "attach_exits": true,
+  "no_hard_stop": true,
+  "auto_stage_id": "UXRP-LONG-TROUGH",
+  "raw_text": "AUTO BUY UXRP $25500 BEST (UXRP-LONG-TROUGH)",
+  "applied_at": "2026-10-07T09:20:50Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued BB-UXRP-2"
+  }
+}

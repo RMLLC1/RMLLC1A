@@ -1,6 +1,6 @@
 # Paper trading rules (Rodney / John Cloud / John Mac)
 
-**Updated:** 2026-10-01  
+**Updated:** 2026-10-02  
 **Mode:** PAPER only (simulated). Not live brokerage.
 
 John Mac: read this before handling any trade text. John Cloud owns the paper book on the cloud disk; Mac **queues** text orders only.
@@ -23,7 +23,7 @@ John Mac: read this before handling any trade text. John Cloud owns the paper bo
 - Poll **Mon–Fri 4:00 AM–8:00 PM America/New_York** only (premarket through after-hours).
 - Outside window: no Yahoo poll (text **queues** still apply anytime Cloud runs the apply step).
 - **No git** for `paper-state.json`, `last_marks.json`, `paper-portfolio.md`, or fills (gitignored; avoids bot email spam).
-- **Gmail** to `regiaemanagementllc@gmail.com` **only** on buy/sell fills — body must include **balances after** (cash, positions, approx equity). Never email marks, ARMED, WORKING, stale, UPL, status, or git activity.
+- **Gmail + Telegram** on buy/sell fills to `regiaemanagementllc@gmail.com` and `@JohnC123Bot` — body must include **balances after** (cash, positions, approx equity). Never notify on marks, ARMED, WORKING, stale, UPL, status, or git activity.
 
 ---
 
@@ -36,16 +36,61 @@ John Mac: read this before handling any trade text. John Cloud owns the paper bo
 
 ---
 
+## Shorts (paper)
+
+Positions may be **LONG** (default) or **SHORT** (`side` on position). `qty` is always ≥ 0.
+
+- **SHORT open:** cash += proceeds; blend `avg_cost` like long buys; set `side` SHORT.
+- **COVER:** cash −= cost; reduce qty; realized = `(avg_cost − fill_px) × qty_covered` (profit when cover below entry).
+- **Flat** clears `side`.
+- **UPL (short):** `(avg_cost − mark) × qty`; equity contribution = `−qty × mark` (cash already includes short proceeds).
+- **Limit short** fills when mark ≥ limit (at or above, like sell). **Limit cover** fills when mark ≤ limit (like buy).
+- Cannot hold long and short on the same symbol; opposite-side orders are blocked.
+
+### Default short exits (mirrored from longs)
+
+Unless Rodney says otherwise on that order:
+
+1. **Hard invalidation +2%** from fill → LIMIT cover at stop (gap through fills at mark).
+2. **Arm −1%** from fill → then **trail 0.5%** above low water → **market cover** remainder when reverse >0.5% up.
+3. **Scale-out ⅓ at −2%** LIMIT cover, then **⅓ at −5%**; remainder on trail/hard.
+4. When trail **arms**, hard cover for that entry group is cancelled.
+5. **After 1st scale-out fills:** lower hard cover stop to **breakeven (entry)**.
+
+**UXRP short:** hard +3%; scale ⅓@−2% + ⅓@−5%; trail 0.5% market after 2nd scale.  
+**GDXU short:** hard +4.5%; scale ⅓@−3% + ⅓@−7%; trail 0.5% market after 2nd scale.
+
+SATA: **SHORT/COVER blocked** (dividend hold). Profits → SATA and loss top-off rules unchanged.
+
+---
+
 ## Default exits (new non-SATA buys)
 
 Unless Rodney says otherwise on that order:
 
 1. **Hard invalidation −2%** from fill → LIMIT sell at stop (if price **gaps through**, fill at **mark**, not hang above market).
-2. **Arm +2%** from fill → then **trail 1%** → LIMIT sell at trail stop.
-3. **Scale-out ⅓ at +4%** LIMIT; remainder stays on trail/hard until done.
+2. **Arm +1%** from fill → then **trail 0.5%** below high water → **market sell** remainder when reverse >0.5%.
+3. **Scale-out ⅓ at +2%** LIMIT, then **⅓ at +5%** LIMIT; remainder stays on trail/hard until done.
 4. When trail **arms**, hard stop for that entry group is cancelled.
+5. **After 1st scale-out fills:** raise hard stop on the remainder to **breakeven (entry)** so a reversal can’t erase the banked third (UXRP/GDXU and default stack).
 
-SATA income / dividend shares: **no stops** (hold).
+### UXRP override (noise-adjusted, 2026-10-02)
+
+UXRP (2× daily) uses wider stops to avoid session chop:
+
+1. **Hard −3%** until trail arms.
+2. **Arm +2%** is informational; **trail 0.5%** market arms **only after the 2nd scale-out (⅓@+5%) fills**, then sells remainder on a 0.5% pullback from high water.
+3. Same scale-outs: **⅓ at +2%**, **⅓ at +5%**.
+
+### GDXU override (noise-adjusted, 2026-10-02)
+
+GDXU (3× daily gold-miners ETN) is wider still:
+
+1. **Hard −4.5%** until trail arms.
+2. **Trail 0.5%** market arms **only after the 2nd scale-out (⅓@+7%) fills**, then sells remainder on a 0.5% pullback from high water.
+3. Scale-outs: **⅓ at +3%**, **⅓ at +7%**.
+
+SATA income / dividend shares: **no stops** (hold). Profits → SATA and loss top-off rules unchanged.
 
 ---
 
@@ -87,6 +132,12 @@ cd ~/RMLLC1A && python3 agents/markets/queue_text_order.py --json-out --text "CO
 | `SELL SYM QTY 100 LIMIT 18` | Limit sell size |
 | `CANCEL <order-id>` | Cancel that order |
 | `CANCEL BUYS SYM` | Cancel open/working limit buys for symbol |
+| `SHORT SYM $1000 LIMIT 16` | Limit short notional at price or better + mirrored exits |
+| `SHORT SYM $5000 BEST` | Short at best + mirrored exits |
+| `COVER SYM ALL BEST` | Cover full short at best |
+| `COVER SYM ALL LIMIT 15` | Limit cover all |
+| `COVER SYM QTY 100 LIMIT 15` | Limit cover size |
+| `CANCEL SHORTS SYM` | Cancel open/working limit shorts for symbol |
 | `STATUS` | Point Rodney to Cloud book / Gmail fills |
 
 Details: `agents/markets/text-orders/README.md`.
@@ -95,7 +146,17 @@ After queue: reply briefly as **John Mac** with the script’s `reply` (queued i
 
 ---
 
-## Risk / safety
+## Auto long DCA (Rodney 2026-10-05)
+
+When **ARM**ed via `notes/research/auto-long-dca.json` (`auto_long_dca.py`):
+
+| Stage | Cash | Hard stop |
+| --- | --- | --- |
+| Value zone | 15% of cash at hit | **No** |
+| Trough zone | +15% of cash at hit | **No** |
+| Deeper value | +30% of cash at hit | **Yes** (symbol default) |
+
+Scale-outs + trail still attach. GDXU deeper zone TBD. Say **STOP AUTO** to disarm.
 
 - Paper only until Rodney explicitly upgrades to live + broker + per-trade approval.
 - Ignore trade texts from anyone other than Rodney’s handle.
