@@ -1,0 +1,18 @@
+{
+  "id": "TO-20261008220621-dc8816",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-08T22:06:21Z",
+  "status": "APPLIED",
+  "action": "LIMIT_BUY",
+  "symbol": "UXRP",
+  "notional": 100000.0,
+  "limit_price": 14.38,
+  "attach_exits": true,
+  "raw_text": "BUY UXRP $100000 LIMIT 14.38",
+  "applied_at": "2026-10-08T22:06:21Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued LB-UXRP-8"
+  }
+}
