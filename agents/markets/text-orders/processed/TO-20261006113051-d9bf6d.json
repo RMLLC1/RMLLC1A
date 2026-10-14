@@ -1,0 +1,17 @@
+{
+  "id": "TO-20261006113051-d9bf6d",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-06T11:30:51Z",
+  "status": "APPLIED",
+  "action": "LIMIT_COVER",
+  "symbol": "UXRP",
+  "qty_all": true,
+  "limit_price": 17.5,
+  "raw_text": "COVER UXRP ALL LIMIT 17.50",
+  "applied_at": "2026-10-06T11:30:51Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued LC-UXRP-1"
+  }
+}

@@ -40,11 +40,18 @@ def parse_command(raw: str) -> dict:
     if upper in {"STATUS", "PORTFOLIO", "BALANCES", "BALANCE"}:
         return {"action": "STATUS", "raw_text": text}
 
-    # CANCEL <id>  or  CANCEL BUYS <SYM>
+    # CANCEL <id>  or  CANCEL BUYS/SHORTS <SYM>
     m = re.match(r"^CANCEL\s+BUYS?\s+([A-Z][A-Z0-9.\-]*)\s*$", upper)
     if m:
         return {
             "action": "CANCEL_BUYS",
+            "symbol": m.group(1),
+            "raw_text": text,
+        }
+    m = re.match(r"^CANCEL\s+SHORTS?\s+([A-Z][A-Z0-9.\-]*)\s*$", upper)
+    if m:
+        return {
+            "action": "CANCEL_SHORTS",
             "symbol": m.group(1),
             "raw_text": text,
         }
@@ -120,8 +127,74 @@ def parse_command(raw: str) -> dict:
             "raw_text": text,
         }
 
+    # SHORT SYM $notional LIMIT price | BEST
+    m = re.match(
+        r"^SHORT\s+([A-Z][A-Z0-9.\-]*)\s+(\$?[\d,.]+K?)\s+(LIMIT\s+(\d+(?:\.\d+)?)|BEST|MKT|MARKET)\s*$",
+        upper,
+    )
+    if m:
+        sym = m.group(1)
+        notional = parse_money(m.group(2))
+        if notional is None or notional <= 0:
+            raise ValueError(f"bad notional: {m.group(2)}")
+        if m.group(3).startswith("LIMIT"):
+            return {
+                "action": "LIMIT_SHORT",
+                "symbol": sym,
+                "notional": notional,
+                "limit_price": float(m.group(4)),
+                "attach_exits": True,
+                "raw_text": text,
+            }
+        return {
+            "action": "SHORT_BEST",
+            "symbol": sym,
+            "notional": notional,
+            "attach_exits": True,
+            "raw_text": text,
+        }
+
+    # COVER SYM ALL BEST|LIMIT p
+    m = re.match(
+        r"^COVER\s+([A-Z][A-Z0-9.\-]*)\s+ALL\s+(LIMIT\s+(\d+(?:\.\d+)?)|BEST|MKT|MARKET)\s*$",
+        upper,
+    )
+    if m:
+        sym = m.group(1)
+        if m.group(2).startswith("LIMIT"):
+            return {
+                "action": "LIMIT_COVER",
+                "symbol": sym,
+                "qty_all": True,
+                "limit_price": float(m.group(3)),
+                "raw_text": text,
+            }
+        return {
+            "action": "COVER_BEST",
+            "symbol": sym,
+            "qty_all": True,
+            "raw_text": text,
+        }
+
+    # COVER SYM QTY n LIMIT p
+    m = re.match(
+        r"^COVER\s+([A-Z][A-Z0-9.\-]*)\s+QTY\s+(\d+(?:\.\d+)?)\s+LIMIT\s+(\d+(?:\.\d+)?)\s*$",
+        upper,
+    )
+    if m:
+        return {
+            "action": "LIMIT_COVER",
+            "symbol": m.group(1),
+            "qty": float(m.group(2)),
+            "qty_all": False,
+            "limit_price": float(m.group(3)),
+            "raw_text": text,
+        }
+
     raise ValueError(
-        "Could not parse. Examples: BUY UXRP $50000 LIMIT 17 | SELL GDXU ALL BEST | CANCEL LB-UXRP-4 | CANCEL BUYS UXRP | STATUS"
+        "Could not parse. Examples: BUY UXRP $50000 LIMIT 17 | SHORT UXRP $1000 LIMIT 16 | "
+        "COVER UXRP ALL BEST | SELL GDXU ALL BEST | CANCEL LB-UXRP-4 | CANCEL BUYS UXRP | "
+        "CANCEL SHORTS UXRP | STATUS"
     )
 
 

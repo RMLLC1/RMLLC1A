@@ -1,0 +1,17 @@
+{
+  "id": "TO-20261007200307-06b7b6",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-07T20:03:07Z",
+  "status": "APPLIED",
+  "action": "BUY_BEST",
+  "symbol": "SATA",
+  "notional": 16095.88,
+  "attach_exits": true,
+  "raw_text": "BUY SATA $16095.88 BEST",
+  "applied_at": "2026-10-07T20:03:07Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued BB-SATA-1"
+  }
+}

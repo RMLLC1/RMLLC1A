@@ -1,0 +1,18 @@
+{
+  "id": "TO-20261005143806-c383cd",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-05T14:38:06Z",
+  "status": "APPLIED",
+  "action": "LIMIT_SHORT",
+  "symbol": "UXRP",
+  "notional": 50000.0,
+  "limit_price": 17.5,
+  "attach_exits": true,
+  "raw_text": "SHORT UXRP $50000 LIMIT 17.50",
+  "applied_at": "2026-10-05T14:38:06Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued LSH-UXRP-1"
+  }
+}
