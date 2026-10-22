@@ -1,0 +1,15 @@
+{
+  "id": "TO-20261022144756-d4e3f9",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-22T14:47:56Z",
+  "status": "APPLIED",
+  "action": "CANCEL",
+  "cancel_order_id": "HS-GDXU-9",
+  "raw_text": "CANCEL HS-GDXU-9",
+  "applied_at": "2026-10-22T14:48:01Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "cancelled HS-GDXU-9"
+  }
+}
