@@ -1,0 +1,18 @@
+{
+  "id": "TO-20261022144259-4acf36",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-22T14:42:59Z",
+  "status": "APPLIED",
+  "action": "LIMIT_BUY",
+  "symbol": "GDXU",
+  "notional": 100000.0,
+  "limit_price": 82.0,
+  "attach_exits": true,
+  "raw_text": "BUY GDXU $100000 LIMIT 82",
+  "applied_at": "2026-10-22T14:42:59Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued LB-GDXU-6"
+  }
+}
