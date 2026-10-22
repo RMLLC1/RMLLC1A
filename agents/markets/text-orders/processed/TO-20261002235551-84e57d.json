@@ -1,0 +1,15 @@
+{
+  "id": "TO-20261002235551-84e57d",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-02T23:55:51Z",
+  "status": "APPLIED",
+  "action": "CANCEL",
+  "cancel_order_id": "LB-UXRP-3",
+  "raw_text": "CANCEL LB-UXRP-3",
+  "applied_at": "2026-10-02T23:55:59Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "cancelled LB-UXRP-3"
+  }
+}

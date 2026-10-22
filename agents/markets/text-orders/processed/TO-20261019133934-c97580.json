@@ -1,0 +1,15 @@
+{
+  "id": "TO-20261019133934-c97580",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-10-19T13:39:34Z",
+  "status": "APPLIED",
+  "action": "CANCEL",
+  "cancel_order_id": "SO-GDXU-28",
+  "raw_text": "CANCEL SO-GDXU-28",
+  "applied_at": "2026-10-19T13:39:34Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "cancelled SO-GDXU-28"
+  }
+}

@@ -20,11 +20,20 @@ Only Rodney’s iMessage number ending in **8173715555**.
 | `SELL UXRP QTY 100 LIMIT 18` | Limit sell 100 shares |
 | `CANCEL LB-UXRP-4` | Cancel that order id |
 | `CANCEL BUYS UXRP` | Cancel open/working limit buys for UXRP |
+| `SHORT UXRP $1000 LIMIT 16` | Limit short $1k notional at $16 or better + mirrored exits |
+| `SHORT GDXU $5000 BEST` | Short at best + mirrored exits |
+| `COVER UXRP ALL BEST` | Cover full short at best |
+| `COVER UXRP ALL LIMIT 15` | Limit cover all at $15 |
+| `COVER UXRP QTY 100 LIMIT 15` | Limit cover 100 shares |
+| `CANCEL SHORTS UXRP` | Cancel open/working limit shorts for UXRP |
 | `STATUS` | Mac replies that book is on Cloud; check Gmail fills / Cursor |
 
 SATA sells stay blocked unless the order includes an explicit override (not available by default text).
 
-Default exits on new buys (non-SATA): hard −2%, arm +2% / trail 1%, scale-out ⅓ at +4%.
+Default exits on new buys (non-SATA): hard −2%, arm +1% / trail 0.5% market, scale-out ⅓ at +2% and ⅓ at +5%.  
+**UXRP:** hard −3%; scale ⅓@+2% + ⅓@+5%; last ⅓ trail 0.5% market **after 2nd scale**.  
+**GDXU:** hard −4.5%; scale ⅓@+3% + ⅓@+7%; last ⅓ trail 0.5% market **after 2nd scale**.  
+SATA profit / loss top-off rules unchanged.
 
 ## Files
 

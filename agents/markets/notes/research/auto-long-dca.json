@@ -1,0 +1,56 @@
+{
+  "updated": "2026-10-05T13:39:00Z",
+  "enabled": true,
+  "armed_at": "2026-10-05T13:39:00Z",
+  "note": "Rodney 2026-10-05 ARM: UXRP/GDXU long DCA ladder. Value/trough = no hard stop; deeper = hard stop. Scale/trail stay on. GDXU deeper not defined yet.",
+  "tolerance_pct": 0.004,
+  "stages": [
+    {
+      "id": "UXRP-LONG-VALUE",
+      "symbol": "UXRP",
+      "low": 16.3,
+      "high": 16.4,
+      "cash_pct": 0.15,
+      "hard_stop": false,
+      "label": "UXRP value — 15% cash, no hard stop"
+    },
+    {
+      "id": "UXRP-LONG-TROUGH",
+      "symbol": "UXRP",
+      "low": 16.15,
+      "high": 16.28,
+      "cash_pct": 0.15,
+      "hard_stop": false,
+      "label": "UXRP trough — +15% cash, no hard stop"
+    },
+    {
+      "id": "UXRP-LONG-MACRO38",
+      "symbol": "UXRP",
+      "low": 15.75,
+      "high": 15.95,
+      "cash_pct": 0.3,
+      "hard_stop": true,
+      "label": "UXRP deeper macro Fib — +30% cash, WITH hard stop"
+    },
+    {
+      "id": "GDXU-LONG-VALUE",
+      "symbol": "GDXU",
+      "low": 101.8,
+      "high": 102.5,
+      "cash_pct": 0.15,
+      "hard_stop": false,
+      "label": "GDXU value — skipped (manual 50% BUY BEST 2026-10-05)",
+      "skipped": true,
+      "skip_reason": "manual BUY GDXU $50000 BEST filled ~$102.23"
+    },
+    {
+      "id": "GDXU-LONG-TROUGH",
+      "symbol": "GDXU",
+      "low": 99.8,
+      "high": 100.6,
+      "cash_pct": 0.15,
+      "hard_stop": false,
+      "label": "GDXU trough — +15% cash, no hard stop"
+    }
+  ]
+}

@@ -1,9 +1,10 @@
 // RMLLC paper exit stack — Daily chart Strategy Tester
-// Mirrors Rodney / John Cloud rules: hard −2% until arm; +2% arm / 1% trail; scale-out ⅓ at +4%.
+// Mirrors Rodney / John Cloud rules: hard −2% until arm; +1% arm / 0.5% trail market;
+// scale-out ⅓ at +2% and ⅓ at +5%; remainder on trail.
 // Not financial advice. Paper / educational backtest only.
 //@version=5
 strategy(
-     title                 = "RMLLC Exits Daily (−2% / +2% arm / 1% trail / ⅓@+4%)",
+     title                 = "RMLLC Exits Daily (−2% / +1% arm / 0.5% trail / ⅓@+2%+⅓@+5%)",
      shorttitle            = "RMLLC Exits D",
      overlay               = true,
      initial_capital       = 100000,
@@ -17,11 +18,12 @@ strategy(
  )
 
 // ── Inputs ──────────────────────────────────────────────────────────────────
-hardPct   = input.float(2.0, "Hard stop %", minval=0.1, step=0.1) / 100.0
-armPct    = input.float(2.0, "Trail arm %", minval=0.1, step=0.1) / 100.0
-trailPct  = input.float(1.0, "Trail % after arm", minval=0.1, step=0.1) / 100.0
-scalePct  = input.float(4.0, "Scale-out %", minval=0.1, step=0.1) / 100.0
-scaleFrac = input.float(33.0, "Scale-out fraction %", minval=1, maxval=99, step=1) / 100.0
+hardPct    = input.float(2.0, "Hard stop %", minval=0.1, step=0.1) / 100.0
+armPct     = input.float(1.0, "Trail arm %", minval=0.1, step=0.1) / 100.0
+trailPct   = input.float(0.5, "Trail % after arm", minval=0.1, step=0.1) / 100.0
+scalePct1  = input.float(2.0, "Scale-out 1 %", minval=0.1, step=0.1) / 100.0
+scalePct2  = input.float(5.0, "Scale-out 2 %", minval=0.1, step=0.1) / 100.0
+scaleFrac  = input.float(33.0, "Each scale-out fraction %", minval=1, maxval=99, step=1) / 100.0
 
 useEmaEntry = input.bool(true, "Entry: close crosses above EMA")
 emaLen      = input.int(20, "EMA length", minval=2)
@@ -43,44 +45,50 @@ if longSignal and strategy.position_size == 0
 var float entryPx   = na
 var float highWater = na
 var bool  armed     = false
-var bool  scaled    = false
+var bool  scaled1   = false
+var bool  scaled2   = false
 
 if strategy.position_size > 0
     if na(entryPx) or strategy.position_size[1] <= 0
         entryPx   := strategy.position_avg_price
         highWater := high
         armed     := false
-        scaled    := false
+        scaled1   := false
+        scaled2   := false
     else
         highWater := math.max(nz(highWater, high), high)
 
-    hardPx  = entryPx * (1.0 - hardPct)
-    armPx   = entryPx * (1.0 + armPct)
-    scalePx = entryPx * (1.0 + scalePct)
+    hardPx   = entryPx * (1.0 - hardPct)
+    armPx    = entryPx * (1.0 + armPct)
+    scalePx1 = entryPx * (1.0 + scalePct1)
+    scalePx2 = entryPx * (1.0 + scalePct2)
 
     if not armed and high >= armPx
         armed := true
 
-    // Scale-out ⅓ at +4% (limit-style: fill when high reaches target on daily)
-    if not scaled and high >= scalePx
-        strategy.close("Long", qty_percent = scaleFrac * 100.0, comment = "Scale ⅓ @+4%")
-        scaled := true
+    // Scale-out ⅓ at +2%, then ⅓ at +5% (limit-style: fill when high reaches target on daily)
+    if not scaled1 and high >= scalePx1
+        strategy.close("Long", qty_percent = scaleFrac * 100.0, comment = "Scale ⅓ @+2%")
+        scaled1 := true
+    if not scaled2 and high >= scalePx2
+        strategy.close("Long", qty_percent = scaleFrac * 100.0, comment = "Scale ⅓ @+5%")
+        scaled2 := true
 
     if armed
         trailStop = highWater * (1.0 - trailPct)
-        strategy.exit("Trail", from_entry = "Long", stop = trailStop, comment = "1% trail")
+        strategy.exit("Trail", from_entry = "Long", stop = trailStop, comment = "0.5% trail")
     else
         strategy.exit("Hard", from_entry = "Long", stop = hardPx, comment = "Hard −2%")
 
     // Visuals
     plot(hardPx, "Hard −2%", color=color.new(color.red, 0), style=plot.style_linebr)
-    plot(armPx, "Arm +2%", color=color.new(color.orange, 0), style=plot.style_linebr)
-    plot(scalePx, "Scale +4%", color=color.new(color.teal, 0), style=plot.style_linebr)
+    plot(armPx, "Arm +1%", color=color.new(color.orange, 0), style=plot.style_linebr)
+    plot(scalePx1, "Scale +2%", color=color.new(color.teal, 0), style=plot.style_linebr)
+    plot(scalePx2, "Scale +5%", color=color.new(color.green, 0), style=plot.style_linebr)
     plot(armed ? highWater * (1.0 - trailPct) : na, "Trail stop", color=color.new(color.blue, 0), style=plot.style_linebr)
 else
     entryPx   := na
     highWater := na
     armed     := false
-    scaled    := false
-
-plot(ema, "EMA", color=color.new(color.gray, 30))
+    scaled1   := false
+    scaled2   := false

@@ -1,0 +1,95 @@
+{
+  "updated": "2026-10-03T03:25:00Z",
+  "note": "Rodney 2026-10-02: alert when recommended GDXU/UXRP long or short levels are hit. No auto-entry. Book paused.",
+  "tolerance_pct": 0.004,
+  "alerts": [
+    {
+      "id": "UXRP-LONG-VALUE",
+      "symbol": "UXRP",
+      "side": "LONG",
+      "low": 16.30,
+      "high": 16.40,
+      "label": "UXRP long value (~$16.34 prior working limit)"
+    },
+    {
+      "id": "UXRP-LONG-TROUGH",
+      "symbol": "UXRP",
+      "side": "LONG",
+      "low": 16.15,
+      "high": 16.28,
+      "label": "UXRP long trough / breakdown support (~$16.22)"
+    },
+    {
+      "id": "UXRP-LONG-MACRO38",
+      "symbol": "UXRP",
+      "side": "LONG",
+      "low": 15.75,
+      "high": 15.95,
+      "label": "UXRP long deeper macro Fib ~$15.83"
+    },
+    {
+      "id": "UXRP-SHORT-A",
+      "symbol": "UXRP",
+      "side": "SHORT",
+      "low": 17.50,
+      "high": 17.80,
+      "label": "UXRP short prefer A ($17.50–17.80)"
+    },
+    {
+      "id": "UXRP-SHORT-B",
+      "symbol": "UXRP",
+      "side": "SHORT",
+      "low": 18.20,
+      "high": 18.70,
+      "label": "UXRP short stronger B ($18.20–18.70)"
+    },
+    {
+      "id": "UXRP-SHORT-C",
+      "symbol": "UXRP",
+      "side": "SHORT",
+      "low": 19.20,
+      "high": 20.25,
+      "label": "UXRP short stretch C ($19.20–20.25)"
+    },
+    {
+      "id": "GDXU-LONG-VALUE",
+      "symbol": "GDXU",
+      "side": "LONG",
+      "low": 101.80,
+      "high": 102.50,
+      "label": "GDXU long value (~$102.20 prior working limit)"
+    },
+    {
+      "id": "GDXU-LONG-TROUGH",
+      "symbol": "GDXU",
+      "side": "LONG",
+      "low": 99.80,
+      "high": 100.60,
+      "label": "GDXU long trough (~$100.40)"
+    },
+    {
+      "id": "GDXU-SHORT-A",
+      "symbol": "GDXU",
+      "side": "SHORT",
+      "low": 113.50,
+      "high": 115.50,
+      "label": "GDXU short prefer A ($113.50–115.50)"
+    },
+    {
+      "id": "GDXU-SHORT-B",
+      "symbol": "GDXU",
+      "side": "SHORT",
+      "low": 123.00,
+      "high": 125.00,
+      "label": "GDXU short stronger B ($123–125 Fib)"
+    },
+    {
+      "id": "GDXU-SHORT-C",
+      "symbol": "GDXU",
+      "side": "SHORT",
+      "low": 138.00,
+      "high": 140.00,
+      "label": "GDXU short stretch C ($138–140)"
+    }
+  ]
+}
