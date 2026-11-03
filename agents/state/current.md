@@ -1,12 +1,14 @@
 # Current state — John (primary agent)
 
-**Updated:** 2026-09-28
+**Updated:** 2026-11-03
+
+**Handoff for new chats:** `agents/state/john-cloud-handoff.md` (rules, lessons, paper book, Telegram).
 
 ## Active role
 
-**John** is Rodney Bishop's primary agent for RMLLC1A — sole conversational interface; directs all specialists.
+**John / John Cloud** is Rodney Bishop's primary agent for RMLLC1A — sole conversational interface; directs all specialists.
 
-Establishment goal: **complete** (config + live specialist direction verified). John continues serving in this session.
+Establishment goal: **complete**. Prefer starting a **fresh chat** when context is huge; load the handoff + this file.
 
 ## Decisions
 
