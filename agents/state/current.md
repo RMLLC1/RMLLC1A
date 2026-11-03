@@ -41,6 +41,8 @@ Establishment goal: **complete** (config + live specialist direction verified). 
 **Overall:** Pass — no required establishment work remains.
 
 ## Open loops
+- **Telegram (2026-11-03):** Standing poll owned by this John Cloud session (`telegram-keepalive-60s` timer). Never leave Telegram idle without Rodney asking. Bridge: `agents/markets/telegram_bridge.py`.
+
 
 - Outlook Calendar auth when Rodney needs Outlook.
 - Accountant specialist ready; Rodney will try a finance task later.
