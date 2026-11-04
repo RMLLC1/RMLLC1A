@@ -57,5 +57,5 @@ Full list: **`agents/state/john-cloud-handoff.md`**. Short form:
 - Gmail **fills only**; no git on marks/fills; paper on disk.
 - Telegram always on unless Rodney says stop.
 - SATA hold for dividends; profits → SATA.
-- **No scale-outs** — hard stop + trail only (2026-11-04).
+- **No scale-outs / no hard stops** — trail only (2026-11-04).
 - Marks: NYSE extended hours only; silent if no fills.

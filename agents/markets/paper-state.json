@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
   "cash": 50000.0,
-  "updated": "2026-11-04T09:41:15Z",
+  "updated": "2026-11-04T09:47:04Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -143,13 +143,13 @@
       "id": "HS-GDXU-2",
       "symbol": "GDXU",
       "type": "HARD_STOP_LIMIT_SELL",
-      "status": "OPEN",
+      "status": "CANCELLED",
       "stop_price": 61.9127,
       "limit_price": 61.9127,
       "entry_group": "BB-GDXU-1",
       "entry_price": 64.83000183105469,
       "cancel_when_trail_armed": true,
-      "params_text": "Hard invalidation \u22124% \u2192 $61.9127 LIMIT until trail arms. (group BB-GDXU-1)"
+      "params_text": "Hard invalidation \u22124% \u2192 $61.9127 LIMIT until trail arms. (group BB-GDXU-1) CANCELLED 2026-11-04T09:47:04Z per Rodney (Remove hard stops)."
     },
     {
       "id": "SO-GDXU-3",
@@ -221,13 +221,13 @@
       "id": "HS-GDXU-3",
       "symbol": "GDXU",
       "type": "HARD_STOP_LIMIT_SELL",
-      "status": "OPEN",
+      "status": "CANCELLED",
       "stop_price": 62.2326,
       "limit_price": 62.2326,
       "entry_group": "BB-GDXU-2",
       "entry_price": 65.16500091552734,
       "cancel_when_trail_armed": true,
-      "params_text": "Hard invalidation \u22124% \u2192 $62.2326 LIMIT until trail arms. (group BB-GDXU-2)"
+      "params_text": "Hard invalidation \u22124% \u2192 $62.2326 LIMIT until trail arms. (group BB-GDXU-2) CANCELLED 2026-11-04T09:47:04Z per Rodney (Remove hard stops)."
     },
     {
       "id": "SO-GDXU-5",
@@ -310,6 +310,15 @@
       "price": 0,
       "cash_after": 50000.0,
       "rationale": "Rodney: remove SO / no scale-outs. Cancelled ['SO-GDXU-30', 'SO-GDXU-3', 'SO-GDXU-4', 'SO-GDXU-5', 'SO-GDXU-6']; trails ['TS-GDXU-11', 'TS-GDXU-2', 'TS-GDXU-3'] \u2192 PENDING_ARM"
+    },
+    {
+      "time": "2026-11-04T09:47:04Z",
+      "side": "CANCEL",
+      "symbol": "GDXU",
+      "qty": 0,
+      "price": 0,
+      "cash_after": 50000.0,
+      "rationale": "Rodney: Remove hard stops. Cancelled ['HS-GDXU-2', 'HS-GDXU-3']."
     }
   ],
   "events": [
@@ -371,21 +380,24 @@
     "stop_exit": "MARKET",
     "profits_buy": "SATA",
     "sata_policy": "HOLD_FOR_DAILY_DIVIDENDS_NO_SELL",
-    "note": "No scale-outs (Rodney 2026-11-04). Hard stops + trails only. SATA hold for dividends. Profits\u2192SATA when sells fill.",
+    "note": "No scale-outs and no hard stops (Rodney 2026-11-04). Trail-only exits. SATA hold for dividends. Profits\u2192SATA when sells fill.",
     "no_scale_outs": true,
     "scale_out_levels": [],
     "symbol_exits": {
       "GDXU": {
         "scale_out_levels": [],
         "no_scale_outs": true,
-        "arm_after_scale_level": null
+        "arm_after_scale_level": null,
+        "no_hard_stop": true
       },
       "UXRP": {
         "scale_out_levels": [],
         "no_scale_outs": true,
-        "arm_after_scale_level": null
+        "arm_after_scale_level": null,
+        "no_hard_stop": true
       }
-    }
+    },
+    "no_hard_stop": true
   },
   "dividend_cash": 93.9556,
   "last_sata_dividend_day": "2026-11-04",

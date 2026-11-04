@@ -454,14 +454,14 @@ SYMBOL_EXIT_DEFAULTS: dict[str, dict] = {
     "UXRP": {
         "arm_pct": 0.02,
         "trail_pct": 0.005,
-        "hard_stop_pct": 0.03,
+        "no_hard_stop": True,
         "no_scale_outs": True,
         "scale_out_levels": [],
     },
     "GDXU": {
         "arm_pct": 0.03,
         "trail_pct": 0.005,
-        "hard_stop_pct": 0.045,
+        "no_hard_stop": True,
         "no_scale_outs": True,
         "scale_out_levels": [],
     },
@@ -566,10 +566,17 @@ def attach_trading_exits(
     """
     arm_pct, trail_pct, hard_pct, scale_levels, arm_after = _exit_rule_for(state, order, sym)
     entry_group = order["id"]
+    rules = state.get("standing_rules") or {}
+    sym_rules = dict(SYMBOL_EXIT_DEFAULTS.get(sym) or {})
+    sym_rules.update((rules.get("symbol_exits") or {}).get(sym) or {})
 
     arm = round(fill_px * (1 + arm_pct), 4)
     hard = round(fill_px * (1 - hard_pct), 4)
-    skip_hard = bool(order.get("no_hard_stop"))
+    skip_hard = bool(
+        order.get("no_hard_stop")
+        or sym_rules.get("no_hard_stop")
+        or rules.get("no_hard_stop")
+    )
 
     n_ts = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "TRAILING_STOP_LIMIT_SELL") + 1
     n_hs = sum(1 for o in state["orders"] if o.get("symbol") == sym and o.get("type") == "HARD_STOP_LIMIT_SELL") + 1
@@ -666,9 +673,17 @@ def attach_trading_exits(
 def attach_trading_exits_short(
     state: dict, order: dict, sym: str, fill_px: float, fill_qty: float, events: list, now: str
 ) -> None:
-    """Attach hard cover, trail (market on reverse up), and dual scale-outs for shorts."""
+    """Attach trail (and optional hard cover / scale-outs) for shorts."""
     arm_pct, trail_pct, hard_pct, scale_levels, arm_after = _exit_rule_for(state, order, sym)
     entry_group = order["id"]
+    rules = state.get("standing_rules") or {}
+    sym_rules = dict(SYMBOL_EXIT_DEFAULTS.get(sym) or {})
+    sym_rules.update((rules.get("symbol_exits") or {}).get(sym) or {})
+    skip_hard = bool(
+        order.get("no_hard_stop")
+        or sym_rules.get("no_hard_stop")
+        or rules.get("no_hard_stop")
+    )
 
     arm = round(fill_px * (1 - arm_pct), 4)
     hard = round(fill_px * (1 + hard_pct), 4)
@@ -715,27 +730,31 @@ def attach_trading_exits_short(
     if arm_after is not None:
         ts["arm_after_scale_level"] = arm_after
         ts["status"] = "WAITING_SCALE"
-    hs = {
-        "id": f"HSC-{sym}-{n_hs}",
-        "symbol": sym,
-        "type": "HARD_STOP_LIMIT_COVER",
-        "status": "OPEN",
-        "stop_price": hard,
-        "limit_price": hard,
-        "entry_group": entry_group,
-        "entry_price": fill_px,
-        "cancel_when_trail_armed": True,
-        "params_text": (
-            f"Hard invalidation +{hard_pct*100:.0f}% → ${hard} LIMIT until trail arms. "
-            f"(group {entry_group})"
-        ),
-    }
-    attached = [ts, hs]
+    attached = [ts]
     events.append(
         f"{now} {sym} attached {ts['id']} "
         f"{'WAITING_SCALE#'+str(arm_after) if arm_after else 'PENDING_ARM arm='+str(arm)}"
     )
-    events.append(f"{now} {sym} attached {hs['id']} HARD_STOP_COVER stop={hard}")
+    if skip_hard:
+        events.append(f"{now} {sym} no hard cover (no_hard_stop) group={entry_group}")
+    else:
+        hs = {
+            "id": f"HSC-{sym}-{n_hs}",
+            "symbol": sym,
+            "type": "HARD_STOP_LIMIT_COVER",
+            "status": "OPEN",
+            "stop_price": hard,
+            "limit_price": hard,
+            "entry_group": entry_group,
+            "entry_price": fill_px,
+            "cancel_when_trail_armed": True,
+            "params_text": (
+                f"Hard invalidation +{hard_pct*100:.0f}% → ${hard} LIMIT until trail arms. "
+                f"(group {entry_group})"
+            ),
+        }
+        attached.append(hs)
+        events.append(f"{now} {sym} attached {hs['id']} HARD_STOP_COVER stop={hard}")
 
     for i, lvl in enumerate(scale_levels):
         scale_px = round(fill_px * (1 - float(lvl["pct"])), 4)

@@ -174,39 +174,39 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
     def _exit_stamps(symbol: str) -> tuple[dict, str]:
         """Per-symbol exit stamps for new text buys. SATA profits / loss top-off unchanged elsewhere.
 
-        Rodney 2026-11-04: no scale-outs. Hard stop + trail only (trail arms at +arm_pct).
+        Rodney 2026-11-04: no scale-outs and no hard stops. Trail only (arms at +arm_pct).
         """
         if symbol == "UXRP":
             return (
                 {
                     "arm_pct": 0.02,
                     "trail_pct": 0.005,
-                    "hard_stop_pct": 0.03,
+                    "no_hard_stop": True,
                     "no_scale_outs": True,
                     "scale_out_levels": [],
                 },
-                "Exits (UXRP): hard −3%; arm +2% / 0.5% trail market. NO scale-outs.",
+                "Exits (UXRP): arm +2% / 0.5% trail market. NO hard stop. NO scale-outs.",
             )
         if symbol == "GDXU":
             return (
                 {
                     "arm_pct": 0.03,
                     "trail_pct": 0.005,
-                    "hard_stop_pct": 0.045,
+                    "no_hard_stop": True,
                     "no_scale_outs": True,
                     "scale_out_levels": [],
                 },
-                "Exits (GDXU): hard −4.5%; arm +3% / 0.5% trail market. NO scale-outs.",
+                "Exits (GDXU): arm +3% / 0.5% trail market. NO hard stop. NO scale-outs.",
             )
         return (
             {
                 "arm_pct": 0.01,
                 "trail_pct": 0.005,
-                "hard_stop_pct": 0.02,
+                "no_hard_stop": True,
                 "no_scale_outs": True,
                 "scale_out_levels": [],
             },
-            "Exits: hard −2%; +1% arm / 0.5% trail market. NO scale-outs.",
+            "Exits: +1% arm / 0.5% trail market. NO hard stop. NO scale-outs.",
         )
 
     def _exit_stamps_short(symbol: str) -> tuple[dict, str]:
@@ -215,23 +215,22 @@ def apply_one(state: dict, doc: dict, events: list, now: str) -> dict:
         if symbol == "UXRP":
             return (
                 stamps,
-                "Short exits (UXRP): hard +3%; arm −2% / 0.5% trail market. NO scale-outs.",
+                "Short exits (UXRP): arm −2% / 0.5% trail market. NO hard stop. NO scale-outs.",
             )
         if symbol == "GDXU":
             return (
                 stamps,
-                "Short exits (GDXU): hard +4.5%; arm −3% / 0.5% trail market. NO scale-outs.",
+                "Short exits (GDXU): arm −3% / 0.5% trail market. NO hard stop. NO scale-outs.",
             )
         return (
             stamps,
-            "Short exits: hard +2%; −1% arm / 0.5% trail market. NO scale-outs.",
+            "Short exits: −1% arm / 0.5% trail market. NO hard stop. NO scale-outs.",
         )
 
     def _apply_exit_flags(order: dict, doc: dict, exit_blurb: str) -> str:
-        """Honor no_hard_stop / attach_exits from text/auto docs."""
-        if doc.get("no_hard_stop"):
+        """Honor no_hard_stop / attach_exits from text/auto docs. Default: no hard stop (2026-11-04)."""
+        if doc.get("no_hard_stop", True):
             order["no_hard_stop"] = True
-            exit_blurb = f"{exit_blurb} NO hard stop (DCA stage)."
         return exit_blurb
 
     if action == "LIMIT_BUY":

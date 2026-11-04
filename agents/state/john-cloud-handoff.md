@@ -22,7 +22,7 @@ A new chat does **not** remember prior turns. It **does** load repo files (`AGEN
 4. No free AT&T SMS (`@txt.att.net` dead). Telegram + this Cursor chat for messaging.
 5. **Telegram must stay live** unless Rodney explicitly says stop. Never leave the poller idle.
 6. Paper trading: **auto-execute**. Realized profits → buy **SATA**; **hold SATA for daily dividends — never sell**.
-7. **No scale-outs** on trades (Rodney 2026-11-04). Do not attach SO ladder. Exits = hard stop + trail only.
+7. **No scale-outs** and **no hard stops** on trades (Rodney 2026-11-04). Exits = trail only (arms at +arm%).
 8. Yahoo marks: **NYSE extended hours only** Mon–Fri **4:00 AM–8:00 PM ET** (historically ~5 min). Silent when no fills.
 9. Nursing CE: dormant until ~2 months before each license expiry (WA ~2027-10-22; TX ~2028-10-31).
 
@@ -43,11 +43,11 @@ A new chat does **not** remember prior turns. It **does** load repo files (`AGEN
 | UXRP | flat |
 | GDXU | **2,103.17** @ avg **$71.32** (post two DCA buys Nov 3) |
 | SATA | **260.12** hold-for-dividends @ avg **$98.15** |
-| Scale-outs | **ALL CANCELLED** (Rodney: Remove SO / do not scale out) |
-| Trails | PENDING_ARM (converted from WAITING_SCALE) |
-| Hard stops | HS-GDXU-2 / HS-GDXU-3 OPEN |
+| Scale-outs | **ALL CANCELLED** |
+| Hard stops | **ALL CANCELLED** (Rodney: Remove hard stops) |
+| Trails | PENDING_ARM (TS-GDXU-11/2/3) |
 
-Engine: `mark_to_market.py` + `apply_text_orders.py` — **no scale-outs** by default.
+Engine: `mark_to_market.py` + `apply_text_orders.py` — **trail only** (no SO / no HS) by default.
 
 ## Token / ops lessons
 
