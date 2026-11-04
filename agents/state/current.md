@@ -43,23 +43,19 @@ Establishment goal: **complete**. Prefer starting a **fresh chat** when context 
 **Overall:** Pass — no required establishment work remains.
 
 ## Open loops
-- **Telegram (2026-11-03):** Standing poll owned by this John Cloud session (`telegram-keepalive-60s` timer). Never leave Telegram idle without Rodney asking. Bridge: `agents/markets/telegram_bridge.py`.
 
-
-- Outlook Calendar auth when Rodney needs Outlook.
-- Accountant specialist ready; Rodney will try a finance task later.
-- Markets specialist ready; UXRP research delivered; paper UXRP 10% buy placed; GDXU research delivered.
-- **Nursing CE specialist (`nurse-ce`) added** for Texas + Washington RN dual-state course vetting (2026-09-28). **Both licenses renew in October.** Awaiting CE website URL.
-- Awaiting Rodney's next task.
+- **Telegram:** Keepalive on this session; never idle without Rodney asking. See handoff.
+- **Paper book:** Cash $50k; GDXU 2,103.17 @ $71.32; SATA 260.12 hold; all SO cancelled 2026-11-04.
+- Re-subscribe timers after any **new chat** (timers do not transfer).
+- Outlook Calendar auth when needed.
+- Nursing CE: dormant until ~2 months before WA/TX renewals (see handoff).
 
 ## Standing preferences
 
-- Confirm before irreversible external actions.
-- Keep replies concise; lead with the answer.
-- Name: John.
-- Prefer email for notifications (to `regiaemanagementllc@gmail.com`; updated 2026-09-28).
-- Standing decision (2026-09-28): use email for messaging for now; no SMS/iMessage setup.
-- **Email volume (Rodney 2026-09-28):** **Gmail** only when stock/crypto is bought or sold. Never for marks/prices. **No git commit/push** for paper marks or paper fills (stops GitHub/Cursor-bot notification emails). Paper state stays on disk only.
-- Free AT&T texting: failed (carrier gateway shut down). Prefer email.
-- Markets paper: **auto-execute**; trail **+2% arm / 1% trail** limit stops. **Realized profits → buy SATA**; **hold for daily dividends — never sell**.
-- **Price feed:** Yahoo poll every **10 minutes** during **NYSE extended hours only** (Mon–Fri **4:00 AM–8:00 PM ET**). Gmail **only on buy/sell fills**.
+Full list: **`agents/state/john-cloud-handoff.md`**. Short form:
+
+- Gmail **fills only**; no git on marks/fills; paper on disk.
+- Telegram always on unless Rodney says stop.
+- SATA hold for dividends; profits → SATA.
+- **No scale-outs** — hard stop + trail only (2026-11-04).
+- Marks: NYSE extended hours only; silent if no fills.

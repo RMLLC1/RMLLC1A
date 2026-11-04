@@ -448,38 +448,50 @@ def apply_hard_stop_limit(order: dict, mark: float, position: dict) -> dict:
     return event
 
 
-# Per-symbol exit defaults (Rodney 2026-10-02 — UXRP noise-adjusted).
-# Global default remains hard −2% / arm +1% / trail 0.5% market / ⅓@+2% + ⅓@+5%.
+# Per-symbol exit defaults (Rodney 2026-11-04 — no scale-outs; hard + trail only).
+# Prior ladder (⅓ scale-outs / trail after 2nd scale) retired per Rodney "do not scale out".
 SYMBOL_EXIT_DEFAULTS: dict[str, dict] = {
     "UXRP": {
         "arm_pct": 0.02,
         "trail_pct": 0.005,
         "hard_stop_pct": 0.03,
-        # Last ⅓ trail arms only after 2nd scale-out fills (Rodney 2026-10-02).
-        "arm_after_scale_level": 2,
+        "no_scale_outs": True,
+        "scale_out_levels": [],
     },
     "GDXU": {
         "arm_pct": 0.03,
         "trail_pct": 0.005,
         "hard_stop_pct": 0.045,
-        "arm_after_scale_level": 2,
-        "scale_out_levels": [
-            {"pct": 0.03, "fraction": 1.0 / 3.0},
-            {"pct": 0.07, "fraction": 1.0 / 3.0},
-        ],
+        "no_scale_outs": True,
+        "scale_out_levels": [],
     },
 }
 
 
 def _default_scale_out_levels(order: dict, rules: dict, sym_rules: dict | None = None) -> list[dict]:
-    """Scale-out ladder: ⅓ at +2%, ⅓ at +5% (remainder on trail)."""
+    """Scale-out ladder. Empty when no_scale_outs (Rodney 2026-11-04)."""
     sym_rules = sym_rules or {}
-    levels = (
-        order.get("scale_out_levels")
-        or sym_rules.get("scale_out_levels")
-        or rules.get("scale_out_levels")
-    )
-    if levels:
+    if (
+        order.get("no_scale_outs")
+        or sym_rules.get("no_scale_outs")
+        or rules.get("no_scale_outs")
+    ):
+        return []
+    # Explicit empty list from order / standing rules means no scale-outs.
+    if "scale_out_levels" in order:
+        levels = order.get("scale_out_levels") or []
+        return [
+            {"pct": float(x["pct"]), "fraction": float(x["fraction"])}
+            for x in levels
+        ]
+    if "scale_out_levels" in sym_rules:
+        levels = sym_rules.get("scale_out_levels") or []
+        return [
+            {"pct": float(x["pct"]), "fraction": float(x["fraction"])}
+            for x in levels
+        ]
+    if "scale_out_levels" in rules:
+        levels = rules.get("scale_out_levels") or []
         return [
             {"pct": float(x["pct"]), "fraction": float(x["fraction"])}
             for x in levels
@@ -504,6 +516,7 @@ def _default_scale_out_levels(order: dict, rules: dict, sym_rules: dict | None =
                 ),
             }
         ]
+    # Legacy default ladder only when nothing opted out.
     return [
         {"pct": 0.02, "fraction": 1.0 / 3.0},
         {"pct": 0.05, "fraction": 1.0 / 3.0},
@@ -533,8 +546,12 @@ def _exit_rule_for(state: dict, order: dict, sym: str) -> tuple[float, float, fl
         )
     )
     scale_levels = _default_scale_out_levels(order, rules, sym_rules)
-    arm_after = order.get("arm_after_scale_level", sym_rules.get("arm_after_scale_level"))
-    arm_after_i = int(arm_after) if arm_after is not None else None
+    # No arm-after-scale when scale-outs are off.
+    if not scale_levels or order.get("no_scale_outs") or sym_rules.get("no_scale_outs") or rules.get("no_scale_outs"):
+        arm_after_i = None
+    else:
+        arm_after = order.get("arm_after_scale_level", sym_rules.get("arm_after_scale_level"))
+        arm_after_i = int(arm_after) if arm_after is not None else None
     return arm_pct, trail_pct, hard_pct, scale_levels, arm_after_i
 
 

@@ -22,8 +22,9 @@ A new chat does **not** remember prior turns. It **does** load repo files (`AGEN
 4. No free AT&T SMS (`@txt.att.net` dead). Telegram + this Cursor chat for messaging.
 5. **Telegram must stay live** unless Rodney explicitly says stop. Never leave the poller idle.
 6. Paper trading: **auto-execute**. Realized profits → buy **SATA**; **hold SATA for daily dividends — never sell**.
-7. Yahoo marks: **NYSE extended hours only** Mon–Fri **4:00 AM–8:00 PM ET** (historically ~5 min). Silent when no fills.
-8. Nursing CE: dormant until ~2 months before each license expiry (WA ~2027-10-22; TX ~2028-10-31).
+7. **No scale-outs** on trades (Rodney 2026-11-04). Do not attach SO ladder. Exits = hard stop + trail only.
+8. Yahoo marks: **NYSE extended hours only** Mon–Fri **4:00 AM–8:00 PM ET** (historically ~5 min). Silent when no fills.
+9. Nursing CE: dormant until ~2 months before each license expiry (WA ~2027-10-22; TX ~2028-10-31).
 
 ## Telegram
 
@@ -33,20 +34,20 @@ A new chat does **not** remember prior turns. It **does** load repo files (`AGEN
 - **Timers do not move to a new chat.** On restart, re-subscribe keepalive (recommend **180–300s**, not 60s — token cost). Renew before expiry (~7 days).
 - Old dedicated poll agent `John Cloud Telegram poll` went **IDLE 2026-10-29** — do not rely on it.
 
-## Paper book (restored 2026-11-03 from Oct 29 snapshot)
+## Paper book (updated 2026-11-04)
 
 | Item | Value |
 | --- | --- |
-| Cash | **$133,333.33** (available) |
-| Dividend cash | ~$80.53 (incl. idle-day backfill) |
+| Cash | **$50,000.00** |
+| Dividend cash | ~$93.96 |
 | UXRP | flat |
-| GDXU | **821.73** @ avg **81.13** |
-| SATA | **260.12** hold-for-dividends @ avg **98.15** |
-| SO-GDXU-29 | **FILLED** Oct 28 (~⅓ @ ≥83.56) → source of cash |
-| SO-GDXU-30 | **OPEN** limit sell **$86.8091** (~⅓) — not filled; GDXU never reached it |
-| TS-GDXU-11 | **WAITING_SCALE** (arms only after scale #2) |
+| GDXU | **2,103.17** @ avg **$71.32** (post two DCA buys Nov 3) |
+| SATA | **260.12** hold-for-dividends @ avg **$98.15** |
+| Scale-outs | **ALL CANCELLED** (Rodney: Remove SO / do not scale out) |
+| Trails | PENDING_ARM (converted from WAITING_SCALE) |
+| Hard stops | HS-GDXU-2 / HS-GDXU-3 OPEN |
 
-Engine: full `mark_to_market.py` with scale-outs (from Oct poll branch). Wrong Sept “$0 cash / UXRP+GDXU long” book was a stale env snapshot — discarded.
+Engine: `mark_to_market.py` + `apply_text_orders.py` — **no scale-outs** by default.
 
 ## Token / ops lessons
 
