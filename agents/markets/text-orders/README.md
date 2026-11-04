@@ -1,0 +1,46 @@
+# Text orders (iMessage → John Mac → John Cloud paper)
+
+Full rules (exits, SATA, desks): **`../trading-rules.md`**.
+
+Rodney texts **John Mac**; Mac queues a paper order here; **John Cloud** applies it on the next marks cycle (~5 minutes during NYSE extended hours; cancels/queues apply anytime).
+
+## Allowed sender
+
+Only Rodney’s iMessage number ending in **8173715555**.
+
+## Commands (examples)
+
+| Text | Effect |
+| --- | --- |
+| `BUY UXRP $50000 LIMIT 17` | Limit buy $50k notional at $17 or better + standard exits |
+| `BUY GDXU 50k LIMIT 107.5` | Same |
+| `BUY UXRP $10000 BEST` | Buy at best available |
+| `SELL UXRP ALL BEST` | Sell full position at best |
+| `SELL GDXU ALL LIMIT 111` | Limit sell all at $111 |
+| `SELL UXRP QTY 100 LIMIT 18` | Limit sell 100 shares |
+| `CANCEL LB-UXRP-4` | Cancel that order id |
+| `CANCEL BUYS UXRP` | Cancel open/working limit buys for UXRP |
+| `SHORT UXRP $1000 LIMIT 16` | Limit short $1k notional at $16 or better + mirrored exits |
+| `SHORT GDXU $5000 BEST` | Short at best + mirrored exits |
+| `COVER UXRP ALL BEST` | Cover full short at best |
+| `COVER UXRP ALL LIMIT 15` | Limit cover all at $15 |
+| `COVER UXRP QTY 100 LIMIT 15` | Limit cover 100 shares |
+| `CANCEL SHORTS UXRP` | Cancel open/working limit shorts for UXRP |
+| `STATUS` | Mac replies that book is on Cloud; check Gmail fills / Cursor |
+
+SATA sells stay blocked unless the order includes an explicit override (not available by default text).
+
+Default exits on new buys (non-SATA): hard −2%, arm +1% / trail 0.5% market, scale-out ⅓ at +2% and ⅓ at +5%.  
+**UXRP:** hard −3%; scale ⅓@+2% + ⅓@+5%; last ⅓ trail 0.5% market **after 2nd scale**.  
+**GDXU:** hard −4.5%; scale ⅓@+3% + ⅓@+7%; last ⅓ trail 0.5% market **after 2nd scale**.  
+SATA profit / loss top-off rules unchanged.
+
+## Files
+
+| Path | Role |
+| --- | --- |
+| `pending/*.json` | Queued by Mac (`queue_text_order.py`); committed to git |
+| `processed/*.json` | Moved here by Cloud after apply |
+| `outbox/*.json` | Optional short status notes for Mac |
+
+Paper `paper-state.json` stays **local on Cloud** (not committed).
