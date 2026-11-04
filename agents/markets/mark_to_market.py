@@ -799,13 +799,12 @@ def scale_out_filled(state: dict, entry_group: str, level: int) -> bool:
 def raise_hard_stop_after_scale(
     state: dict, entry_group: str, scale_level: int, events: list, now: str
 ) -> None:
-    """After 1st scale-out fills, raise hard stop (breakeven or raise_hard_stop_to).
+    """Raise hard stop after a scale-out fills (breakeven or raise_hard_stop_to).
 
-    Rodney 2026-10-02: don't give back the win after banking the first ⅓.
-    Rodney 2026-11-04 GDXU: optional raise_hard_stop_to (e.g. $82) overrides entry.
+    Default: after scale level 1 (Rodney 2026-10-02).
+    Per-order override: raise_after_scale_level (Rodney 2026-11-04 GDXU: wait for SO #2
+    before raising HS to raise_hard_stop_to, e.g. $82).
     """
-    if int(scale_level) != 1:
-        return
     entry_px = None
     for o in state.get("orders") or []:
         if o.get("entry_group") == entry_group and o.get("entry_price") is not None:
@@ -819,6 +818,9 @@ def raise_hard_stop_after_scale(
             and o.get("type") == "HARD_STOP_LIMIT_SELL"
             and o.get("status") not in {"FILLED", "CANCELLED"}
         ):
+            need_lvl = int(o.get("raise_after_scale_level") or 1)
+            if int(scale_level) != need_lvl:
+                continue
             target = float(o.get("raise_hard_stop_to") or entry_px)
             old = o.get("stop_price")
             # Only raise (never loosen) the stop.
@@ -833,12 +835,12 @@ def raise_hard_stop_after_scale(
                 else f"breakeven ${target:.4f}"
             )
             o["params_text"] = (
-                f"Hard stop {label} after 1st scale-out. "
+                f"Hard stop {label} after scale-out #{need_lvl}. "
                 f"(was {old}; group {entry_group})"
             )
             events.append(
                 f"{now} {o.get('symbol')} {o['id']} hard stop → {label} "
-                f"(after scale #1; was {old})"
+                f"(after scale #{need_lvl}; was {old})"
             )
     for o in state.get("orders") or []:
         if (
