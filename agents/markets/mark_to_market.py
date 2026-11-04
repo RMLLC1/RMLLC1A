@@ -392,7 +392,7 @@ def cancel_symbol_exits(
 
 def apply_hard_stop_limit(order: dict, mark: float, position: dict) -> dict:
     """Fixed stop-limit sell (hard invalidation). Triggers when mark <= stop; LIMIT at stop."""
-    if order.get("status") in {"FILLED", "CANCELLED"}:
+    if order.get("status") in {"FILLED", "CANCELLED", "UNWOUND", "SUSPENDED"}:
         return {}
     stop = float(order["stop_price"])
     limit = float(order.get("limit_price") or stop)
