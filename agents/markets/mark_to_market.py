@@ -799,9 +799,10 @@ def scale_out_filled(state: dict, entry_group: str, level: int) -> bool:
 def raise_hard_stop_after_scale(
     state: dict, entry_group: str, scale_level: int, events: list, now: str
 ) -> None:
-    """After 1st scale-out fills, raise hard stop to entry (breakeven) on remaining size.
+    """After 1st scale-out fills, raise hard stop (breakeven or raise_hard_stop_to).
 
     Rodney 2026-10-02: don't give back the win after banking the first ⅓.
+    Rodney 2026-11-04 GDXU: optional raise_hard_stop_to (e.g. $82) overrides entry.
     """
     if int(scale_level) != 1:
         return
@@ -818,19 +819,25 @@ def raise_hard_stop_after_scale(
             and o.get("type") == "HARD_STOP_LIMIT_SELL"
             and o.get("status") not in {"FILLED", "CANCELLED"}
         ):
+            target = float(o.get("raise_hard_stop_to") or entry_px)
             old = o.get("stop_price")
             # Only raise (never loosen) the stop.
-            if old is not None and float(old) >= entry_px - 1e-9:
+            if old is not None and float(old) >= target - 1e-9:
                 continue
-            o["stop_price"] = round(entry_px, 4)
-            o["limit_price"] = round(entry_px, 4)
+            o["stop_price"] = round(target, 4)
+            o["limit_price"] = round(target, 4)
             o["breakeven_after_scale1"] = True
+            label = (
+                f"raised to ${target:.4f}"
+                if abs(target - entry_px) > 1e-6
+                else f"breakeven ${target:.4f}"
+            )
             o["params_text"] = (
-                f"Hard stop raised to breakeven ${entry_px:.4f} after 1st scale-out. "
+                f"Hard stop {label} after 1st scale-out. "
                 f"(was {old}; group {entry_group})"
             )
             events.append(
-                f"{now} {o.get('symbol')} {o['id']} hard stop → breakeven ${entry_px:.4f} "
+                f"{now} {o.get('symbol')} {o['id']} hard stop → {label} "
                 f"(after scale #1; was {old})"
             )
     for o in state.get("orders") or []:

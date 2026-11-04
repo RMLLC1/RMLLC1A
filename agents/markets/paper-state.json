@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
   "cash": 50000.0,
-  "updated": "2026-11-04T09:47:04Z",
+  "updated": "2026-11-04T10:11:46Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -71,13 +71,13 @@
       "id": "TS-GDXU-11",
       "symbol": "GDXU",
       "type": "TRAILING_STOP_LIMIT_SELL",
-      "status": "PENDING_ARM",
+      "status": "CANCELLED",
       "arm_price": 83.5639,
       "trail_pct": 0.005,
       "fill_at_market": true,
       "entry_group": "LB-GDXU-6",
       "entry_price": 81.12999725341797,
-      "params_text": "Arm \u2192 $83.5639. Trail 0.5% \u2192 market sell on reverse. (group LB-GDXU-6; converted from WAITING_SCALE \u2014 no scale-outs per Rodney 2026-11-04T09:41:15Z)"
+      "params_text": "Arm \u2192 $83.5639. Trail 0.5% \u2192 market sell on reverse. (group LB-GDXU-6; converted from WAITING_SCALE \u2014 no scale-outs per Rodney 2026-11-04T09:41:15Z) CANCELLED 2026-11-04T10:11:46Z \u2014 replaced by POS-GDXU-ALL ladder."
     },
     {
       "id": "HS-GDXU-9",
@@ -131,13 +131,13 @@
       "id": "TS-GDXU-2",
       "symbol": "GDXU",
       "type": "TRAILING_STOP_LIMIT_SELL",
-      "status": "PENDING_ARM",
+      "status": "CANCELLED",
       "arm_price": 66.7749,
       "trail_pct": 0.005,
       "fill_at_market": true,
       "entry_group": "BB-GDXU-1",
       "entry_price": 64.83000183105469,
-      "params_text": "Arm \u2192 $66.7749. Trail 0.5% \u2192 market sell on reverse. (group BB-GDXU-1; converted from WAITING_SCALE \u2014 no scale-outs per Rodney 2026-11-04T09:41:15Z)"
+      "params_text": "Arm \u2192 $66.7749. Trail 0.5% \u2192 market sell on reverse. (group BB-GDXU-1; converted from WAITING_SCALE \u2014 no scale-outs per Rodney 2026-11-04T09:41:15Z) CANCELLED 2026-11-04T10:11:46Z \u2014 replaced by POS-GDXU-ALL ladder."
     },
     {
       "id": "HS-GDXU-2",
@@ -209,13 +209,13 @@
       "id": "TS-GDXU-3",
       "symbol": "GDXU",
       "type": "TRAILING_STOP_LIMIT_SELL",
-      "status": "PENDING_ARM",
+      "status": "CANCELLED",
       "arm_price": 67.12,
       "trail_pct": 0.005,
       "fill_at_market": true,
       "entry_group": "BB-GDXU-2",
       "entry_price": 65.16500091552734,
-      "params_text": "Arm \u2192 $67.12. Trail 0.5% \u2192 market sell on reverse. (group BB-GDXU-2; converted from WAITING_SCALE \u2014 no scale-outs per Rodney 2026-11-04T09:41:15Z)"
+      "params_text": "Arm \u2192 $67.12. Trail 0.5% \u2192 market sell on reverse. (group BB-GDXU-2; converted from WAITING_SCALE \u2014 no scale-outs per Rodney 2026-11-04T09:41:15Z) CANCELLED 2026-11-04T10:11:46Z \u2014 replaced by POS-GDXU-ALL ladder."
     },
     {
       "id": "HS-GDXU-3",
@@ -254,6 +254,58 @@
       "entry_group": "BB-GDXU-2",
       "entry_price": 65.16500091552734,
       "params_text": "Scale-out 33% at +7% \u2192 $69.7266 LIMIT. (group BB-GDXU-2; \u2153 at +3%, \u2153 at +7%) CANCELLED 2026-11-04T09:41:15Z per Rodney (Remove SO / no scale-outs)."
+    },
+    {
+      "id": "HS-GDXU-10",
+      "symbol": "GDXU",
+      "type": "HARD_STOP_LIMIT_SELL",
+      "status": "SUSPENDED",
+      "stop_price": 75.0,
+      "limit_price": 75.0,
+      "entry_group": "POS-GDXU-ALL",
+      "entry_price": 71.320751,
+      "raise_hard_stop_to": 82.0,
+      "cancel_when_trail_armed": true,
+      "params_text": "Hard stop $75 LIMIT on full GDXU \u2014 SUSPENDED pending Rodney confirm (mark ~$65 is already below $75; activating would sell all). After confirm/activate: raise to $82 after SO #1. (group POS-GDXU-ALL)"
+    },
+    {
+      "id": "SO-GDXU-31",
+      "symbol": "GDXU",
+      "type": "LIMIT_SELL",
+      "status": "OPEN",
+      "limit_price": 77.5,
+      "qty": 701.0582339319047,
+      "purpose": "SCALE_OUT",
+      "scale_level": 1,
+      "entry_group": "POS-GDXU-ALL",
+      "entry_price": 71.320751,
+      "params_text": "Scale-out \u2153 at $77.50 LIMIT. (group POS-GDXU-ALL; Rodney absolute ladder)"
+    },
+    {
+      "id": "SO-GDXU-32",
+      "symbol": "GDXU",
+      "type": "LIMIT_SELL",
+      "status": "OPEN",
+      "limit_price": 82.5,
+      "qty": 701.0582339319047,
+      "purpose": "SCALE_OUT",
+      "scale_level": 2,
+      "entry_group": "POS-GDXU-ALL",
+      "entry_price": 71.320751,
+      "params_text": "Scale-out \u2153 at $82.50 LIMIT. (group POS-GDXU-ALL; Rodney absolute ladder)"
+    },
+    {
+      "id": "TS-GDXU-12",
+      "symbol": "GDXU",
+      "type": "TRAILING_STOP_LIMIT_SELL",
+      "status": "WAITING_SCALE",
+      "arm_price": 82.5,
+      "trail_pct": 0.02,
+      "fill_at_market": true,
+      "entry_group": "POS-GDXU-ALL",
+      "entry_price": 71.320751,
+      "arm_after_scale_level": 2,
+      "params_text": "Remaining \u2153: 2% trail market arms after SO #2 ($82.50) fills. (group POS-GDXU-ALL; Rodney 2026-11-04)"
     }
   ],
   "trade_log": [
@@ -319,6 +371,15 @@
       "price": 0,
       "cash_after": 50000.0,
       "rationale": "Rodney: Remove hard stops. Cancelled ['HS-GDXU-2', 'HS-GDXU-3']."
+    },
+    {
+      "time": "2026-11-04T10:11:46Z",
+      "side": "EXIT_LADDER",
+      "symbol": "GDXU",
+      "qty": 2103.174701795714,
+      "price": 0,
+      "cash_after": 50000.0,
+      "rationale": "Rodney ladder POS-GDXU-ALL: HS $75\u2192$82 after SO1; SO $77.50/$82.50; trail 2% after SO2. Cancelled ['TS-GDXU-11', 'TS-GDXU-2', 'TS-GDXU-3']. qty/3=701.0582"
     }
   ],
   "events": [
@@ -380,7 +441,7 @@
     "stop_exit": "MARKET",
     "profits_buy": "SATA",
     "sata_policy": "HOLD_FOR_DAILY_DIVIDENDS_NO_SELL",
-    "note": "No scale-outs and no hard stops (Rodney 2026-11-04). Trail-only exits. SATA hold for dividends. Profits\u2192SATA when sells fill.",
+    "note": "GDXU position ladder (Rodney 2026-11-04): HS $75 (raise to $82 after SO1); SO $77.50 / $82.50; rem 2% trail after SO2. New buys: still trail-only unless overridden.",
     "no_scale_outs": true,
     "scale_out_levels": [],
     "symbol_exits": {
