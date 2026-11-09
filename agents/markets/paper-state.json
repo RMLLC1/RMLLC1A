@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
   "cash": 0.0,
-  "updated": "2026-11-09T19:16:57Z",
+  "updated": "2026-11-09T20:00:40Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -24,21 +24,21 @@
       "cost_basis": 45121.19,
       "hold_for_dividends": true,
       "no_sell": true,
-      "last_upl_pct": -1.08
+      "last_upl_pct": -0.43
     },
     {
       "symbol": "NVDA",
       "qty": 283.9907002752373,
       "avg_cost": 176.062103,
       "cost_basis": 50000.0,
-      "last_upl_pct": 0.0
+      "last_upl_pct": 0.66
     },
     {
       "symbol": "MRVL",
       "qty": 326.360101840128,
       "avg_cost": 153.205002,
       "cost_basis": 50000.0,
-      "last_upl_pct": 0.0
+      "last_upl_pct": 0.31
     }
   ],
   "orders": [
@@ -529,24 +529,30 @@
       "symbol": "NVDA",
       "type": "TRAILING_STOP_LIMIT_SELL",
       "status": "PENDING_ARM",
-      "arm_price": 177.8227,
+      "arm_price": 179.5833,
       "trail_pct": 0.005,
       "fill_at_market": true,
       "entry_group": "BB-NVDA-1",
       "entry_price": 176.06210327148438,
-      "params_text": "Arm +1% \u2192 $177.8227. Trail 0.5% \u2192 market sell on reverse. (group BB-NVDA-1)"
+      "params_text": "Arm \u2192 $179.5833. Trail 0.5% \u2192 market sell on reverse. (group BB-NVDA-1; NO hard stop; NO scale-outs; arm +2% per Rodney 2026-11-09)",
+      "arm_pct": 0.02,
+      "no_hard_stop": true,
+      "no_scale_outs": true
     },
     {
       "id": "TS-MRVL-1",
       "symbol": "MRVL",
       "type": "TRAILING_STOP_LIMIT_SELL",
       "status": "PENDING_ARM",
-      "arm_price": 154.7371,
+      "arm_price": 156.2691,
       "trail_pct": 0.005,
       "fill_at_market": true,
       "entry_group": "BB-MRVL-1",
       "entry_price": 153.2050018310547,
-      "params_text": "Arm +1% \u2192 $154.7371. Trail 0.5% \u2192 market sell on reverse. (group BB-MRVL-1)"
+      "params_text": "Arm \u2192 $156.2691. Trail 0.5% \u2192 market sell on reverse. (group BB-MRVL-1; NO hard stop; NO scale-outs; arm +2% per Rodney 2026-11-09)",
+      "arm_pct": 0.02,
+      "no_hard_stop": true,
+      "no_scale_outs": true
     }
   ],
   "trade_log": [
@@ -768,30 +774,6 @@
     }
   ],
   "events": [
-    "2026-11-04T20:10:10Z cancelled HS-GDXU-10 \u2014 trail TS-GDXU-14 ARMED",
-    "2026-11-04T20:10:10Z cancelled HS-GDXU-12 \u2014 trail TS-GDXU-14 ARMED",
-    "2026-11-04T20:10:10Z GDXU mark=82.5800 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 80.9284}",
-    "2026-11-04T20:10:10Z SATA mark=98.0450 {'id': 'PB-SATA-5', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 80.50782954168228, 'price': 98.04499816894531, 'cost': 7893.39}",
-    "2026-11-04T20:10:57Z GDXU mark=82.5800 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 80.9284}",
-    "2026-11-04T20:15:20Z GDXU mark=82.3150 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 80.9284}",
-    "2026-11-04T20:20:22Z GDXU mark=82.5300 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 80.9284}",
-    "2026-11-04T20:25:11Z GDXU mark=82.5600 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 80.9284}",
-    "2026-11-04T20:30:15Z GDXU mark=82.6900 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 82.69000244140625, 'stop': 81.0362}",
-    "2026-11-04T20:35:08Z GDXU mark=83.3650 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 83.36499786376953, 'stop': 81.6977}",
-    "2026-11-04T20:40:08Z GDXU mark=83.0200 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.6977}",
-    "2026-11-04T20:45:07Z GDXU mark=82.7221 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.6977}",
-    "2026-11-04T20:50:18Z GDXU mark=82.4100 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.6977}",
-    "2026-11-04T20:55:22Z GDXU mark=82.6200 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.6977}",
-    "2026-11-04T21:00:12Z GDXU mark=82.5400 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.6977}",
-    "2026-11-04T21:05:15Z GDXU mark=83.4000 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 83.4, 'stop': 81.732}",
-    "2026-11-04T21:10:22Z GDXU mark=83.0900 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
-    "2026-11-04T21:15:18Z GDXU mark=83.0900 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
-    "2026-11-04T21:20:19Z GDXU mark=83.0000 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
-    "2026-11-04T21:25:15Z GDXU mark=83.1400 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
-    "2026-11-04T21:30:09Z GDXU mark=83.1400 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
-    "2026-11-04T21:35:09Z GDXU mark=82.2700 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
-    "2026-11-04T21:40:12Z GDXU mark=82.1000 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
-    "2026-11-04T21:45:17Z GDXU mark=82.7000 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
     "2026-11-04T21:50:15Z GDXU mark=82.7000 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
     "2026-11-04T21:55:15Z GDXU mark=82.0000 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
     "2026-11-04T22:00:11Z GDXU mark=81.7500 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 81.732}",
@@ -817,7 +799,31 @@
     "2026-11-09T19:16:57Z MRVL attached TS-MRVL-1 PENDING_ARM arm=154.7371",
     "2026-11-09T19:16:57Z MRVL no hard stop (Rodney DCA / no_hard_stop) group=BB-MRVL-1",
     "2026-11-09T19:16:57Z NVDA mark=176.0621 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
-    "2026-11-09T19:16:57Z MRVL mark=153.2050 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}"
+    "2026-11-09T19:16:57Z MRVL mark=153.2050 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:20:22Z NVDA mark=176.1800 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:20:22Z MRVL mark=152.9750 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:20:38Z APPLIED recommended exits NVDA/MRVL: arm +2% / trail 0.5% market; no hard stop; no scale-outs",
+    "2026-11-09T19:20:38Z NVDA mark=176.2550 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:20:38Z MRVL mark=153.0150 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:25:23Z NVDA mark=176.2000 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:25:23Z MRVL mark=153.1100 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:30:18Z NVDA mark=175.9550 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:30:18Z MRVL mark=153.1600 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:35:16Z NVDA mark=175.9150 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:35:16Z MRVL mark=153.4000 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:40:15Z NVDA mark=176.7900 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:40:15Z MRVL mark=154.5700 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:45:23Z NVDA mark=176.6300 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:45:23Z MRVL mark=153.9100 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:50:24Z NVDA mark=176.7300 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:50:24Z MRVL mark=153.5750 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:55:09Z NVDA mark=176.6200 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:55:09Z MRVL mark=153.1990 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T20:00:10Z NVDA mark=177.0800 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T20:00:10Z MRVL mark=153.3201 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}",
+    "2026-11-09T20:00:25Z WATCHLIST set always=['GDXU', 'UXRP', 'SATA'] + open positions ['MRVL', 'NVDA', 'SATA']; monitor every 5m in NYSE extended hours",
+    "2026-11-09T20:00:40Z NVDA mark=177.2200 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T20:00:40Z MRVL mark=153.6800 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}"
   ],
   "auto_execute": true,
   "standing_rules": {
@@ -841,6 +847,20 @@
         "no_scale_outs": true,
         "arm_after_scale_level": null,
         "no_hard_stop": true
+      },
+      "NVDA": {
+        "arm_pct": 0.02,
+        "trail_pct": 0.005,
+        "no_hard_stop": true,
+        "no_scale_outs": true,
+        "scale_out_levels": []
+      },
+      "MRVL": {
+        "arm_pct": 0.02,
+        "trail_pct": 0.005,
+        "no_hard_stop": true,
+        "no_scale_outs": true,
+        "scale_out_levels": []
       }
     },
     "no_hard_stop": true,
@@ -852,7 +872,13 @@
       "trail_pct": 0.02
     },
     "daily_dividend_reinvest": true,
-    "note_dividend_reinvest": "Daily: any dividend_cash \u2265 $1 \u2192 BUY_BEST SATA (fractional OK). Rodney 2026-11-09."
+    "note_dividend_reinvest": "Daily: any dividend_cash \u2265 $1 \u2192 BUY_BEST SATA (fractional OK). Rodney 2026-11-09.",
+    "watchlist_always": [
+      "GDXU",
+      "UXRP",
+      "SATA"
+    ],
+    "watchlist_monitor_extended_hours": true
   },
   "dividend_cash": 0,
   "last_sata_dividend_day": "2026-11-09",

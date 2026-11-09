@@ -1,6 +1,6 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-11-09T19:16:57Z  
+**Updated:** 2026-11-09T20:00:40Z  
 **Base currency:** USD  
 **Starting cash:** 200,000.00  
 **Cash:** 0.00  
@@ -21,21 +21,21 @@
 - **Hold for daily dividends — do not sell** income SATA unless Rodney overrides.
 
 **Marks:**
-- BTC-USD: **$74589.9062** (yahoo_v8_chart_1m)
-- GDXU: **$101.9600** (yahoo_v8_chart_1m)
-- MRVL: **$153.2050** (yahoo_v8_chart_1m)
-- NVDA: **$176.0621** (yahoo_v8_chart_1m)
-- SATA: **$96.8050** (yahoo_v8_chart_1m)
-- UXRP: **$8.6300** (yahoo_v8_chart_1m)
-- XRP-USD: **$1.0922** (yahoo_v8_chart_1m)
+- BTC-USD: **$74813.3281** (yahoo_v8_chart_1m)
+- GDXU: **$105.1000** (yahoo_v8_chart_1m)
+- MRVL: **$153.6800** (yahoo_v8_chart_1m)
+- NVDA: **$177.2200** (yahoo_v8_chart_1m)
+- SATA: **$97.4450** (yahoo_v8_chart_1m)
+- UXRP: **$8.6776** (yahoo_v8_chart_1m)
+- XRP-USD: **$1.0931** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Side | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| SATA | LONG | 461.0472 | 97.8667 | 45,121.19 | 96.8050 | -489.51 |
-| NVDA | LONG | 283.9907 | 176.0621 | 50,000.00 | 176.0621 | 0.00 |
-| MRVL | LONG | 326.3601 | 153.2050 | 50,000.00 | 153.2050 | 0.00 |
+| SATA | LONG | 461.0472 | 97.8667 | 45,121.19 | 97.4450 | -194.44 |
+| NVDA | LONG | 283.9907 | 176.0621 | 50,000.00 | 177.2200 | 328.83 |
+| MRVL | LONG | 326.3601 | 153.2050 | 50,000.00 | 153.6800 | 155.02 |
 
 ## Open orders (PAPER)
 
@@ -43,8 +43,8 @@
 | --- | --- | --- | --- | --- |
 | PB-SATA-3 | SATA | BUY_BEST | **UNWOUND** | Buy $8664.03 SATA (trading profit + any dividend cash). HOLD for daily dividends — do not sell. UNWOUND 2026-11-04T10:30:59Z per Rodney (paper rewind profit→SATA after HS). UNWOUND 2026-11-04T10:31:45Z paper rewind (do not re-fire). |
 | PB-SATA-4 | SATA | BUY_BEST | **UNWOUND** | Buy $8621.96 SATA (trading profit + any dividend cash). HOLD for daily dividends — do not sell. UNWOUND 2026-11-04T10:31:45Z paper rewind (do not re-fire). |
-| TS-NVDA-1 | NVDA | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +1% → $177.8227. Trail 0.5% → market sell on reverse. (group BB-NVDA-1) |
-| TS-MRVL-1 | MRVL | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +1% → $154.7371. Trail 0.5% → market sell on reverse. (group BB-MRVL-1) |
+| TS-NVDA-1 | NVDA | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm → $179.5833. Trail 0.5% → market sell on reverse. (group BB-NVDA-1; NO hard stop; NO scale-outs; arm +2% per Rodney 2026-11-09) |
+| TS-MRVL-1 | MRVL | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm → $156.2691. Trail 0.5% → market sell on reverse. (group BB-MRVL-1; NO hard stop; NO scale-outs; arm +2% per Rodney 2026-11-09) |
 
 ## Trade log (buys/sells)
 
@@ -63,18 +63,18 @@
 
 ## Recent events
 
-- 2026-11-09T19:00:34Z dividend_cash $71.2563 → SATA daily reinvest (~0.7347 sh @ ~$96.99)
-- 2026-11-09T19:00:34Z SATA mark=96.9900 {'id': 'PB-SATA-7', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 0.7347149352461123, 'price': 96.98999786376953, 'cost': 71.26}
-- 2026-11-09T19:16:20Z TEXT queued BB-NVDA-1 BUY_BEST NVDA $50000.0
-- 2026-11-09T19:16:20Z TEXT queued BB-MRVL-1 BUY_BEST MRVL $50000.0
-- 2026-11-09T19:16:57Z NVDA mark=176.0621 {'id': 'BB-NVDA-1', 'symbol': 'NVDA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 283.9907002752373, 'price': 176.06210327148438, 'cost': 50000.0}
-- 2026-11-09T19:16:57Z NVDA attached TS-NVDA-1 PENDING_ARM arm=177.8227
-- 2026-11-09T19:16:57Z NVDA no hard stop (Rodney DCA / no_hard_stop) group=BB-NVDA-1
-- 2026-11-09T19:16:57Z MRVL mark=153.2050 {'id': 'BB-MRVL-1', 'symbol': 'MRVL', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 326.360101840128, 'price': 153.2050018310547, 'cost': 50000.0}
-- 2026-11-09T19:16:57Z MRVL attached TS-MRVL-1 PENDING_ARM arm=154.7371
-- 2026-11-09T19:16:57Z MRVL no hard stop (Rodney DCA / no_hard_stop) group=BB-MRVL-1
-- 2026-11-09T19:16:57Z NVDA mark=176.0621 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
-- 2026-11-09T19:16:57Z MRVL mark=153.2050 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
+- 2026-11-09T19:40:15Z MRVL mark=154.5700 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
+- 2026-11-09T19:45:23Z NVDA mark=176.6300 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
+- 2026-11-09T19:45:23Z MRVL mark=153.9100 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
+- 2026-11-09T19:50:24Z NVDA mark=176.7300 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
+- 2026-11-09T19:50:24Z MRVL mark=153.5750 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
+- 2026-11-09T19:55:09Z NVDA mark=176.6200 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
+- 2026-11-09T19:55:09Z MRVL mark=153.1990 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
+- 2026-11-09T20:00:10Z NVDA mark=177.0800 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
+- 2026-11-09T20:00:10Z MRVL mark=153.3201 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
+- 2026-11-09T20:00:25Z WATCHLIST set always=['GDXU', 'UXRP', 'SATA'] + open positions ['MRVL', 'NVDA', 'SATA']; monitor every 5m in NYSE extended hours
+- 2026-11-09T20:00:40Z NVDA mark=177.2200 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
+- 2026-11-09T20:00:40Z MRVL mark=153.6800 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
 
 ## Rules
 

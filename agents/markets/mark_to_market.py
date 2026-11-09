@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parent
 STATE_PATH = ROOT / "paper-state.json"
 MARKS_PATH = ROOT / "last_marks.json"
 PORTFOLIO_MD = ROOT / "paper-portfolio.md"
+WATCHLIST_PATH = ROOT / "watchlist.json"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; JohnMarkBot/1.0)"}
 NY_TZ = ZoneInfo("America/New_York")
 
@@ -1778,15 +1779,50 @@ def main() -> None:
         return
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    # Fetch core symbols plus any live position/order tickers (e.g. new text buys).
+    # Fetch core symbols + watchlist always-include + live position/order tickers.
     state_early = json.loads(STATE_PATH.read_text())
     live_syms = set(SYMBOLS)
+    # Rodney watchlist: always GDXU/UXRP/SATA + any open positions (refreshed each poll).
+    always = ["GDXU", "UXRP", "SATA"]
+    pos_syms: list[str] = []
     for p in state_early.get("positions") or []:
         if float(p.get("qty") or 0) != 0 and p.get("symbol"):
-            live_syms.add(str(p["symbol"]).upper())
+            sym = str(p["symbol"]).upper()
+            live_syms.add(sym)
+            pos_syms.append(sym)
     for o in state_early.get("orders") or []:
-        if o.get("status") in {"OPEN", "WORKING", "ARMED", "WAITING"} and o.get("symbol"):
+        if o.get("status") in {"OPEN", "WORKING", "ARMED", "WAITING", "PENDING_ARM"} and o.get(
+            "symbol"
+        ):
             live_syms.add(str(o["symbol"]).upper())
+    live_syms.update(always)
+    if WATCHLIST_PATH.exists():
+        try:
+            wl = json.loads(WATCHLIST_PATH.read_text())
+            always = [str(s).upper() for s in (wl.get("always_include") or always)]
+            live_syms.update(always)
+            live_syms.update(str(s).upper() for s in (wl.get("symbols") or []))
+        except Exception:
+            pass
+    # Keep watchlist.json in sync with open positions each poll.
+    watch_syms = list(dict.fromkeys(always + sorted(set(pos_syms))))
+    WATCHLIST_PATH.write_text(
+        json.dumps(
+            {
+                "updated": now,
+                "always_include": always,
+                "symbols": watch_syms,
+                "open_position_symbols": sorted(set(pos_syms)),
+                "monitor": {
+                    "interval_seconds": 300,
+                    "session": "NYSE extended hours Mon–Fri 04:00–20:00 America/New_York",
+                    "via": "telegram-keepalive-300s + mark_to_market.py",
+                },
+            },
+            indent=2,
+        )
+        + "\n"
+    )
     marks = {s: fetch_yahoo(s) for s in sorted(live_syms)}
     MARKS_PATH.write_text(json.dumps({"updated": now, "marks": marks}, indent=2) + "\n")
 

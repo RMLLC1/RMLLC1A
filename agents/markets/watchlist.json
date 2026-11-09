@@ -1,0 +1,25 @@
+{
+  "updated": "2026-11-09T20:00:40Z",
+  "always_include": [
+    "GDXU",
+    "UXRP",
+    "SATA"
+  ],
+  "symbols": [
+    "GDXU",
+    "UXRP",
+    "SATA",
+    "MRVL",
+    "NVDA"
+  ],
+  "open_position_symbols": [
+    "MRVL",
+    "NVDA",
+    "SATA"
+  ],
+  "monitor": {
+    "interval_seconds": 300,
+    "session": "NYSE extended hours Mon\u2013Fri 04:00\u201320:00 America/New_York",
+    "via": "telegram-keepalive-300s + mark_to_market.py"
+  }
+}
