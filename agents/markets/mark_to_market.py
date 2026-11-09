@@ -234,22 +234,29 @@ def queue_sata_profit_buy(state: dict, profit: float, events: list, now: str) ->
 def try_reinvest_dividend_cash(
     state: dict, sata_mark: float | None, events: list, now: str
 ) -> float:
-    """When dividend_cash alone can buy ≥1 SATA share, reinvest at best. Returns cash to add."""
+    """Reinvest dividend_cash into SATA at best (daily; any balance ≥ $1). Returns cash to add."""
+    rules = state.get("standing_rules") or {}
+    # Default ON per Rodney 2026-11-09; set standing_rules.daily_dividend_reinvest=false to pause.
+    if rules.get("daily_dividend_reinvest", True) is False:
+        return 0.0
     if sata_mark is None or sata_mark <= 0:
         return 0.0
     div = round(float(state.get("dividend_cash") or 0), 4)
-    if div < float(sata_mark):
+    # Queue floor is $1 notional — buy fractional SATA; do not wait for a full share.
+    if div < 1.0:
         return 0.0
     state["dividend_cash"] = 0
     _queue_sata_buy(
         state,
         div,
         "DIVIDEND_REINVEST",
-        "Reinvest ${NOTIONAL} SATA dividend cash. HOLD for daily dividends — do not sell.",
+        "Reinvest ${NOTIONAL} SATA dividend cash (daily). HOLD for daily dividends — do not sell.",
         events,
         now,
     )
-    events.append(f"{now} dividend_cash ${div:.4f} → SATA reinvest (≥1 share @ ~${sata_mark:.2f})")
+    events.append(
+        f"{now} dividend_cash ${div:.4f} → SATA daily reinvest (~{div / float(sata_mark):.4f} sh @ ~${sata_mark:.2f})"
+    )
     return div
 
 
@@ -1655,7 +1662,7 @@ def render_md(state: dict, marks: dict) -> str:
         "- **Trading exits:** default hard **−2%** / arm **+1%** / trail **0.5%** market / scale **⅓@+2%** + **⅓@+5%**. **UXRP:** hard **−3%** / arm **+2%** / trail **0.5%**. **GDXU:** hard **−4.5%** / arm **+3%** / trail **0.5%** / scale **⅓@+3%** + **⅓@+7%**.",
         "- **Income SATA (~dividends sleeve):** no stops / no scale-outs / no sells unless Rodney overrides.",
         "- Open paper orders auto-fill when conditions hit (no manual confirm).",
-        "- **Profits → SATA:** realized **trading** profit buys **SATA** at best; **dividend_cash** reinvests when ≥1 share, else merges into the next profit→SATA buy.",
+        "- **Profits → SATA:** realized **trading** profit buys **SATA** at best; **dividend_cash** reinvests daily into SATA (any balance ≥ $1; fractional OK).",
         "- **Hold for daily dividends — do not sell** income SATA unless Rodney overrides.",
         "",
         "**Marks:**",

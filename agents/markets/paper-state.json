@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
   "cash": 100000.0,
-  "updated": "2026-11-09T18:31:04Z",
+  "updated": "2026-11-09T19:00:49Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -19,12 +19,12 @@
     },
     {
       "symbol": "SATA",
-      "qty": 460.3125112150847,
-      "avg_cost": 97.868142,
-      "cost_basis": 45049.93,
+      "qty": 461.04722615033086,
+      "avg_cost": 97.866742,
+      "cost_basis": 45121.19,
       "hold_for_dividends": true,
       "no_sell": true,
-      "last_upl_pct": -1.14
+      "last_upl_pct": -0.9
     }
   ],
   "orders": [
@@ -459,6 +459,18 @@
       "params_text": "Buy $7136.25 SATA (trading profit + any dividend cash). HOLD for daily dividends \u2014 do not sell.",
       "fill_price": 97.53,
       "fill_qty": 73.16979390956628
+    },
+    {
+      "id": "PB-SATA-7",
+      "symbol": "SATA",
+      "type": "BUY_BEST",
+      "status": "FILLED",
+      "notional": 71.26,
+      "attach_trailing_stop": false,
+      "purpose": "DIVIDEND_REINVEST",
+      "params_text": "Reinvest $71.26 SATA dividend cash (daily). HOLD for daily dividends \u2014 do not sell.",
+      "fill_price": 96.98999786376953,
+      "fill_qty": 0.7347149352461123
     }
   ],
   "trade_log": [
@@ -650,14 +662,18 @@
       "price": 97.53,
       "cash_after": 200000.0,
       "rationale": "Profit\u2192SATA PB-SATA-6 auto-filled; hold for dividends"
+    },
+    {
+      "time": "2026-11-09T19:00:34Z",
+      "side": "BUY",
+      "symbol": "SATA",
+      "qty": 0.7347149352461123,
+      "price": 96.98999786376953,
+      "cash_after": 100000.0,
+      "rationale": "Dividend reinvest\u2192SATA PB-SATA-7 auto-filled; hold for dividends"
     }
   ],
   "events": [
-    "2026-11-04T19:45:07Z GDXU mark=81.9500 {'id': 'HS-GDXU-12', 'symbol': 'GDXU', 'event': 'HARD_STOP_HOLD', 'stop': 75.0}",
-    "2026-11-04T19:45:07Z GDXU mark=81.9500 {'id': 'SO-GDXU-34', 'symbol': 'GDXU', 'event': 'WORKING_SELL', 'limit': 82.5}",
-    "2026-11-04T19:50:14Z GDXU mark=81.8500 {'id': 'HS-GDXU-12', 'symbol': 'GDXU', 'event': 'HARD_STOP_HOLD', 'stop': 75.0}",
-    "2026-11-04T19:50:14Z GDXU mark=81.8500 {'id': 'SO-GDXU-34', 'symbol': 'GDXU', 'event': 'WORKING_SELL', 'limit': 82.5}",
-    "2026-11-04T19:55:13Z GDXU mark=81.7498 {'id': 'HS-GDXU-12', 'symbol': 'GDXU', 'event': 'HARD_STOP_HOLD', 'stop': 75.0}",
     "2026-11-04T19:55:13Z GDXU mark=81.7498 {'id': 'SO-GDXU-34', 'symbol': 'GDXU', 'event': 'WORKING_SELL', 'limit': 82.5}",
     "2026-11-04T20:00:15Z GDXU mark=81.8300 {'id': 'HS-GDXU-12', 'symbol': 'GDXU', 'event': 'HARD_STOP_HOLD', 'stop': 75.0}",
     "2026-11-04T20:00:15Z GDXU mark=81.8300 {'id': 'SO-GDXU-34', 'symbol': 'GDXU', 'event': 'WORKING_SELL', 'limit': 82.5}",
@@ -703,7 +719,11 @@
     "2026-11-06T00:00:19Z SATA DIVIDEND paper $23.7521 (460.3125 \u00d7 $0.0516) \u2192 dividend_cash",
     "2026-11-09T09:00:17Z SATA DIVIDEND paper $23.7521 (460.3125 \u00d7 $0.0516) \u2192 dividend_cash",
     "2026-11-09T18:20:37Z CASH_SET trading cash 200000.00 \u2192 100000.00 per Rodney (SATA + dividend_cash unchanged)",
-    "2026-11-09T18:31:04Z INIT dividends_earned_total=$151.7897 from dividend_log (Rodney: daily running total)"
+    "2026-11-09T18:31:04Z INIT dividends_earned_total=$151.7897 from dividend_log (Rodney: daily running total)",
+    "2026-11-09T19:00:34Z STANDING: daily_dividend_reinvest=true (any dividend_cash\u2265$1 \u2192 SATA)",
+    "2026-11-09T19:00:34Z queued PB-SATA-7 $71.26 (DIVIDEND_REINVEST)",
+    "2026-11-09T19:00:34Z dividend_cash $71.2563 \u2192 SATA daily reinvest (~0.7347 sh @ ~$96.99)",
+    "2026-11-09T19:00:34Z SATA mark=96.9900 {'id': 'PB-SATA-7', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 0.7347149352461123, 'price': 96.98999786376953, 'cost': 71.26}"
   ],
   "auto_execute": true,
   "standing_rules": {
@@ -736,9 +756,11 @@
       "raise_after_scale_level": 2,
       "so2": 82.5,
       "trail_pct": 0.02
-    }
+    },
+    "daily_dividend_reinvest": true,
+    "note_dividend_reinvest": "Daily: any dividend_cash \u2265 $1 \u2192 BUY_BEST SATA (fractional OK). Rodney 2026-11-09."
   },
-  "dividend_cash": 71.2563,
+  "dividend_cash": 0,
   "last_sata_dividend_day": "2026-11-09",
   "dividend_log": [
     {
