@@ -142,12 +142,26 @@ def credit_sata_dividends(state: dict, now: str, events: list) -> None:
         return
     amount = round(qty * SATA_DAILY_DIV, 4)
     state["dividend_cash"] = round(float(state.get("dividend_cash") or 0) + amount, 4)
+    # Lifetime running total (survives dividend_log trim); never reset on reinvest/sweep.
+    state["dividends_earned_total"] = round(
+        float(state.get("dividends_earned_total") or 0) + amount, 4
+    )
     state["last_sata_dividend_day"] = day
     state.setdefault("dividend_log", []).append(
-        {"date": day, "symbol": "SATA", "qty": qty, "per_share": SATA_DAILY_DIV, "amount": amount}
+        {
+            "date": day,
+            "symbol": "SATA",
+            "qty": qty,
+            "per_share": SATA_DAILY_DIV,
+            "amount": amount,
+            "earned_total_after": state["dividends_earned_total"],
+        }
     )
     state["dividend_log"] = state["dividend_log"][-90:]
-    events.append(f"{now} SATA DIVIDEND paper ${amount} ({qty:.4f} × ${SATA_DAILY_DIV}) → dividend_cash")
+    events.append(
+        f"{now} SATA DIVIDEND paper ${amount} ({qty:.4f} × ${SATA_DAILY_DIV}) → dividend_cash "
+        f"(earned_total ${state['dividends_earned_total']:.4f})"
+    )
 
 
 def _queue_sata_buy(
@@ -1629,6 +1643,7 @@ def render_md(state: dict, marks: dict) -> str:
         f"**Starting cash:** {state['starting_cash']:,.2f}  ",
         f"**Cash:** {cash:,.2f}  ",
         f"**Dividend cash (SATA collected):** {float(state.get('dividend_cash') or 0):,.4f}  ",
+        f"**Dividends earned total (running):** {float(state.get('dividends_earned_total') or 0):,.4f}  ",
         "**Mode:** PAPER only — **auto-execute** open buy/sell orders on each poll  ",
         "**Price feed:** Yahoo Finance v8 1m chart (near-live poll; premarket + regular; may lag)  ",
         "**Notify:** Gmail + Telegram on buy/sell fills (with balances) — never on mark/price updates  ",
@@ -2252,6 +2267,7 @@ def main() -> None:
         "marks": {k: v.get("mark") for k, v in marks.items()},
         "cash": state["cash"],
         "dividend_cash": state.get("dividend_cash", 0),
+        "dividends_earned_total": state.get("dividends_earned_total", 0),
         "big_items": fills,  # buy/sell fills only; empty ⇒ no email
         "text_orders": text_summary,
         "events_tail": events[-5:],
