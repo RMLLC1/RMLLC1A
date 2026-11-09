@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
-  "cash": 100000.0,
-  "updated": "2026-11-09T19:00:49Z",
+  "cash": 0.0,
+  "updated": "2026-11-09T19:16:57Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -24,7 +24,21 @@
       "cost_basis": 45121.19,
       "hold_for_dividends": true,
       "no_sell": true,
-      "last_upl_pct": -0.9
+      "last_upl_pct": -1.08
+    },
+    {
+      "symbol": "NVDA",
+      "qty": 283.9907002752373,
+      "avg_cost": 176.062103,
+      "cost_basis": 50000.0,
+      "last_upl_pct": 0.0
+    },
+    {
+      "symbol": "MRVL",
+      "qty": 326.360101840128,
+      "avg_cost": 153.205002,
+      "cost_basis": 50000.0,
+      "last_upl_pct": 0.0
     }
   ],
   "orders": [
@@ -471,6 +485,68 @@
       "params_text": "Reinvest $71.26 SATA dividend cash (daily). HOLD for daily dividends \u2014 do not sell.",
       "fill_price": 96.98999786376953,
       "fill_qty": 0.7347149352461123
+    },
+    {
+      "id": "BB-NVDA-1",
+      "symbol": "NVDA",
+      "type": "BUY_BEST",
+      "status": "FILLED",
+      "notional": 50000.0,
+      "attach_trailing_stop": true,
+      "attach_trading_exits": true,
+      "arm_pct": 0.01,
+      "trail_pct": 0.005,
+      "no_hard_stop": true,
+      "no_scale_outs": true,
+      "scale_out_levels": [],
+      "source": "text_order",
+      "text_order_id": "TO-20261109191604-8206f4",
+      "params_text": "Text: buy $50,000 NVDA at best. Exits: +1% arm / 0.5% trail market. NO hard stop. NO scale-outs.",
+      "fill_price": 176.06210327148438,
+      "fill_qty": 283.9907002752373
+    },
+    {
+      "id": "BB-MRVL-1",
+      "symbol": "MRVL",
+      "type": "BUY_BEST",
+      "status": "FILLED",
+      "notional": 50000.0,
+      "attach_trailing_stop": true,
+      "attach_trading_exits": true,
+      "arm_pct": 0.01,
+      "trail_pct": 0.005,
+      "no_hard_stop": true,
+      "no_scale_outs": true,
+      "scale_out_levels": [],
+      "source": "text_order",
+      "text_order_id": "TO-20261109191604-ac920e",
+      "params_text": "Text: buy $50,000 MRVL at best. Exits: +1% arm / 0.5% trail market. NO hard stop. NO scale-outs.",
+      "fill_price": 153.2050018310547,
+      "fill_qty": 326.360101840128
+    },
+    {
+      "id": "TS-NVDA-1",
+      "symbol": "NVDA",
+      "type": "TRAILING_STOP_LIMIT_SELL",
+      "status": "PENDING_ARM",
+      "arm_price": 177.8227,
+      "trail_pct": 0.005,
+      "fill_at_market": true,
+      "entry_group": "BB-NVDA-1",
+      "entry_price": 176.06210327148438,
+      "params_text": "Arm +1% \u2192 $177.8227. Trail 0.5% \u2192 market sell on reverse. (group BB-NVDA-1)"
+    },
+    {
+      "id": "TS-MRVL-1",
+      "symbol": "MRVL",
+      "type": "TRAILING_STOP_LIMIT_SELL",
+      "status": "PENDING_ARM",
+      "arm_price": 154.7371,
+      "trail_pct": 0.005,
+      "fill_at_market": true,
+      "entry_group": "BB-MRVL-1",
+      "entry_price": 153.2050018310547,
+      "params_text": "Arm +1% \u2192 $154.7371. Trail 0.5% \u2192 market sell on reverse. (group BB-MRVL-1)"
     }
   ],
   "trade_log": [
@@ -671,19 +747,27 @@
       "price": 96.98999786376953,
       "cash_after": 100000.0,
       "rationale": "Dividend reinvest\u2192SATA PB-SATA-7 auto-filled; hold for dividends"
+    },
+    {
+      "time": "2026-11-09T19:16:57Z",
+      "side": "BUY",
+      "symbol": "NVDA",
+      "qty": 283.9907002752373,
+      "price": 176.06210327148438,
+      "cash_after": 50000.0,
+      "rationale": "BUY_BEST BB-NVDA-1 auto-filled at best available"
+    },
+    {
+      "time": "2026-11-09T19:16:57Z",
+      "side": "BUY",
+      "symbol": "MRVL",
+      "qty": 326.360101840128,
+      "price": 153.2050018310547,
+      "cash_after": 0.0,
+      "rationale": "BUY_BEST BB-MRVL-1 auto-filled at best available"
     }
   ],
   "events": [
-    "2026-11-04T19:55:13Z GDXU mark=81.7498 {'id': 'SO-GDXU-34', 'symbol': 'GDXU', 'event': 'WORKING_SELL', 'limit': 82.5}",
-    "2026-11-04T20:00:15Z GDXU mark=81.8300 {'id': 'HS-GDXU-12', 'symbol': 'GDXU', 'event': 'HARD_STOP_HOLD', 'stop': 75.0}",
-    "2026-11-04T20:00:15Z GDXU mark=81.8300 {'id': 'SO-GDXU-34', 'symbol': 'GDXU', 'event': 'WORKING_SELL', 'limit': 82.5}",
-    "2026-11-04T20:05:13Z GDXU mark=82.1850 {'id': 'HS-GDXU-12', 'symbol': 'GDXU', 'event': 'HARD_STOP_HOLD', 'stop': 75.0}",
-    "2026-11-04T20:05:13Z GDXU mark=82.1850 {'id': 'SO-GDXU-34', 'symbol': 'GDXU', 'event': 'WORKING_SELL', 'limit': 82.5}",
-    "2026-11-04T20:10:10Z GDXU mark=82.5800 {'id': 'HS-GDXU-12', 'symbol': 'GDXU', 'event': 'HARD_STOP_HOLD', 'stop': 75.0}",
-    "2026-11-04T20:10:10Z GDXU mark=82.5800 {'id': 'SO-GDXU-34', 'symbol': 'GDXU', 'event': 'FILLED_SELL', 'side': 'SELL', 'qty': 701.0582339319047, 'price': 82.58000183105469, 'proceeds': 57893.39, 'limit': 82.5}",
-    "2026-11-04T20:10:10Z queued PB-SATA-5 $7893.39 (PROFIT_TO_SATA)",
-    "2026-11-04T20:10:10Z GDXU HS-GDXU-12 hard stop \u2192 raised to $82.0000 (after scale #2; was 75.0)",
-    "2026-11-04T20:10:10Z GDXU TS-GDXU-14 ARMED after scale-out hw=82.5800 stop=80.9284",
     "2026-11-04T20:10:10Z cancelled HS-GDXU-10 \u2014 trail TS-GDXU-14 ARMED",
     "2026-11-04T20:10:10Z cancelled HS-GDXU-12 \u2014 trail TS-GDXU-14 ARMED",
     "2026-11-04T20:10:10Z GDXU mark=82.5800 {'id': 'TS-GDXU-14', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 80.9284}",
@@ -723,7 +807,17 @@
     "2026-11-09T19:00:34Z STANDING: daily_dividend_reinvest=true (any dividend_cash\u2265$1 \u2192 SATA)",
     "2026-11-09T19:00:34Z queued PB-SATA-7 $71.26 (DIVIDEND_REINVEST)",
     "2026-11-09T19:00:34Z dividend_cash $71.2563 \u2192 SATA daily reinvest (~0.7347 sh @ ~$96.99)",
-    "2026-11-09T19:00:34Z SATA mark=96.9900 {'id': 'PB-SATA-7', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 0.7347149352461123, 'price': 96.98999786376953, 'cost': 71.26}"
+    "2026-11-09T19:00:34Z SATA mark=96.9900 {'id': 'PB-SATA-7', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 0.7347149352461123, 'price': 96.98999786376953, 'cost': 71.26}",
+    "2026-11-09T19:16:20Z TEXT queued BB-NVDA-1 BUY_BEST NVDA $50000.0",
+    "2026-11-09T19:16:20Z TEXT queued BB-MRVL-1 BUY_BEST MRVL $50000.0",
+    "2026-11-09T19:16:57Z NVDA mark=176.0621 {'id': 'BB-NVDA-1', 'symbol': 'NVDA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 283.9907002752373, 'price': 176.06210327148438, 'cost': 50000.0}",
+    "2026-11-09T19:16:57Z NVDA attached TS-NVDA-1 PENDING_ARM arm=177.8227",
+    "2026-11-09T19:16:57Z NVDA no hard stop (Rodney DCA / no_hard_stop) group=BB-NVDA-1",
+    "2026-11-09T19:16:57Z MRVL mark=153.2050 {'id': 'BB-MRVL-1', 'symbol': 'MRVL', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 326.360101840128, 'price': 153.2050018310547, 'cost': 50000.0}",
+    "2026-11-09T19:16:57Z MRVL attached TS-MRVL-1 PENDING_ARM arm=154.7371",
+    "2026-11-09T19:16:57Z MRVL no hard stop (Rodney DCA / no_hard_stop) group=BB-MRVL-1",
+    "2026-11-09T19:16:57Z NVDA mark=176.0621 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}",
+    "2026-11-09T19:16:57Z MRVL mark=153.2050 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}"
   ],
   "auto_execute": true,
   "standing_rules": {

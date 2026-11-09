@@ -23,7 +23,7 @@ NY_TZ = ZoneInfo("America/New_York")
 SESSION_OPEN = time(4, 0)
 SESSION_CLOSE = time(20, 0)  # inclusive through 8:00 PM ET
 
-SYMBOLS = ["UXRP", "GDXU", "SATA", "BTC-USD", "XRP-USD"]
+SYMBOLS = ["UXRP", "GDXU", "SATA", "BTC-USD", "XRP-USD", "MRVL", "NVDA"]
 
 # Email / chat notify ONLY on these fill events — never on marks or price updates.
 FILL_EVENTS = {
@@ -481,6 +481,21 @@ SYMBOL_EXIT_DEFAULTS: dict[str, dict] = {
     },
     "GDXU": {
         "arm_pct": 0.03,
+        "trail_pct": 0.005,
+        "no_hard_stop": True,
+        "no_scale_outs": True,
+        "scale_out_levels": [],
+    },
+    # Semis / mega-cap AI — trail-only like GDXU/UXRP; arm a bit wider than global default.
+    "MRVL": {
+        "arm_pct": 0.02,
+        "trail_pct": 0.005,
+        "no_hard_stop": True,
+        "no_scale_outs": True,
+        "scale_out_levels": [],
+    },
+    "NVDA": {
+        "arm_pct": 0.02,
         "trail_pct": 0.005,
         "no_hard_stop": True,
         "no_scale_outs": True,
@@ -1763,7 +1778,16 @@ def main() -> None:
         return
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    marks = {s: fetch_yahoo(s) for s in SYMBOLS}
+    # Fetch core symbols plus any live position/order tickers (e.g. new text buys).
+    state_early = json.loads(STATE_PATH.read_text())
+    live_syms = set(SYMBOLS)
+    for p in state_early.get("positions") or []:
+        if float(p.get("qty") or 0) != 0 and p.get("symbol"):
+            live_syms.add(str(p["symbol"]).upper())
+    for o in state_early.get("orders") or []:
+        if o.get("status") in {"OPEN", "WORKING", "ARMED", "WAITING"} and o.get("symbol"):
+            live_syms.add(str(o["symbol"]).upper())
+    marks = {s: fetch_yahoo(s) for s in sorted(live_syms)}
     MARKS_PATH.write_text(json.dumps({"updated": now, "marks": marks}, indent=2) + "\n")
 
     # Re-load after text apply so newly queued OPEN orders are visible this poll.
