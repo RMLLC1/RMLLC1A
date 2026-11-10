@@ -1,0 +1,51 @@
+{
+  "status": "ACTIVE",
+  "name": "BTC Market Wave paper sleeve",
+  "created": "2026-11-10T19:16:09Z",
+  "symbol": "BTC-USD",
+  "allocation": 10000.0,
+  "cash": 9500.0,
+  "qty": 0.006821359467098345,
+  "avg_cost": 73299.1719,
+  "cost_basis": 500.0,
+  "clip": 500.0,
+  "sma_days": 20,
+  "band_pct": 0.04,
+  "sell_above_cost_basis": true,
+  "last_action_day": "2026-11-10",
+  "trades": [
+    {
+      "time": "2026-11-10T19:16:09Z",
+      "day": "2026-11-10",
+      "action": "BUY",
+      "side": "BUY",
+      "qty": 0.006821359467098345,
+      "price": 73299.171875,
+      "notional": 500.0,
+      "zone": "BELOW",
+      "sma": 78045.4,
+      "lower": 74923.58,
+      "upper": 81167.22
+    }
+  ],
+  "events": [
+    "2026-11-10T19:16:09Z BUY {'side': 'BUY', 'qty': 0.006821359467098345, 'price': 73299.171875, 'notional': 500.0}"
+  ],
+  "note": "Arch Public Market Wave proxy: buy below 20d SMA\u22124%, sell above 20d SMA+4%, ignore mid-band. $500 clips. Sell only above avg cost.",
+  "last_mark": {
+    "ok": true,
+    "action": "HOLD",
+    "zone": "BELOW",
+    "mark": 73601.68,
+    "sma20": 78060.53,
+    "lower": 74938.1,
+    "upper": 81182.95,
+    "cash": 9500.0,
+    "qty": 0.006821359467098345,
+    "avg_cost": 73299.1719,
+    "equity": 10002.06,
+    "pnl": 2.06,
+    "fill": null,
+    "updated": "2026-11-10T23:25:24Z"
+  }
+}
