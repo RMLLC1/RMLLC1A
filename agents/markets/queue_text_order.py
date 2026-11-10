@@ -34,9 +34,38 @@ def parse_money(token: str) -> float | None:
     return val
 
 
+def _normalize_trade_text(upper: str) -> str:
+    """Collapse common natural phrasing into canonical BUY/SHORT forms.
+
+    Examples accepted after normalize:
+      BUY $40000 UXRP BEST LONG AND APPLY RULES
+      BUY UXRP 40000 AT BEST
+      SHORT SELL $50K GDXU BEST
+    """
+    t = upper
+    t = re.sub(r"\bSHORT\s+SELL\b", "SHORT", t)
+    t = re.sub(r"\b(AND\s+)?APPLY\s+RULES?\b", " ", t)
+    # Directional fluff only — never strip a leading SHORT action verb.
+    t = re.sub(r"\bLONG\b", " ", t)
+    t = re.sub(r"\bSHORT\s+(POSITION|SIDE)\b", " ", t)
+    t = re.sub(r"\bAT\s+BEST\b", "BEST", t)
+    t = re.sub(r"\b(MARKET|MKT)\s+ORDER\b", "BEST", t)
+    t = re.sub(r"\s+", " ", t).strip()
+
+    # BUY $notional SYM BEST|LIMIT p  →  BUY SYM $notional BEST|LIMIT p
+    m = re.match(
+        r"^(BUY|SHORT)\s+(\$?[\d,.]+K?)\s+([A-Z][A-Z0-9.\-]*)\s+"
+        r"(LIMIT\s+\d+(?:\.\d+)?|BEST|MKT|MARKET)\s*$",
+        t,
+    )
+    if m:
+        return f"{m.group(1)} {m.group(3)} {m.group(2)} {m.group(4)}"
+    return t
+
+
 def parse_command(raw: str) -> dict:
     text = " ".join(raw.strip().split())
-    upper = text.upper()
+    upper = _normalize_trade_text(text.upper())
     if upper in {"STATUS", "PORTFOLIO", "BALANCES", "BALANCE"}:
         return {"action": "STATUS", "raw_text": text}
 
