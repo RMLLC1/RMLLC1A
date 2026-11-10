@@ -131,9 +131,11 @@ def is_us_business_day(dt: datetime) -> bool:
 
 def credit_sata_dividends(state: dict, now: str, events: list) -> None:
     """Credit paper daily dividends into dividend_cash; never sells SATA."""
-    if not is_us_business_day(datetime.now(timezone.utc)):
+    # Use America/New_York calendar date so UTC midnight doesn't advance the dividend day early.
+    now_et = datetime.now(NY_TZ)
+    if not is_us_business_day(now_et):
         return
-    day = now[:10]
+    day = now_et.strftime("%Y-%m-%d")
     if state.get("last_sata_dividend_day") == day:
         return
     pos = next((p for p in state["positions"] if p["symbol"] == "SATA"), None)
