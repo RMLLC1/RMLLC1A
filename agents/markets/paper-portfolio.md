@@ -1,9 +1,9 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-11-09T20:00:40Z  
+**Updated:** 2026-11-10T00:06:24Z  
 **Base currency:** USD  
 **Starting cash:** 200,000.00  
-**Cash:** 0.00  
+**Cash:** 100,000.00  
 **Dividend cash (SATA collected):** 0.0000  
 **Dividends earned total (running):** 151.7897  
 **Mode:** PAPER only — **auto-execute** open buy/sell orders on each poll  
@@ -21,21 +21,19 @@
 - **Hold for daily dividends — do not sell** income SATA unless Rodney overrides.
 
 **Marks:**
-- BTC-USD: **$74813.3281** (yahoo_v8_chart_1m)
-- GDXU: **$105.1000** (yahoo_v8_chart_1m)
-- MRVL: **$153.6800** (yahoo_v8_chart_1m)
-- NVDA: **$177.2200** (yahoo_v8_chart_1m)
-- SATA: **$97.4450** (yahoo_v8_chart_1m)
-- UXRP: **$8.6776** (yahoo_v8_chart_1m)
-- XRP-USD: **$1.0931** (yahoo_v8_chart_1m)
+- BTC-USD: **$75252.5781** (yahoo_v8_chart_1m)
+- GDXU: **$103.5000** (yahoo_v8_chart_1m)
+- MRVL: **$158.1277** (yahoo_v8_chart_1m)
+- NVDA: **$181.3935** (yahoo_v8_chart_1m)
+- SATA: **$97.7000** (yahoo_v8_chart_1m)
+- UXRP: **$8.8044** (yahoo_v8_chart_1m)
+- XRP-USD: **$1.0994** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Side | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| SATA | LONG | 461.0472 | 97.8667 | 45,121.19 | 97.4450 | -194.44 |
-| NVDA | LONG | 283.9907 | 176.0621 | 50,000.00 | 177.2200 | 328.83 |
-| MRVL | LONG | 326.3601 | 153.2050 | 50,000.00 | 153.6800 | 155.02 |
+| SATA | LONG | 479.8112 | 97.8466 | 46,947.91 | 97.7000 | -70.35 |
 
 ## Open orders (PAPER)
 
@@ -43,15 +41,11 @@
 | --- | --- | --- | --- | --- |
 | PB-SATA-3 | SATA | BUY_BEST | **UNWOUND** | Buy $8664.03 SATA (trading profit + any dividend cash). HOLD for daily dividends — do not sell. UNWOUND 2026-11-04T10:30:59Z per Rodney (paper rewind profit→SATA after HS). UNWOUND 2026-11-04T10:31:45Z paper rewind (do not re-fire). |
 | PB-SATA-4 | SATA | BUY_BEST | **UNWOUND** | Buy $8621.96 SATA (trading profit + any dividend cash). HOLD for daily dividends — do not sell. UNWOUND 2026-11-04T10:31:45Z paper rewind (do not re-fire). |
-| TS-NVDA-1 | NVDA | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm → $179.5833. Trail 0.5% → market sell on reverse. (group BB-NVDA-1; NO hard stop; NO scale-outs; arm +2% per Rodney 2026-11-09) |
-| TS-MRVL-1 | MRVL | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm → $156.2691. Trail 0.5% → market sell on reverse. (group BB-MRVL-1; NO hard stop; NO scale-outs; arm +2% per Rodney 2026-11-09) |
+| PB-SATA-10 | SATA | BUY_BEST | **UNWOUND** | Reinvest $24.76 SATA dividend cash (daily). HOLD for daily dividends — do not sell. UNWOUND 2026-11-10T00:06:10Z — reverse duplicate/early dividend reinvest (Nov9 already credited; UTC/NY date bug). |
+| PB-SATA-11 | SATA | BUY_BEST | **UNWOUND** | Reinvest $24.77 SATA dividend cash (daily). HOLD for daily dividends — do not sell. UNWOUND 2026-11-10T00:06:10Z — reverse duplicate/early dividend reinvest (Nov9 already credited; UTC/NY date bug). |
 
 ## Trade log (buys/sells)
 
-- 2026-11-04T10:21:08Z **BUY** SATA qty=89.77339135840846 @ $96.51 → cash $200000.0
-- 2026-11-04T10:30:59Z **UNWIND** GDXU qty=1402.1164678638092 @ $77.5 → cash $100000.0
-- 2026-11-04T10:31:09Z **SELL_LIMIT** GDXU qty=1402.1164678638092 @ $82.0 → cash $208621.96
-- 2026-11-04T10:31:09Z **BUY** SATA qty=89.3374779815563 @ $96.51 → cash $200000.0
 - 2026-11-04T10:31:45Z **UNWIND** GDXU qty=1402.1164678638092 @ $77.5 → cash $100000.0
 - 2026-11-04T20:10:10Z **SELL** GDXU qty=701.0582339319047 @ $82.58000183105469 → cash $157893.39
 - 2026-11-04T20:10:10Z **BUY** SATA qty=80.50782954168228 @ $98.04499816894531 → cash $150000.0
@@ -60,21 +54,25 @@
 - 2026-11-09T19:00:34Z **BUY** SATA qty=0.7347149352461123 @ $96.98999786376953 → cash $100000.0
 - 2026-11-09T19:16:57Z **BUY** NVDA qty=283.9907002752373 @ $176.06210327148438 → cash $50000.0
 - 2026-11-09T19:16:57Z **BUY** MRVL qty=326.360101840128 @ $153.2050018310547 → cash $0.0
+- 2026-11-09T22:15:21Z **SELL_MARKET** MRVL qty=326.360101840128 @ $156.44 → cash $51055.77
+- 2026-11-09T22:15:21Z **BUY** SATA qty=10.873017507723997 @ $97.1 → cash $50000.0
+- 2026-11-09T23:00:11Z **SELL_MARKET** NVDA qty=283.9907002752373 @ $178.7768 → cash $100770.95
+- 2026-11-09T23:00:11Z **BUY** SATA qty=7.890992835209826 @ $97.7 → cash $100000.0
 
 ## Recent events
 
-- 2026-11-09T19:40:15Z MRVL mark=154.5700 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
-- 2026-11-09T19:45:23Z NVDA mark=176.6300 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
-- 2026-11-09T19:45:23Z MRVL mark=153.9100 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
-- 2026-11-09T19:50:24Z NVDA mark=176.7300 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
-- 2026-11-09T19:50:24Z MRVL mark=153.5750 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
-- 2026-11-09T19:55:09Z NVDA mark=176.6200 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
-- 2026-11-09T19:55:09Z MRVL mark=153.1990 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
-- 2026-11-09T20:00:10Z NVDA mark=177.0800 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
-- 2026-11-09T20:00:10Z MRVL mark=153.3201 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
-- 2026-11-09T20:00:25Z WATCHLIST set always=['GDXU', 'UXRP', 'SATA'] + open positions ['MRVL', 'NVDA', 'SATA']; monitor every 5m in NYSE extended hours
-- 2026-11-09T20:00:40Z NVDA mark=177.2200 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'PENDING_ARM'}
-- 2026-11-09T20:00:40Z MRVL mark=153.6800 {'id': 'TS-MRVL-1', 'symbol': 'MRVL', 'event': 'PENDING_ARM'}
+- 2026-11-09T23:00:11Z NVDA mark=178.7768 {'id': 'TS-NVDA-1', 'symbol': 'NVDA', 'event': 'FILLED_MARKET', 'side': 'SELL', 'limit': 178.7816, 'price': 178.7768, 'qty': 283.9907002752373, 'proceeds': 50770.95}
+- 2026-11-09T23:00:11Z queued PB-SATA-9 $770.95 (PROFIT_TO_SATA)
+- 2026-11-09T23:00:11Z SATA mark=97.7000 {'id': 'PB-SATA-9', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 7.890992835209826, 'price': 97.7, 'cost': 770.95}
+- 2026-11-10T00:00:10Z SATA DIVIDEND paper $24.7583 (479.8112 × $0.0516) → dividend_cash (earned_total $176.5480)
+- 2026-11-10T00:00:10Z queued PB-SATA-10 $24.76 (DIVIDEND_REINVEST)
+- 2026-11-10T00:00:10Z dividend_cash $24.7583 → SATA daily reinvest (~0.2534 sh @ ~$97.70)
+- 2026-11-10T00:00:10Z SATA mark=97.7000 {'id': 'PB-SATA-10', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 0.2534288638689867, 'price': 97.7, 'cost': 24.76}
+- 2026-11-10T00:05:12Z SATA DIVIDEND paper $24.7713 (480.0647 × $0.0516) → dividend_cash (earned_total $201.3193)
+- 2026-11-10T00:05:12Z queued PB-SATA-11 $24.77 (DIVIDEND_REINVEST)
+- 2026-11-10T00:05:12Z dividend_cash $24.7713 → SATA daily reinvest (~0.2535 sh @ ~$97.70)
+- 2026-11-10T00:05:12Z SATA mark=97.7000 {'id': 'PB-SATA-11', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 0.2535312180143296, 'price': 97.7, 'cost': 24.77}
+- 2026-11-10T00:06:10Z REWIND duplicate/early SATA dividend reinvests PB-SATA-10/11 (−0.5070 sh, −$49.53 basis); earned_total→$151.7897; last_day=2026-11-09
 
 ## Rules
 

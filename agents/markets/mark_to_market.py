@@ -190,8 +190,15 @@ def _queue_sata_buy(
             o["params_text"] = params_text.replace("${NOTIONAL}", f"${o['notional']:.2f}")
             events.append(f"{now} SATA {purpose} notional → ${o['notional']:.2f}")
             return
-    n = sum(1 for o in state["orders"] if str(o.get("id", "")).startswith("PB-SATA-")) + 1
-    oid = f"PB-SATA-{n}"
+    # Use max existing numeric suffix + 1 (count breaks after UNWOUND/reuse and duplicate ids).
+    max_n = 0
+    for o in state["orders"]:
+        oid0 = str(o.get("id", ""))
+        if oid0.startswith("PB-SATA-"):
+            tail = oid0.split("-")[-1]
+            if tail.isdigit():
+                max_n = max(max_n, int(tail))
+    oid = f"PB-SATA-{max_n + 1}"
     state["orders"].append(
         {
             "id": oid,
