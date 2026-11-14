@@ -24,7 +24,13 @@ NY_TZ = ZoneInfo("America/New_York")
 SESSION_OPEN = time(4, 0)
 SESSION_CLOSE = time(20, 0)  # inclusive through 8:00 PM ET
 
-SYMBOLS = ["UXRP", "GDXU", "SATA", "BTC-USD", "XRP-USD", "MRVL", "NVDA"]
+SYMBOLS = ["UXRP", "GDXU", "SATA", "BTC-USD", "XRP-USD", "SOL-USD", "MRVL", "NVDA"]
+# Paper symbols that Yahoo lists under a different ticker.
+YAHOO_ALIASES = {
+    "SOL": "SOL-USD",
+    "BTC": "BTC-USD",
+    "XRP": "XRP-USD",
+}
 
 # Email / chat notify ONLY on these fill events — never on marks or price updates.
 FILL_EVENTS = {
@@ -44,8 +50,9 @@ CASH_FLOOR_USD = 100_000.0
 
 
 def fetch_yahoo(symbol: str) -> dict:
+    yahoo_sym = YAHOO_ALIASES.get(symbol.upper(), symbol)
     url = (
-        f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
+        f"https://query1.finance.yahoo.com/v8/finance/chart/{yahoo_sym}"
         "?interval=1m&range=1d&includePrePost=true"
     )
     req = urllib.request.Request(url, headers=UA)
@@ -75,6 +82,7 @@ def fetch_yahoo(symbol: str) -> dict:
         fresh = age_sec <= 15 * 60
     return {
         "symbol": symbol,
+        "yahoo_symbol": yahoo_sym,
         "mark": float(mark) if mark is not None else None,
         "regularMarketPrice": regular,
         "previousClose": previous,
@@ -1764,9 +1772,31 @@ def in_nyse_extended_hours(now_et: datetime | None = None) -> bool:
     return SESSION_OPEN <= t <= SESSION_CLOSE
 
 
+def _is_crypto_symbol(symbol: str) -> bool:
+    s = str(symbol or "").upper()
+    if s in YAHOO_ALIASES or s in YAHOO_ALIASES.values():
+        return True
+    return s.endswith("-USD") and s not in {"UXRP"}  # UXRP is the 2x XRP ETF, not spot crypto
+
+
+def open_crypto_symbols(state: dict) -> set[str]:
+    """Paper symbols that should keep trading 24/7 (open crypto orders/positions)."""
+    out: set[str] = set()
+    for o in state.get("orders") or []:
+        if o.get("status") in {"OPEN", "WORKING", "ARMED", "WAITING", "PENDING_ARM"} and _is_crypto_symbol(
+            o.get("symbol") or ""
+        ):
+            out.add(str(o["symbol"]).upper())
+    for p in state.get("positions") or []:
+        if float(p.get("qty") or 0) != 0 and _is_crypto_symbol(p.get("symbol") or ""):
+            out.add(str(p["symbol"]).upper())
+    return out
+
+
 def main() -> None:
     force = "--force" in sys.argv
     now_et = datetime.now(NY_TZ)
+    crypto_only: set[str] | None = None
 
     # iMessage text-orders: pull pending from git and apply into local paper-state even off-hours.
     from apply_text_orders import process_pending  # local module beside this file
@@ -1774,64 +1804,79 @@ def main() -> None:
     text_summary = process_pending()
 
     if not force and not in_nyse_extended_hours(now_et):
-        summary = {
-            "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "skipped": True,
-            "reason": "outside_nyse_extended_hours",
-            "local_et": now_et.strftime("%Y-%m-%d %H:%M:%S %Z"),
-            "window": "Mon–Fri 04:00–20:00 America/New_York (premarket through after-hours)",
-            "big_items": [],
-            "text_orders": text_summary,
-            "note": "No Yahoo poll outside NYSE extended hours; use --force to override",
-        }
-        print(json.dumps(summary, indent=2))
-        return
+        state_peek = json.loads(STATE_PATH.read_text()) if STATE_PATH.exists() else {}
+        crypto_only = open_crypto_symbols(state_peek)
+        if not crypto_only:
+            summary = {
+                "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "skipped": True,
+                "reason": "outside_nyse_extended_hours",
+                "local_et": now_et.strftime("%Y-%m-%d %H:%M:%S %Z"),
+                "window": "Mon–Fri 04:00–20:00 America/New_York (premarket through after-hours)",
+                "big_items": [],
+                "text_orders": text_summary,
+                "note": "No Yahoo poll outside NYSE extended hours; use --force to override. Open crypto orders still poll 24/7.",
+            }
+            print(json.dumps(summary, indent=2))
+            return
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     # Fetch core symbols + watchlist always-include + live position/order tickers.
     state_early = json.loads(STATE_PATH.read_text())
-    live_syms = set(SYMBOLS)
-    # Rodney watchlist: always GDXU/UXRP/SATA + any open positions (refreshed each poll).
     always = ["GDXU", "UXRP", "SATA"]
     pos_syms: list[str] = []
-    for p in state_early.get("positions") or []:
-        if float(p.get("qty") or 0) != 0 and p.get("symbol"):
-            sym = str(p["symbol"]).upper()
-            live_syms.add(sym)
-            pos_syms.append(sym)
-    for o in state_early.get("orders") or []:
-        if o.get("status") in {"OPEN", "WORKING", "ARMED", "WAITING", "PENDING_ARM"} and o.get(
-            "symbol"
-        ):
-            live_syms.add(str(o["symbol"]).upper())
-    live_syms.update(always)
-    if WATCHLIST_PATH.exists():
-        try:
-            wl = json.loads(WATCHLIST_PATH.read_text())
-            always = [str(s).upper() for s in (wl.get("always_include") or always)]
-            live_syms.update(always)
-            live_syms.update(str(s).upper() for s in (wl.get("symbols") or []))
-        except Exception:
-            pass
-    # Keep watchlist.json in sync with open positions each poll.
-    watch_syms = list(dict.fromkeys(always + sorted(set(pos_syms))))
-    WATCHLIST_PATH.write_text(
-        json.dumps(
-            {
-                "updated": now,
-                "always_include": always,
-                "symbols": watch_syms,
-                "open_position_symbols": sorted(set(pos_syms)),
-                "monitor": {
-                    "interval_seconds": 300,
-                    "session": "NYSE extended hours Mon–Fri 04:00–20:00 America/New_York",
-                    "via": "telegram-keepalive-300s + mark_to_market.py",
+    if crypto_only is not None:
+        # Weekend / off-hours: only poll crypto so SOL/BTC limits can fill 24/7.
+        live_syms = set(crypto_only)
+        for p in state_early.get("positions") or []:
+            if float(p.get("qty") or 0) != 0 and _is_crypto_symbol(p.get("symbol") or ""):
+                live_syms.add(str(p["symbol"]).upper())
+        for o in state_early.get("orders") or []:
+            if o.get("status") in {"OPEN", "WORKING", "ARMED", "WAITING", "PENDING_ARM"} and _is_crypto_symbol(
+                o.get("symbol") or ""
+            ):
+                live_syms.add(str(o["symbol"]).upper())
+    else:
+        live_syms = set(SYMBOLS)
+        # Rodney watchlist: always GDXU/UXRP/SATA + any open positions (refreshed each poll).
+        for p in state_early.get("positions") or []:
+            if float(p.get("qty") or 0) != 0 and p.get("symbol"):
+                sym = str(p["symbol"]).upper()
+                live_syms.add(sym)
+                pos_syms.append(sym)
+        for o in state_early.get("orders") or []:
+            if o.get("status") in {"OPEN", "WORKING", "ARMED", "WAITING", "PENDING_ARM"} and o.get(
+                "symbol"
+            ):
+                live_syms.add(str(o["symbol"]).upper())
+        live_syms.update(always)
+        if WATCHLIST_PATH.exists():
+            try:
+                wl = json.loads(WATCHLIST_PATH.read_text())
+                always = [str(s).upper() for s in (wl.get("always_include") or always)]
+                live_syms.update(always)
+                live_syms.update(str(s).upper() for s in (wl.get("symbols") or []))
+            except Exception:
+                pass
+        # Keep watchlist.json in sync with open positions each poll.
+        watch_syms = list(dict.fromkeys(always + sorted(set(pos_syms))))
+        WATCHLIST_PATH.write_text(
+            json.dumps(
+                {
+                    "updated": now,
+                    "always_include": always,
+                    "symbols": watch_syms,
+                    "open_position_symbols": sorted(set(pos_syms)),
+                    "monitor": {
+                        "interval_seconds": 300,
+                        "session": "NYSE extended hours Mon–Fri 04:00–20:00 America/New_York; crypto orders 24/7",
+                        "via": "telegram-keepalive-300s + mark_to_market.py",
+                    },
                 },
-            },
-            indent=2,
+                indent=2,
+            )
+            + "\n"
         )
-        + "\n"
-    )
     marks = {s: fetch_yahoo(s) for s in sorted(live_syms)}
     MARKS_PATH.write_text(json.dumps({"updated": now, "marks": marks}, indent=2) + "\n")
 

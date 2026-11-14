@@ -50,6 +50,8 @@ def _normalize_trade_text(upper: str) -> str:
     t = re.sub(r"\bSHORT\s+(POSITION|SIDE)\b", " ", t)
     t = re.sub(r"\bAT\s+BEST\b", "BEST", t)
     t = re.sub(r"\b(MARKET|MKT)\s+ORDER\b", "BEST", t)
+    # LIMIT $75 → LIMIT 75 (dollar sign on limit price is common)
+    t = re.sub(r"\bLIMIT\s+\$\s*", "LIMIT ", t)
     t = re.sub(r"\s+", " ", t).strip()
 
     # BUY $notional SYM BEST|LIMIT p  →  BUY SYM $notional BEST|LIMIT p
