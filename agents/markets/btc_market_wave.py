@@ -7,6 +7,8 @@ Rules (proxy of Arch Public Market Wave):
 - SELL clip when daily mark closes above upper band
 - Mid-band = no action (chop ignored)
 - Clip size $500; sell only above cost basis when sell_above_cost_basis=True
+- Optional deeper support buy: once when live spot <= support_level, buy
+  support_buy_fraction of remaining sleeve cash (24/7, checked every poll)
 - Sleeve capital earmarked from trading cash; does not touch SATA
 """
 
@@ -26,19 +28,39 @@ CLIP = 500.0
 SMA_DAYS = 20
 BAND_PCT = 0.04
 SYMBOL = "BTC-USD"
+DEFAULT_SUPPORT_LEVEL = 67_000.0
+DEFAULT_SUPPORT_FRACTION = 0.5
+MIN_SUPPORT_NOTIONAL = 1.0
 
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def fetch_daily_closes(symbol: str = SYMBOL, range_: str = "3mo") -> list[float]:
-    url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range={range_}&interval=1d"
+def fetch_chart(symbol: str = SYMBOL, range_: str = "3mo", interval: str = "1d") -> dict:
+    url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range={range_}&interval={interval}"
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=20) as resp:
-        data = json.loads(resp.read().decode())
+        return json.loads(resp.read().decode())
+
+
+def fetch_daily_closes(symbol: str = SYMBOL, range_: str = "3mo") -> list[float]:
+    data = fetch_chart(symbol, range_=range_, interval="1d")
     quote = data["chart"]["result"][0]["indicators"]["quote"][0]["close"]
     return [float(c) for c in quote if c is not None]
+
+
+def fetch_live_spot(symbol: str = SYMBOL) -> float:
+    """24/7 spot for support triggers (Yahoo regularMarketPrice)."""
+    data = fetch_chart(symbol, range_="1d", interval="1m")
+    meta = data["chart"]["result"][0]["meta"]
+    spot = meta.get("regularMarketPrice")
+    if spot is None:
+        closes = data["chart"]["result"][0]["indicators"]["quote"][0]["close"]
+        spot = next((c for c in reversed(closes) if c is not None), None)
+    if spot is None:
+        raise RuntimeError("no_live_spot")
+    return float(spot)
 
 
 def load_json(path: Path, default):
@@ -76,11 +98,15 @@ def ensure_sleeve(paper: dict) -> dict:
         "band_pct": BAND_PCT,
         "sell_above_cost_basis": True,
         "last_action_day": None,
+        "support_level": DEFAULT_SUPPORT_LEVEL,
+        "support_buy_fraction": DEFAULT_SUPPORT_FRACTION,
+        "support_buy_fired": False,
         "trades": [],
         "events": [],
         "note": (
             "Arch Public Market Wave proxy: buy below 20d SMA−4%, sell above 20d SMA+4%, "
-            "ignore mid-band. $500 clips. Sell only above avg cost."
+            "ignore mid-band. $500 clips. Sell only above avg cost. "
+            "Once at live spot <= support_level, buy support_buy_fraction of remaining cash (24/7)."
         ),
     }
     paper.setdefault("events", []).append(
@@ -112,26 +138,62 @@ def avg_cost(sleeve: dict) -> float:
     return float(sleeve.get("cost_basis") or 0) / qty
 
 
-def evaluate(sleeve: dict, closes: list[float]) -> dict:
+def apply_buy(sleeve: dict, mark: float, notional: float) -> dict:
+    cash = float(sleeve.get("cash") or 0)
+    qty = float(sleeve.get("qty") or 0)
+    notional = min(notional, cash)
+    buy_qty = notional / mark
+    sleeve["cash"] = round(cash - notional, 4)
+    sleeve["qty"] = qty + buy_qty
+    sleeve["cost_basis"] = round(float(sleeve.get("cost_basis") or 0) + notional, 4)
+    sleeve["avg_cost"] = round(avg_cost(sleeve), 4)
+    return {"side": "BUY", "qty": buy_qty, "price": mark, "notional": notional}
+
+
+def evaluate(sleeve: dict, closes: list[float], live_spot: float | None = None) -> dict:
     mark, sma, lower, upper = bands(closes)
+    spot = float(live_spot) if live_spot is not None else mark
     day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     action = "HOLD"
     fill = None
     zone = "BELOW" if mark < lower else ("ABOVE" if mark > upper else "MID")
 
-    # One action per UTC day max (daily close proxy).
-    if sleeve.get("last_action_day") != day:
+    # Ensure support defaults exist on older sleeve files.
+    if sleeve.get("support_level") is None:
+        sleeve["support_level"] = DEFAULT_SUPPORT_LEVEL
+    if sleeve.get("support_buy_fraction") is None:
+        sleeve["support_buy_fraction"] = DEFAULT_SUPPORT_FRACTION
+    if "support_buy_fired" not in sleeve:
+        sleeve["support_buy_fired"] = False
+
+    support_level = float(sleeve.get("support_level") or 0)
+    support_fraction = float(sleeve.get("support_buy_fraction") or 0)
+    # Deeper support: 24/7 live spot, once, independent of daily band clip.
+    if (
+        support_level > 0
+        and support_fraction > 0
+        and not sleeve.get("support_buy_fired")
+        and spot <= support_level
+    ):
+        cash = float(sleeve.get("cash") or 0)
+        notional = round(cash * support_fraction, 2)
+        if notional >= MIN_SUPPORT_NOTIONAL and spot > 0:
+            fill = apply_buy(sleeve, spot, notional)
+            sleeve["support_buy_fired"] = True
+            sleeve["support_buy_filled_at"] = utc_now()
+            action = "SUPPORT_BUY"
+            fill["kind"] = "SUPPORT"
+            fill["support_level"] = support_level
+            fill["support_fraction"] = support_fraction
+
+    # One band action per UTC day max (daily close proxy).
+    if fill is None and sleeve.get("last_action_day") != day:
         cash = float(sleeve.get("cash") or 0)
         qty = float(sleeve.get("qty") or 0)
         if zone == "BELOW" and cash >= CLIP:
-            buy_qty = CLIP / mark
-            sleeve["cash"] = round(cash - CLIP, 4)
-            sleeve["qty"] = qty + buy_qty
-            sleeve["cost_basis"] = round(float(sleeve.get("cost_basis") or 0) + CLIP, 4)
-            sleeve["avg_cost"] = round(avg_cost(sleeve), 4)
+            fill = apply_buy(sleeve, mark, CLIP)
             sleeve["last_action_day"] = day
             action = "BUY"
-            fill = {"side": "BUY", "qty": buy_qty, "price": mark, "notional": CLIP}
         elif zone == "ABOVE" and qty > 0:
             ac = avg_cost(sleeve)
             if (not sleeve.get("sell_above_cost_basis")) or mark > ac:
@@ -163,18 +225,20 @@ def evaluate(sleeve: dict, closes: list[float]) -> dict:
             "sma": round(sma, 2),
             "lower": round(lower, 2),
             "upper": round(upper, 2),
+            "spot": round(spot, 2),
         }
         sleeve.setdefault("trades", []).append(trade)
         sleeve["trades"] = sleeve["trades"][-200:]
         sleeve.setdefault("events", []).append(f"{utc_now()} {action} {fill}")
         sleeve["events"] = sleeve["events"][-100:]
 
-    equity = round(float(sleeve["cash"]) + float(sleeve["qty"]) * mark, 2)
+    equity = round(float(sleeve["cash"]) + float(sleeve["qty"]) * spot, 2)
     out = {
         "ok": True,
         "action": action,
         "zone": zone,
         "mark": round(mark, 2),
+        "spot": round(spot, 2),
         "sma20": round(sma, 2),
         "lower": round(lower, 2),
         "upper": round(upper, 2),
@@ -184,6 +248,9 @@ def evaluate(sleeve: dict, closes: list[float]) -> dict:
         "equity": equity,
         "pnl": round(equity - ALLOCATION, 2),
         "fill": fill,
+        "support_level": support_level,
+        "support_buy_fraction": support_fraction,
+        "support_buy_fired": bool(sleeve.get("support_buy_fired")),
         "updated": utc_now(),
     }
     sleeve["last_mark"] = out
@@ -197,7 +264,11 @@ def main() -> None:
     closes = fetch_daily_closes()
     if len(closes) < SMA_DAYS:
         raise SystemExit(json.dumps({"ok": False, "error": "insufficient_history"}))
-    result = evaluate(sleeve, closes)
+    try:
+        live_spot = fetch_live_spot()
+    except Exception:
+        live_spot = closes[-1]
+    result = evaluate(sleeve, closes, live_spot=live_spot)
     print(json.dumps(result, indent=2))
 
 
