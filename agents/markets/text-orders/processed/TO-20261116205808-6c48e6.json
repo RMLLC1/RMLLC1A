@@ -1,0 +1,27 @@
+{
+  "id": "TO-20261116205808-6c48e6",
+  "source": "telegram",
+  "from": "Rodney",
+  "created": "2026-11-16T20:58:08Z",
+  "status": "APPLIED",
+  "action": "BUY_BEST",
+  "symbol": "GDXU",
+  "notional": 23930.55,
+  "use_all_cash": true,
+  "attach_exits": true,
+  "purpose": "REDEPLOY_FROM_SATA_HALF",
+  "raw_text": "buy GDXU at best with SATA half-sell proceeds; track for SATA buyback",
+  "note": "Rodney 2026-11-16: deploy SB-SATA-1 proceeds (~$23930.55) into GDXU BEST; buy back SATA when GDXU trade totally complete.",
+  "sata_buyback_track": {
+    "source_sell_id": "SB-SATA-1",
+    "sata_qty_sold": 252.2191680112639,
+    "sata_fill_price": 94.87999725341797,
+    "proceeds": 23930.55,
+    "intent": "BUY_BACK_SATA_WHEN_GDXU_TRADE_COMPLETE"
+  },
+  "applied_at": "2026-11-16T20:58:08Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued BB-GDXU-3"
+  }
+}
