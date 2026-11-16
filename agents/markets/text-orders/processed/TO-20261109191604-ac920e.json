@@ -1,0 +1,17 @@
+{
+  "id": "TO-20261109191604-ac920e",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-11-09T19:16:04Z",
+  "status": "APPLIED",
+  "action": "BUY_BEST",
+  "symbol": "MRVL",
+  "notional": 50000.0,
+  "attach_exits": true,
+  "raw_text": "BUY MRVL $50000 BEST",
+  "applied_at": "2026-11-09T19:16:20Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued BB-MRVL-1"
+  }
+}

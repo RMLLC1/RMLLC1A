@@ -1,0 +1,18 @@
+{
+  "id": "TO-20261114085526-597bff",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-11-14T08:55:26Z",
+  "status": "APPLIED",
+  "action": "LIMIT_BUY",
+  "symbol": "SOL",
+  "notional": 50000.0,
+  "limit_price": 75.0,
+  "attach_exits": true,
+  "raw_text": "BUY SOL $50k LIMIT 75",
+  "applied_at": "2026-11-14T08:55:33Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued LB-SOL-1"
+  }
+}

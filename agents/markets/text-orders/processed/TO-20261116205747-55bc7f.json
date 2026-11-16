@@ -1,0 +1,21 @@
+{
+  "id": "TO-20261116205747-55bc7f",
+  "source": "telegram",
+  "from": "Rodney",
+  "created": "2026-11-16T20:57:47Z",
+  "status": "APPLIED",
+  "action": "SELL_BEST",
+  "symbol": "SATA",
+  "qty": 252.2191680112639,
+  "qty_all": false,
+  "allow_sata_sell": true,
+  "skip_profit_to_sata": true,
+  "purpose": "REDEPLOY_TO_GDXU",
+  "raw_text": "Please sell 50% SATA at best, then buy GDXU at best. Keep track to buy back SATA once trade complete.",
+  "note": "Rodney 2026-11-16: sell half SATA \u2192 GDXU at best; track for SATA buyback when GDXU trade totally complete.",
+  "applied_at": "2026-11-16T20:57:47Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued SB-SATA-1"
+  }
+}

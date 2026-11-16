@@ -1,0 +1,17 @@
+{
+  "id": "TO-20261103193020-859cfe",
+  "source": "imessage",
+  "from": "telegram",
+  "created": "2026-11-03T19:30:20Z",
+  "status": "APPLIED",
+  "action": "BUY_BEST",
+  "symbol": "GDXU",
+  "notional": 50000.0,
+  "attach_exits": true,
+  "raw_text": "BUY GDXU $50000 BEST",
+  "applied_at": "2026-11-03T19:30:20Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued BB-GDXU-2"
+  }
+}
