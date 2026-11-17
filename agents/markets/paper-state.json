@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
   "cash": 0.0,
-  "updated": "2026-11-16T20:58:26Z",
+  "updated": "2026-11-17T15:01:01Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -12,19 +12,19 @@
     },
     {
       "symbol": "GDXU",
-      "qty": 373.5646411492827,
+      "qty": 0.0,
       "avg_cost": 64.059998,
-      "cost_basis": 23930.55,
-      "last_upl_pct": 0.0
+      "cost_basis": 0.0,
+      "last_upl_pct": 6.46
     },
     {
       "symbol": "SATA",
-      "qty": 252.2191680112639,
-      "avg_cost": 97.82153,
-      "cost_basis": 24672.46,
+      "qty": 517.3434624860017,
+      "avg_cost": 96.42681,
+      "cost_basis": 49885.78,
       "hold_for_dividends": true,
       "no_sell": true,
-      "last_upl_pct": -3.14
+      "last_upl_pct": -1.38
     },
     {
       "symbol": "NVDA",
@@ -45,7 +45,7 @@
       "qty": 667.3785534170665,
       "avg_cost": 74.919998,
       "cost_basis": 50000.0,
-      "last_upl_pct": -4.78
+      "last_upl_pct": -1.75
     }
   ],
   "orders": [
@@ -805,13 +805,48 @@
       "id": "TS-GDXU-7",
       "symbol": "GDXU",
       "type": "TRAILING_STOP_LIMIT_SELL",
-      "status": "PENDING_ARM",
+      "status": "FILLED",
       "arm_price": 65.9818,
       "trail_pct": 0.005,
       "fill_at_market": true,
       "entry_group": "BB-GDXU-3",
       "entry_price": 64.05999755859375,
-      "params_text": "Arm +3% \u2192 $65.9818. Trail 0.5% \u2192 market sell on reverse. (group BB-GDXU-3)"
+      "params_text": "Arm +3% \u2192 $65.9818. Trail 0.5% \u2192 market sell on reverse. (group BB-GDXU-3)",
+      "high_water": 68.1969985961914,
+      "stop": 67.856,
+      "fill_price": 67.25,
+      "fill_qty": 373.5646411492827
+    },
+    {
+      "id": "PB-SATA-16",
+      "symbol": "SATA",
+      "type": "BUY_BEST",
+      "status": "FILLED",
+      "notional": 1282.77,
+      "attach_trailing_stop": false,
+      "purpose": "PROFIT_TO_SATA",
+      "params_text": "Buy $1282.77 SATA (trading profit + any dividend cash). HOLD for daily dividends \u2014 do not sell.",
+      "fill_price": 95.0999984741211,
+      "fill_qty": 13.488643749548233
+    },
+    {
+      "id": "BB-SATA-1",
+      "symbol": "SATA",
+      "type": "BUY_BEST",
+      "status": "FILLED",
+      "notional": 23930.55,
+      "attach_trailing_stop": false,
+      "attach_trading_exits": false,
+      "arm_pct": 0.01,
+      "trail_pct": 0.005,
+      "no_hard_stop": true,
+      "no_scale_outs": true,
+      "scale_out_levels": [],
+      "source": "text_order",
+      "text_order_id": "TO-20261117150057-5565a1",
+      "params_text": "Text: buy $23,931 SATA at best. Exits: +1% arm / 0.5% trail market. NO hard stop. NO scale-outs.",
+      "fill_price": 95.0999984741211,
+      "fill_qty": 251.6356507251896
     }
   ],
   "trade_log": [
@@ -1165,60 +1200,87 @@
       "price": 64.05999755859375,
       "cash_after": 0.0,
       "rationale": "BUY_BEST BB-GDXU-3 auto-filled at best available"
+    },
+    {
+      "time": "2026-11-17T15:00:26Z",
+      "side": "SELL_MARKET",
+      "symbol": "GDXU",
+      "qty": 373.5646411492827,
+      "price": 67.25,
+      "cash_after": 25122.22,
+      "rationale": "Trailing stop TS-GDXU-7 auto-filled"
+    },
+    {
+      "time": "2026-11-17T15:00:26Z",
+      "side": "BUY",
+      "symbol": "SATA",
+      "qty": 13.488643749548233,
+      "price": 95.0999984741211,
+      "cash_after": 23930.55,
+      "rationale": "Profit\u2192SATA PB-SATA-16 auto-filled; hold for dividends"
+    },
+    {
+      "time": "2026-11-17T15:00:59Z",
+      "side": "BUY",
+      "symbol": "SATA",
+      "qty": 251.6356507251896,
+      "price": 95.0999984741211,
+      "cash_after": 0.0,
+      "rationale": "BUY_BEST BB-SATA-1 auto-filled at best available; hold for dividends"
     }
   ],
   "events": [
-    "2026-11-16T17:35:14Z SOL mark=71.2900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T17:40:27Z SOL mark=71.5000 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T17:45:26Z SOL mark=71.3500 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T17:50:18Z SOL mark=71.2800 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T17:55:17Z SOL mark=71.2600 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:00:12Z SOL mark=71.0800 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:05:51Z SOL mark=71.1200 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:10:16Z SOL mark=71.1300 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:15:29Z SOL mark=71.3200 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:20:21Z SOL mark=71.3600 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:25:13Z SOL mark=71.3900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:30:23Z SOL mark=71.0700 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:35:18Z SOL mark=70.9700 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:40:31Z SOL mark=71.1200 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:45:11Z SOL mark=71.1200 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:50:22Z SOL mark=71.3900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T18:55:24Z SOL mark=71.3300 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:00:21Z SOL mark=71.3100 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:05:14Z SOL mark=71.1700 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:10:15Z SOL mark=71.0900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:15:12Z SOL mark=71.0400 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:20:19Z SOL mark=70.9700 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:25:12Z SOL mark=71.1800 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:30:14Z SOL mark=71.1300 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:35:21Z SOL mark=71.0300 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:40:13Z SOL mark=70.9700 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:45:21Z SOL mark=70.9800 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:50:11Z SOL mark=71.0900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T19:55:09Z SOL mark=71.3900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:00:22Z SOL mark=71.4700 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:05:17Z SOL mark=71.5700 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:10:12Z SOL mark=71.6100 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:15:10Z SOL mark=71.4100 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:20:10Z SOL mark=71.3600 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:25:17Z SOL mark=71.2800 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:30:09Z SOL mark=71.4500 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:35:22Z SOL mark=71.2700 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:40:22Z SOL mark=71.1900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:45:23Z SOL mark=71.3400 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:50:15Z SOL mark=71.4900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:55:23Z SOL mark=71.4100 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:57:47Z TEXT queued SB-SATA-1 SELL_BEST SATA",
-    "2026-11-16T20:57:55Z SOL mark=71.3200 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:57:55Z SATA mark=94.8800 {'id': 'SB-SATA-1', 'symbol': 'SATA', 'event': 'FILLED_SELL', 'side': 'SELL', 'qty': 252.2191680112639, 'price': 94.87999725341797, 'proceeds': 23930.55, 'basis_released': 24672.47}",
-    "2026-11-16T20:58:08Z TEXT queued BB-GDXU-3 BUY_BEST GDXU $23930.55",
-    "2026-11-16T20:58:24Z SOL mark=71.3400 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:58:24Z GDXU mark=64.0600 {'id': 'BB-GDXU-3', 'symbol': 'GDXU', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 373.5646411492827, 'price': 64.05999755859375, 'cost': 23930.55}",
-    "2026-11-16T20:58:24Z GDXU attached TS-GDXU-7 PENDING_ARM arm=65.9818",
-    "2026-11-16T20:58:24Z GDXU no hard stop (Rodney DCA / no_hard_stop) group=BB-GDXU-3",
-    "2026-11-16T20:58:24Z GDXU mark=64.0600 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
-    "2026-11-16T20:58:26Z TRACK SATA-BUYBACK-FROM-GDXU-20261116 OPEN \u2014 buy back SATA after GDXU trade complete (sold 252.2192 SATA \u2192 BB-GDXU-3)"
+    "2026-11-17T13:15:21Z SOL mark=73.9000 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:15:21Z GDXU STALE_QUOTE age=1161s mark=64.76 \u2014 order logic skipped",
+    "2026-11-17T13:20:17Z SOL mark=73.8900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:20:17Z GDXU mark=65.1986 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:25:09Z SOL mark=73.9000 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:25:09Z GDXU mark=64.5000 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:30:24Z SOL mark=73.8600 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:30:24Z GDXU mark=64.5000 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:35:16Z SOL mark=73.8500 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:35:16Z GDXU mark=64.1300 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:40:09Z SOL mark=73.6000 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:40:09Z GDXU mark=63.3036 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:45:11Z SOL mark=73.4300 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:45:11Z GDXU mark=63.6600 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:50:20Z SOL mark=73.5600 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:50:20Z GDXU mark=63.7200 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:55:16Z SOL mark=73.6200 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T13:55:16Z GDXU mark=63.8000 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:00:19Z SOL mark=73.7300 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:00:19Z GDXU mark=64.2873 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:05:17Z SOL mark=73.7600 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:05:17Z GDXU mark=64.3000 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:10:20Z SOL mark=73.7600 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:10:20Z GDXU mark=64.4100 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:15:26Z SOL mark=73.7900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:15:26Z GDXU mark=64.5900 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:20:08Z SOL mark=73.9200 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:20:08Z GDXU mark=64.9500 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:25:28Z SOL mark=73.7000 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:25:28Z GDXU mark=64.8818 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:30:15Z SOL mark=73.6500 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:30:15Z GDXU mark=64.1701 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:35:18Z SOL mark=73.7200 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:35:18Z GDXU mark=66.0817 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'ARMED', 'high_water': 66.08170318603516, 'stop': 65.7513}",
+    "2026-11-17T14:40:21Z SOL mark=73.9900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:40:21Z GDXU mark=67.3153 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 67.31529998779297, 'stop': 66.9787}",
+    "2026-11-17T14:45:38Z SOL mark=73.9500 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:45:38Z GDXU mark=67.9397 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 67.939697265625, 'stop': 67.6}",
+    "2026-11-17T14:50:11Z SOL mark=73.6900 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:50:11Z GDXU mark=68.1650 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 68.16500091552734, 'stop': 67.8242}",
+    "2026-11-17T14:55:07Z SOL mark=73.7000 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T14:55:07Z GDXU mark=68.1970 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 68.1969985961914, 'stop': 67.856}",
+    "2026-11-17T15:00:26Z SOL mark=73.7600 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T15:00:26Z GDXU mark=67.2500 {'id': 'TS-GDXU-7', 'symbol': 'GDXU', 'event': 'FILLED_MARKET', 'side': 'SELL', 'limit': 67.856, 'price': 67.25, 'qty': 373.5646411492827, 'proceeds': 25122.22}",
+    "2026-11-17T15:00:26Z merged $91.1015 dividend_cash into profit\u2192SATA buy (below 1-share reinvest threshold alone)",
+    "2026-11-17T15:00:26Z queued PB-SATA-16 $1282.77 (PROFIT_TO_SATA)",
+    "2026-11-17T15:00:26Z SATA mark=95.1000 {'id': 'PB-SATA-16', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 13.488643749548233, 'price': 95.0999984741211, 'cost': 1282.77}",
+    "2026-11-17T15:00:57Z TEXT queued BB-SATA-1 BUY_BEST SATA $23930.55",
+    "2026-11-17T15:00:59Z SOL mark=73.6100 {'id': 'TS-SOL-1', 'symbol': 'SOL', 'event': 'PENDING_ARM'}",
+    "2026-11-17T15:00:59Z SATA mark=95.1000 {'id': 'BB-SATA-1', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 251.6356507251896, 'price': 95.0999984741211, 'cost': 23930.55}",
+    "2026-11-17T15:01:01Z TRACK SATA-BUYBACK-FROM-GDXU-20261116 COMPLETED \u2014 GDXU TS-GDXU-7 exit \u2192 SATA buy BB-SATA-1"
   ],
   "auto_execute": true,
   "standing_rules": {
@@ -1275,13 +1337,14 @@
     ],
     "watchlist_monitor_extended_hours": true,
     "pending_sata_buyback": {
-      "status": "OPEN",
+      "status": "COMPLETED",
       "id": "SATA-BUYBACK-FROM-GDXU-20261116",
-      "when": "GDXU clip from BB-GDXU-3 fully exited \u2192 buy back SATA"
+      "when": "GDXU clip from BB-GDXU-3 fully exited \u2192 buy back SATA",
+      "completed": "2026-11-17T15:01:01Z"
     }
   },
-  "dividend_cash": 78.087,
-  "last_sata_dividend_day": "2026-11-16",
+  "dividend_cash": 0,
+  "last_sata_dividend_day": "2026-11-17",
   "dividend_log": [
     {
       "date": "2026-11-03",
@@ -1363,16 +1426,24 @@
       "per_share": 0.0516,
       "amount": 26.029,
       "earned_total_after": 279.4063
+    },
+    {
+      "date": "2026-11-17",
+      "symbol": "SATA",
+      "qty": 252.2191680112639,
+      "per_share": 0.0516,
+      "amount": 13.0145,
+      "earned_total_after": 292.4208
     }
   ],
   "restore_note": {
     "source": "bc-a5e8f5ec John Cloud Telegram poll Oct 29 balances + Oct 28 SO-29 fill",
     "wrong_book_backup": "/tmp/paper-state-WRONG-sept28-backup.json"
   },
-  "dividends_earned_total": 279.4063,
+  "dividends_earned_total": 292.4208,
   "pending_sata_buyback": {
     "id": "SATA-BUYBACK-FROM-GDXU-20261116",
-    "status": "OPEN",
+    "status": "COMPLETED",
     "created": "2026-11-16T20:58:26Z",
     "source": "telegram_rodney",
     "intent": "Buy back SATA once GDXU trade is totally complete (full exit of this clip).",
@@ -1391,6 +1462,21 @@
       "notional": 23930.55
     },
     "trigger": "When this GDXU position (from BB-GDXU-3) is fully exited / trade totally complete, BUY_BEST SATA with available redeploy proceeds (prefer trading cash from that exit).",
-    "note": "Rodney override of SATA no_sell for this half; remaining SATA stays hold-for-dividends."
+    "note": "Rodney override of SATA no_sell for this half; remaining SATA stays hold-for-dividends.",
+    "completed": "2026-11-17T15:01:01Z",
+    "gdxu_exit": {
+      "order_id": "TS-GDXU-7",
+      "fill_price": 67.25,
+      "fill_qty": 373.5646411492827,
+      "proceeds": 25122.22,
+      "realized": 1191.67
+    },
+    "sata_buyback": {
+      "order_id": "BB-SATA-1",
+      "status": "FILLED",
+      "fill_price": 95.0999984741211,
+      "fill_qty": 251.6356507251896,
+      "notional": 23930.55
+    }
   }
 }
