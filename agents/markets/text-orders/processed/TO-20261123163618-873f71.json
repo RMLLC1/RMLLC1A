@@ -3,10 +3,15 @@
   "source": "imessage",
   "from": "+18173715555",
   "created": "2026-11-23T16:36:18Z",
-  "status": "PENDING",
+  "status": "APPLIED",
   "action": "BUY_BEST",
   "symbol": "GDXU",
   "notional": 97246.51,
   "attach_exits": true,
-  "raw_text": "BUY GDXU $97246.51 BEST"
+  "raw_text": "BUY GDXU $97246.51 BEST",
+  "applied_at": "2026-11-23T16:36:22Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued BB-GDXU-4"
+  }
 }
