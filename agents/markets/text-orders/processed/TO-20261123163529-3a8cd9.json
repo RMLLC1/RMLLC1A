@@ -3,7 +3,7 @@
   "source": "telegram",
   "from": "Rodney",
   "created": "2026-11-23T16:35:29Z",
-  "status": "PENDING",
+  "status": "APPLIED",
   "action": "SELL_BEST",
   "symbol": "SATA",
   "qty_all": true,
@@ -11,5 +11,10 @@
   "skip_profit_to_sata": true,
   "purpose": "REDEPLOY_TO_GDXU",
   "raw_text": "Sell all of SATA at best, and with all the cash buy GDXU at best",
-  "note": "Rodney 2026-11-23: sell ALL SATA at best → deploy all cash into GDXU at best. Compound Telegram text failed parse; split into sell then buy."
+  "note": "Rodney 2026-11-23: sell ALL SATA at best \u2192 deploy all cash into GDXU at best. Compound Telegram text failed parse; split into sell then buy.",
+  "applied_at": "2026-11-23T16:36:13Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued SB-SATA-2"
+  }
 }
