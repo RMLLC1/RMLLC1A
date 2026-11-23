@@ -1,11 +1,15 @@
 {
   "id": "TO-20261123163529-3a8cd9",
-  "source": "imessage",
-  "from": "+18173715555",
+  "source": "telegram",
+  "from": "Rodney",
   "created": "2026-11-23T16:35:29Z",
   "status": "PENDING",
   "action": "SELL_BEST",
   "symbol": "SATA",
   "qty_all": true,
-  "raw_text": "SELL SATA ALL BEST"
+  "allow_sata_sell": true,
+  "skip_profit_to_sata": true,
+  "purpose": "REDEPLOY_TO_GDXU",
+  "raw_text": "Sell all of SATA at best, and with all the cash buy GDXU at best",
+  "note": "Rodney 2026-11-23: sell ALL SATA at best → deploy all cash into GDXU at best. Compound Telegram text failed parse; split into sell then buy."
 }
