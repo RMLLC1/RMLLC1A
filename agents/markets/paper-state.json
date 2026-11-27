@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
   "cash": 50000.0,
-  "updated": "2026-11-27T17:00:56Z",
+  "updated": "2026-11-27T19:40:30Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -24,7 +24,7 @@
       "cost_basis": 65112.59,
       "hold_for_dividends": true,
       "no_sell": true,
-      "last_upl_pct": 0.0
+      "last_upl_pct": 0.07
     },
     {
       "symbol": "NVDA",
@@ -925,6 +925,24 @@
       "params_text": "Buy $65112.59 SATA with the exit proceeds above the cash floor (keep $50,000 cash). HOLD for daily dividends \u2014 do not sell.",
       "fill_price": 91.98999786376953,
       "fill_qty": 707.8224971417761
+    },
+    {
+      "id": "LB-SATA-1",
+      "symbol": "SATA",
+      "type": "LIMIT_BUY",
+      "status": "OPEN",
+      "limit_price": 92.0,
+      "notional": 50000.0,
+      "attach_trailing_stop": false,
+      "attach_trading_exits": false,
+      "arm_pct": 0.01,
+      "trail_pct": 0.005,
+      "no_hard_stop": true,
+      "no_scale_outs": true,
+      "scale_out_levels": [],
+      "source": "text_order",
+      "text_order_id": "TO-20261127194026-41dc6a",
+      "params_text": "Text: buy $50,000 SATA at $92.0 or better. HOLD for daily dividends \u2014 no exits attached."
     }
   ],
   "trade_log": [
@@ -1362,8 +1380,6 @@
     }
   ],
   "events": [
-    "2026-11-27T13:40:39Z GDXU STALE_QUOTE age=132099s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T13:45:29Z GDXU STALE_QUOTE age=132389s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T13:51:08Z GDXU STALE_QUOTE age=132728s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T13:55:24Z GDXU STALE_QUOTE age=132984s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T14:01:04Z GDXU STALE_QUOTE age=133324s mark=50.3 \u2014 order logic skipped",
@@ -1411,7 +1427,9 @@
     "2026-11-27T17:00:56Z GDXU mark=57.7300 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'FILLED_MARKET', 'side': 'SELL', 'limit': 57.7796, 'price': 57.72999954223633, 'qty': 1993.9821424487884, 'proceeds': 115112.59}",
     "2026-11-27T17:00:56Z queued PB-SATA-18 $65112.59 (EXIT_REMAINDER_TO_SATA)",
     "2026-11-27T17:00:56Z GDXU exit_redeploy: keep $50,000.00 cash, $65,112.59 -> SATA",
-    "2026-11-27T17:00:56Z SATA mark=91.9900 {'id': 'PB-SATA-18', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 707.8224971417761, 'price': 91.98999786376953, 'cost': 65112.59}"
+    "2026-11-27T17:00:56Z SATA mark=91.9900 {'id': 'PB-SATA-18', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 707.8224971417761, 'price': 91.98999786376953, 'cost': 65112.59}",
+    "2026-11-27T19:40:28Z TEXT queued LB-SATA-1 LIMIT_BUY SATA @92.0 $50000.0",
+    "2026-11-27T19:40:30Z SATA mark=92.0500 {'id': 'LB-SATA-1', 'symbol': 'SATA', 'event': 'WORKING_BUY', 'limit': 92.0}"
   ],
   "auto_execute": true,
   "standing_rules": {
