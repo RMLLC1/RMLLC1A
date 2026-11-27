@@ -1,6 +1,6 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-11-27T16:05:56Z  
+**Updated:** 2026-11-27T16:10:48Z  
 **Base currency:** USD  
 **Starting cash:** 200,000.00  
 **Cash:** 0.00  
@@ -21,20 +21,20 @@
 - **Hold for daily dividends — do not sell** income SATA unless Rodney overrides.
 
 **Marks:**
-- BTC-USD: **$59848.6992** (yahoo_v8_chart_1m)
-- GDXU: **$56.0000** (yahoo_v8_chart_1m)
-- MRVL: **$138.0150** (yahoo_v8_chart_1m)
-- NVDA: **$148.1400** (yahoo_v8_chart_1m)
-- SATA: **$91.6280** (yahoo_v8_chart_1m)
-- SOL-USD: **$72.0200** (yahoo_v8_chart_1m)
-- UXRP: **$6.3600** (yahoo_v8_chart_1m)
-- XRP-USD: **$0.9498** (yahoo_v8_chart_1m)
+- BTC-USD: **$59952.2617** (yahoo_v8_chart_1m)
+- GDXU: **$56.3800** (yahoo_v8_chart_1m)
+- MRVL: **$137.8000** (yahoo_v8_chart_1m)
+- NVDA: **$148.0450** (yahoo_v8_chart_1m)
+- SATA: **$91.4469** (yahoo_v8_chart_1m)
+- SOL-USD: **$72.1000** (yahoo_v8_chart_1m)
+- UXRP: **$6.3701** (yahoo_v8_chart_1m)
+- XRP-USD: **$0.9495** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Side | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| GDXU | LONG | 1993.9821 | 48.7700 | 97,246.51 | 56.0000 | 14,416.49 |
+| GDXU | LONG | 1993.9821 | 48.7700 | 97,246.51 | 56.3800 | 15,174.21 |
 
 ## Open orders (PAPER)
 
@@ -44,7 +44,7 @@
 | PB-SATA-4 | SATA | BUY_BEST | **UNWOUND** | Buy $8621.96 SATA (trading profit + any dividend cash). HOLD for daily dividends — do not sell. UNWOUND 2026-11-04T10:31:45Z paper rewind (do not re-fire). |
 | PB-SATA-10 | SATA | BUY_BEST | **UNWOUND** | Reinvest $24.76 SATA dividend cash (daily). HOLD for daily dividends — do not sell. UNWOUND 2026-11-10T00:06:10Z — reverse duplicate/early dividend reinvest (Nov9 already credited; UTC/NY date bug). |
 | PB-SATA-11 | SATA | BUY_BEST | **UNWOUND** | Reinvest $24.77 SATA dividend cash (daily). HOLD for daily dividends — do not sell. UNWOUND 2026-11-10T00:06:10Z — reverse duplicate/early dividend reinvest (Nov9 already credited; UTC/NY date bug). |
-| TS-GDXU-8 | GDXU | TRAILING_STOP_LIMIT_SELL | **ARMED** | Arm → $56.00 (Rodney 2026-11-27: arm at current price; was $70.00). Trail 0.5% → market sell on reverse. (group BB-GDXU-4) |
+| TS-GDXU-8 | GDXU | TRAILING_STOP_LIMIT_SELL | **ARMED** | Arm → $56.00 (Rodney 2026-11-27: arm at current price; was $70.00). Trail widened 0.5% → 5.0% per Rodney 2026-11-27 (market sell on reverse). (group BB-GDXU-4) |
 
 ## Trade log (buys/sells)
 
@@ -63,8 +63,6 @@
 
 ## Recent events
 
-- 2026-11-27T15:25:20Z GDXU mark=56.0300 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-27T15:30:24Z GDXU mark=55.9500 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T15:35:29Z GDXU mark=56.2299 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T15:41:00Z GDXU mark=56.3011 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T15:45:41Z GDXU mark=56.3050 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
@@ -75,6 +73,8 @@
 - 2026-11-27T16:05:23Z GDXU mark=56.1900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T16:05:51Z GDXU mark=56.0000 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T16:05:56Z GDXU mark=56.0000 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED', 'high_water': 56.0, 'stop': 55.72}
+- 2026-11-27T16:10:41Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.380001068115234, 'stop': 56.0981}
+- 2026-11-27T16:10:48Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}
 
 ## Rules
 
