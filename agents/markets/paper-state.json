@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
   "cash": 0.0,
-  "updated": "2026-11-27T16:10:48Z",
+  "updated": "2026-11-27T16:15:36Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -15,7 +15,7 @@
       "qty": 1993.9821424487884,
       "avg_cost": 48.77,
       "cost_basis": 97246.51,
-      "last_upl_pct": 15.6
+      "last_upl_pct": 15.54
     },
     {
       "symbol": "SATA",
@@ -1330,7 +1330,6 @@
     }
   ],
   "events": [
-    "2026-11-27T12:25:41Z GDXU STALE_QUOTE age=127601s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T12:30:45Z GDXU STALE_QUOTE age=127905s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T12:35:42Z GDXU STALE_QUOTE age=128203s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T12:40:26Z GDXU STALE_QUOTE age=128486s mark=50.3 \u2014 order logic skipped",
@@ -1379,7 +1378,8 @@
     "2026-11-27T16:05:51Z GDXU mark=56.0000 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}",
     "2026-11-27T16:05:56Z GDXU mark=56.0000 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED', 'high_water': 56.0, 'stop': 55.72}",
     "2026-11-27T16:10:41Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.380001068115234, 'stop': 56.0981}",
-    "2026-11-27T16:10:48Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}"
+    "2026-11-27T16:10:48Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}",
+    "2026-11-27T16:15:36Z GDXU mark=56.3482 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}"
   ],
   "auto_execute": true,
   "standing_rules": {
@@ -1443,7 +1443,14 @@
     },
     "daily_sata_dividend_report": true,
     "daily_sata_dividend_report_even_if_zero": true,
-    "note_daily_sata_dividend_report": "Rodney 2026-11-23: keep tracking total SATA dividends; daily 08:00 PT report includes today's amount even if $0 (e.g. weekends / no SATA position)."
+    "note_daily_sata_dividend_report": "Rodney 2026-11-23: keep tracking total SATA dividends; daily 08:00 PT report includes today's amount even if $0 (e.g. weekends / no SATA position).",
+    "exit_redeploy": {
+      "enabled": true,
+      "symbol": "GDXU",
+      "keep_cash": 50000.0,
+      "buy": "SATA",
+      "note": "Rodney 2026-11-27: once the GDXU trade closes, keep $50k cash for trading and buy SATA with the remainder of the proceeds."
+    }
   },
   "dividend_cash": 0,
   "last_sata_dividend_day": "2026-11-27",

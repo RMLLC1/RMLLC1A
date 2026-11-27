@@ -1,6 +1,6 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-11-27T16:10:48Z  
+**Updated:** 2026-11-27T16:15:36Z  
 **Base currency:** USD  
 **Starting cash:** 200,000.00  
 **Cash:** 0.00  
@@ -21,20 +21,20 @@
 - **Hold for daily dividends — do not sell** income SATA unless Rodney overrides.
 
 **Marks:**
-- BTC-USD: **$59952.2617** (yahoo_v8_chart_1m)
-- GDXU: **$56.3800** (yahoo_v8_chart_1m)
-- MRVL: **$137.8000** (yahoo_v8_chart_1m)
-- NVDA: **$148.0450** (yahoo_v8_chart_1m)
-- SATA: **$91.4469** (yahoo_v8_chart_1m)
-- SOL-USD: **$72.1000** (yahoo_v8_chart_1m)
-- UXRP: **$6.3701** (yahoo_v8_chart_1m)
-- XRP-USD: **$0.9495** (yahoo_v8_chart_1m)
+- BTC-USD: **$59903.2109** (yahoo_v8_chart_1m)
+- GDXU: **$56.3482** (yahoo_v8_chart_1m)
+- MRVL: **$137.8500** (yahoo_v8_chart_1m)
+- NVDA: **$147.9500** (yahoo_v8_chart_1m)
+- SATA: **$91.4515** (yahoo_v8_chart_1m)
+- SOL-USD: **$72.0500** (yahoo_v8_chart_1m)
+- UXRP: **$6.3500** (yahoo_v8_chart_1m)
+- XRP-USD: **$0.9478** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Side | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| GDXU | LONG | 1993.9821 | 48.7700 | 97,246.51 | 56.3800 | 15,174.21 |
+| GDXU | LONG | 1993.9821 | 48.7700 | 97,246.51 | 56.3482 | 15,110.80 |
 
 ## Open orders (PAPER)
 
@@ -63,7 +63,6 @@
 
 ## Recent events
 
-- 2026-11-27T15:35:29Z GDXU mark=56.2299 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T15:41:00Z GDXU mark=56.3011 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T15:45:41Z GDXU mark=56.3050 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T15:50:30Z GDXU mark=56.0873 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
@@ -75,6 +74,7 @@
 - 2026-11-27T16:05:56Z GDXU mark=56.0000 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED', 'high_water': 56.0, 'stop': 55.72}
 - 2026-11-27T16:10:41Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.380001068115234, 'stop': 56.0981}
 - 2026-11-27T16:10:48Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}
+- 2026-11-27T16:15:36Z GDXU mark=56.3482 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}
 
 ## Rules
 
