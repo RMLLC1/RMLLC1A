@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-17T15:00:59Z",
+  "updated": "2026-11-27T16:05:56Z",
   "always_include": [
     "GDXU",
     "UXRP",
@@ -8,12 +8,10 @@
   "symbols": [
     "GDXU",
     "UXRP",
-    "SATA",
-    "SOL"
+    "SATA"
   ],
   "open_position_symbols": [
-    "SATA",
-    "SOL"
+    "GDXU"
   ],
   "monitor": {
     "interval_seconds": 300,
