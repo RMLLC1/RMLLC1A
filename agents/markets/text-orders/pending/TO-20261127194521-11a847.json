@@ -1,0 +1,12 @@
+{
+  "id": "TO-20261127194521-11a847",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-11-27T19:45:21Z",
+  "status": "PENDING",
+  "action": "BUY_BEST",
+  "symbol": "SATA",
+  "notional": 50000.0,
+  "attach_exits": true,
+  "raw_text": "BUY SATA $50000 BEST"
+}
