@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
-  "cash": 0.0,
-  "updated": "2026-11-27T16:30:22Z",
+  "cash": 50000.0,
+  "updated": "2026-11-27T17:00:56Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -12,19 +12,19 @@
     },
     {
       "symbol": "GDXU",
-      "qty": 1993.9821424487884,
+      "qty": 0.0,
       "avg_cost": 48.77,
-      "cost_basis": 97246.51,
-      "last_upl_pct": 16.65
+      "cost_basis": 0.0,
+      "last_upl_pct": 19.07
     },
     {
       "symbol": "SATA",
-      "qty": 0.0,
-      "avg_cost": 0.0,
-      "cost_basis": 0.0,
+      "qty": 707.8224971417761,
+      "avg_cost": 91.989998,
+      "cost_basis": 65112.59,
       "hold_for_dividends": true,
       "no_sell": true,
-      "last_upl_pct": -6.18
+      "last_upl_pct": 0.0
     },
     {
       "symbol": "NVDA",
@@ -902,15 +902,29 @@
       "id": "TS-GDXU-8",
       "symbol": "GDXU",
       "type": "TRAILING_STOP_LIMIT_SELL",
-      "status": "ARMED",
+      "status": "FILLED",
       "arm_price": 56.0,
       "trail_pct": 0.005,
       "fill_at_market": true,
       "entry_group": "BB-GDXU-4",
       "entry_price": 48.77000045776367,
       "params_text": "Arm \u2192 $56.00 (Rodney 2026-11-27: arm at current price; was $70.00). Trail set back to 0.5% per Rodney 2026-11-27 (market sell on reverse). (group BB-GDXU-4)",
-      "high_water": 56.88999938964844,
-      "stop": 56.6055
+      "high_water": 58.06999969482422,
+      "stop": 57.7796,
+      "fill_price": 57.72999954223633,
+      "fill_qty": 1993.9821424487884
+    },
+    {
+      "id": "PB-SATA-18",
+      "symbol": "SATA",
+      "type": "BUY_BEST",
+      "status": "FILLED",
+      "notional": 65112.59,
+      "attach_trailing_stop": false,
+      "purpose": "EXIT_REMAINDER_TO_SATA",
+      "params_text": "Buy $65112.59 SATA with the exit proceeds above the cash floor (keep $50,000 cash). HOLD for daily dividends \u2014 do not sell.",
+      "fill_price": 91.98999786376953,
+      "fill_qty": 707.8224971417761
     }
   ],
   "trade_log": [
@@ -1327,18 +1341,27 @@
       "price": 48.77000045776367,
       "cash_after": 0.0,
       "rationale": "BUY_BEST BB-GDXU-4 auto-filled at best available"
+    },
+    {
+      "time": "2026-11-27T17:00:56Z",
+      "side": "SELL_MARKET",
+      "symbol": "GDXU",
+      "qty": 1993.9821424487884,
+      "price": 57.72999954223633,
+      "cash_after": 115112.59,
+      "rationale": "Trailing stop TS-GDXU-8 auto-filled"
+    },
+    {
+      "time": "2026-11-27T17:00:56Z",
+      "side": "BUY",
+      "symbol": "SATA",
+      "qty": 707.8224971417761,
+      "price": 91.98999786376953,
+      "cash_after": 50000.0,
+      "rationale": "BUY_BEST PB-SATA-18 auto-filled at best available; hold for dividends"
     }
   ],
   "events": [
-    "2026-11-27T12:55:29Z GDXU STALE_QUOTE age=129389s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T13:00:29Z GDXU STALE_QUOTE age=129689s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T13:05:18Z GDXU STALE_QUOTE age=129978s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T13:10:23Z GDXU STALE_QUOTE age=130283s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T13:15:16Z GDXU STALE_QUOTE age=130576s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T13:20:34Z GDXU STALE_QUOTE age=130894s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T13:25:34Z GDXU STALE_QUOTE age=131195s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T13:30:35Z GDXU STALE_QUOTE age=131495s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T13:35:30Z GDXU STALE_QUOTE age=131790s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T13:40:39Z GDXU STALE_QUOTE age=132099s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T13:45:29Z GDXU STALE_QUOTE age=132389s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T13:51:08Z GDXU STALE_QUOTE age=132728s mark=50.3 \u2014 order logic skipped",
@@ -1379,7 +1402,16 @@
     "2026-11-27T16:25:23Z GDXU mark=56.4800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.47999954223633, 'stop': 53.656}",
     "2026-11-27T16:25:36Z GDXU mark=56.5750 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.57500076293945, 'stop': 53.7463}",
     "2026-11-27T16:30:15Z GDXU mark=56.8900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.88999938964844, 'stop': 54.0455}",
-    "2026-11-27T16:30:22Z GDXU mark=56.8900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 56.6055}"
+    "2026-11-27T16:30:22Z GDXU mark=56.8900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 56.6055}",
+    "2026-11-27T16:35:40Z GDXU mark=57.2800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 57.279998779296875, 'stop': 56.9936}",
+    "2026-11-27T16:40:41Z GDXU mark=57.1900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 56.9936}",
+    "2026-11-27T16:45:32Z GDXU mark=57.4900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 57.4900016784668, 'stop': 57.2026}",
+    "2026-11-27T16:51:03Z GDXU mark=57.6210 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 57.62099838256836, 'stop': 57.3329}",
+    "2026-11-27T16:55:35Z GDXU mark=58.0700 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 58.06999969482422, 'stop': 57.7796}",
+    "2026-11-27T17:00:56Z GDXU mark=57.7300 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'FILLED_MARKET', 'side': 'SELL', 'limit': 57.7796, 'price': 57.72999954223633, 'qty': 1993.9821424487884, 'proceeds': 115112.59}",
+    "2026-11-27T17:00:56Z queued PB-SATA-18 $65112.59 (EXIT_REMAINDER_TO_SATA)",
+    "2026-11-27T17:00:56Z GDXU exit_redeploy: keep $50,000.00 cash, $65,112.59 -> SATA",
+    "2026-11-27T17:00:56Z SATA mark=91.9900 {'id': 'PB-SATA-18', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 707.8224971417761, 'price': 91.98999786376953, 'cost': 65112.59}"
   ],
   "auto_execute": true,
   "standing_rules": {

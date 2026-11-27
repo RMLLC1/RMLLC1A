@@ -1,9 +1,9 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-11-27T16:30:22Z  
+**Updated:** 2026-11-27T17:00:56Z  
 **Base currency:** USD  
 **Starting cash:** 200,000.00  
-**Cash:** 0.00  
+**Cash:** 50,000.00  
 **Dividend cash (SATA collected):** 0.0000  
 **Dividends earned total (running):** 399.2004  
 **Mode:** PAPER only — **auto-execute** open buy/sell orders on each poll  
@@ -21,20 +21,20 @@
 - **Hold for daily dividends — do not sell** income SATA unless Rodney overrides.
 
 **Marks:**
-- BTC-USD: **$59972.8906** (yahoo_v8_chart_1m)
-- GDXU: **$56.8900** (yahoo_v8_chart_1m)
-- MRVL: **$137.8600** (yahoo_v8_chart_1m)
-- NVDA: **$148.7700** (yahoo_v8_chart_1m)
-- SATA: **$91.6200** (yahoo_v8_chart_1m)
-- SOL-USD: **$71.9700** (yahoo_v8_chart_1m)
-- UXRP: **$6.3200** (yahoo_v8_chart_1m)
-- XRP-USD: **$0.9463** (yahoo_v8_chart_1m)
+- BTC-USD: **$59867.5195** (yahoo_v8_chart_1m)
+- GDXU: **$57.7300** (yahoo_v8_chart_1m)
+- MRVL: **$137.2400** (yahoo_v8_chart_1m)
+- NVDA: **$149.0400** (yahoo_v8_chart_1m)
+- SATA: **$91.9900** (yahoo_v8_chart_1m)
+- SOL-USD: **$71.9300** (yahoo_v8_chart_1m)
+- UXRP: **$6.3594** (yahoo_v8_chart_1m)
+- XRP-USD: **$0.9478** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Side | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| GDXU | LONG | 1993.9821 | 48.7700 | 97,246.51 | 56.8900 | 16,191.13 |
+| SATA | LONG | 707.8225 | 91.9900 | 65,112.59 | 91.9900 | 0.00 |
 
 ## Open orders (PAPER)
 
@@ -44,12 +44,9 @@
 | PB-SATA-4 | SATA | BUY_BEST | **UNWOUND** | Buy $8621.96 SATA (trading profit + any dividend cash). HOLD for daily dividends — do not sell. UNWOUND 2026-11-04T10:31:45Z paper rewind (do not re-fire). |
 | PB-SATA-10 | SATA | BUY_BEST | **UNWOUND** | Reinvest $24.76 SATA dividend cash (daily). HOLD for daily dividends — do not sell. UNWOUND 2026-11-10T00:06:10Z — reverse duplicate/early dividend reinvest (Nov9 already credited; UTC/NY date bug). |
 | PB-SATA-11 | SATA | BUY_BEST | **UNWOUND** | Reinvest $24.77 SATA dividend cash (daily). HOLD for daily dividends — do not sell. UNWOUND 2026-11-10T00:06:10Z — reverse duplicate/early dividend reinvest (Nov9 already credited; UTC/NY date bug). |
-| TS-GDXU-8 | GDXU | TRAILING_STOP_LIMIT_SELL | **ARMED** | Arm → $56.00 (Rodney 2026-11-27: arm at current price; was $70.00). Trail set back to 0.5% per Rodney 2026-11-27 (market sell on reverse). (group BB-GDXU-4) |
 
 ## Trade log (buys/sells)
 
-- 2026-11-11T21:25:07Z **COVER_MARKET** GDXU qty=583.4305925377931 @ $83.11 → cash $91511.08
-- 2026-11-11T21:25:07Z **BUY** SATA qty=15.53809768637532 @ $97.25 → cash $90000.0
 - 2026-11-14T14:15:19Z **BUY** SOL qty=667.3785534170665 @ $74.91999816894531 → cash $0.0
 - 2026-11-16T20:57:55Z **SELL** SATA qty=252.2191680112639 @ $94.87999725341797 → cash $23930.55
 - 2026-11-16T20:58:24Z **BUY** GDXU qty=373.5646411492827 @ $64.05999755859375 → cash $0.0
@@ -60,21 +57,23 @@
 - 2026-11-23T14:10:20Z **BUY** SATA qty=5.294893284165829 @ $89.49 → cash $50000.0
 - 2026-11-23T16:36:15Z **SELL** SATA qty=522.6383557701675 @ $90.4000015258789 → cash $97246.51
 - 2026-11-23T16:36:23Z **BUY** GDXU qty=1993.9821424487884 @ $48.77000045776367 → cash $0.0
+- 2026-11-27T17:00:56Z **SELL_MARKET** GDXU qty=1993.9821424487884 @ $57.72999954223633 → cash $115112.59
+- 2026-11-27T17:00:56Z **BUY** SATA qty=707.8224971417761 @ $91.98999786376953 → cash $50000.0
 
 ## Recent events
 
-- 2026-11-27T16:00:58Z GDXU mark=56.3600 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-27T16:05:23Z GDXU mark=56.1900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-27T16:05:51Z GDXU mark=56.0000 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-27T16:05:56Z GDXU mark=56.0000 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED', 'high_water': 56.0, 'stop': 55.72}
-- 2026-11-27T16:10:41Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.380001068115234, 'stop': 56.0981}
-- 2026-11-27T16:10:48Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}
-- 2026-11-27T16:15:36Z GDXU mark=56.3482 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}
-- 2026-11-27T16:20:17Z GDXU mark=56.3200 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}
-- 2026-11-27T16:25:23Z GDXU mark=56.4800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.47999954223633, 'stop': 53.656}
 - 2026-11-27T16:25:36Z GDXU mark=56.5750 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.57500076293945, 'stop': 53.7463}
 - 2026-11-27T16:30:15Z GDXU mark=56.8900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.88999938964844, 'stop': 54.0455}
 - 2026-11-27T16:30:22Z GDXU mark=56.8900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 56.6055}
+- 2026-11-27T16:35:40Z GDXU mark=57.2800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 57.279998779296875, 'stop': 56.9936}
+- 2026-11-27T16:40:41Z GDXU mark=57.1900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 56.9936}
+- 2026-11-27T16:45:32Z GDXU mark=57.4900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 57.4900016784668, 'stop': 57.2026}
+- 2026-11-27T16:51:03Z GDXU mark=57.6210 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 57.62099838256836, 'stop': 57.3329}
+- 2026-11-27T16:55:35Z GDXU mark=58.0700 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 58.06999969482422, 'stop': 57.7796}
+- 2026-11-27T17:00:56Z GDXU mark=57.7300 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'FILLED_MARKET', 'side': 'SELL', 'limit': 57.7796, 'price': 57.72999954223633, 'qty': 1993.9821424487884, 'proceeds': 115112.59}
+- 2026-11-27T17:00:56Z queued PB-SATA-18 $65112.59 (EXIT_REMAINDER_TO_SATA)
+- 2026-11-27T17:00:56Z GDXU exit_redeploy: keep $50,000.00 cash, $65,112.59 -> SATA
+- 2026-11-27T17:00:56Z SATA mark=91.9900 {'id': 'PB-SATA-18', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 707.8224971417761, 'price': 91.98999786376953, 'cost': 65112.59}
 
 ## Rules
 
