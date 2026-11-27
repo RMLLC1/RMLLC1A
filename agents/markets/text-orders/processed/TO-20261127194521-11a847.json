@@ -3,10 +3,15 @@
   "source": "imessage",
   "from": "+18173715555",
   "created": "2026-11-27T19:45:21Z",
-  "status": "PENDING",
+  "status": "APPLIED",
   "action": "BUY_BEST",
   "symbol": "SATA",
   "notional": 50000.0,
   "attach_exits": true,
-  "raw_text": "BUY SATA $50000 BEST"
+  "raw_text": "BUY SATA $50000 BEST",
+  "applied_at": "2026-11-27T19:45:23Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued BB-SATA-2"
+  }
 }
