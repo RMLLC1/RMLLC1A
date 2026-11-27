@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
-  "cash": 50000.0,
-  "updated": "2026-11-27T19:40:30Z",
+  "cash": 0.0,
+  "updated": "2026-11-27T19:45:24Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -19,12 +19,12 @@
     },
     {
       "symbol": "SATA",
-      "qty": 707.8224971417761,
-      "avg_cost": 91.989998,
-      "cost_basis": 65112.59,
+      "qty": 1251.0055498305323,
+      "avg_cost": 92.016051,
+      "cost_basis": 115112.59,
       "hold_for_dividends": true,
       "no_sell": true,
-      "last_upl_pct": 0.07
+      "last_upl_pct": 0.04
     },
     {
       "symbol": "NVDA",
@@ -930,7 +930,7 @@
       "id": "LB-SATA-1",
       "symbol": "SATA",
       "type": "LIMIT_BUY",
-      "status": "OPEN",
+      "status": "CANCELLED",
       "limit_price": 92.0,
       "notional": 50000.0,
       "attach_trailing_stop": false,
@@ -942,7 +942,26 @@
       "scale_out_levels": [],
       "source": "text_order",
       "text_order_id": "TO-20261127194026-41dc6a",
-      "params_text": "Text: buy $50,000 SATA at $92.0 or better. HOLD for daily dividends \u2014 no exits attached."
+      "params_text": "Text: buy $50,000 SATA at $92.0 or better. HOLD for daily dividends \u2014 no exits attached. | Cancelled via text order"
+    },
+    {
+      "id": "BB-SATA-2",
+      "symbol": "SATA",
+      "type": "BUY_BEST",
+      "status": "FILLED",
+      "notional": 50000.0,
+      "attach_trailing_stop": true,
+      "attach_trading_exits": true,
+      "arm_pct": 0.01,
+      "trail_pct": 0.005,
+      "no_hard_stop": true,
+      "no_scale_outs": true,
+      "scale_out_levels": [],
+      "source": "text_order",
+      "text_order_id": "TO-20261127194521-11a847",
+      "params_text": "Text: buy $50,000 SATA at best. Exits: +1% arm / 0.5% trail market. NO hard stop. NO scale-outs.",
+      "fill_price": 92.05,
+      "fill_qty": 543.1830526887561
     }
   ],
   "trade_log": [
@@ -1377,13 +1396,18 @@
       "price": 91.98999786376953,
       "cash_after": 50000.0,
       "rationale": "BUY_BEST PB-SATA-18 auto-filled at best available; hold for dividends"
+    },
+    {
+      "time": "2026-11-27T19:45:24Z",
+      "side": "BUY",
+      "symbol": "SATA",
+      "qty": 543.1830526887561,
+      "price": 92.05,
+      "cash_after": 0.0,
+      "rationale": "BUY_BEST BB-SATA-2 auto-filled at best available; hold for dividends"
     }
   ],
   "events": [
-    "2026-11-27T13:51:08Z GDXU STALE_QUOTE age=132728s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T13:55:24Z GDXU STALE_QUOTE age=132984s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T14:01:04Z GDXU STALE_QUOTE age=133324s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T14:05:10Z GDXU STALE_QUOTE age=133570s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T14:10:22Z GDXU STALE_QUOTE age=133882s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T14:15:38Z GDXU STALE_QUOTE age=134198s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T14:20:32Z GDXU STALE_QUOTE age=134492s mark=50.3 \u2014 order logic skipped",
@@ -1429,7 +1453,11 @@
     "2026-11-27T17:00:56Z GDXU exit_redeploy: keep $50,000.00 cash, $65,112.59 -> SATA",
     "2026-11-27T17:00:56Z SATA mark=91.9900 {'id': 'PB-SATA-18', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 707.8224971417761, 'price': 91.98999786376953, 'cost': 65112.59}",
     "2026-11-27T19:40:28Z TEXT queued LB-SATA-1 LIMIT_BUY SATA @92.0 $50000.0",
-    "2026-11-27T19:40:30Z SATA mark=92.0500 {'id': 'LB-SATA-1', 'symbol': 'SATA', 'event': 'WORKING_BUY', 'limit': 92.0}"
+    "2026-11-27T19:40:30Z SATA mark=92.0500 {'id': 'LB-SATA-1', 'symbol': 'SATA', 'event': 'WORKING_BUY', 'limit': 92.0}",
+    "2026-11-27T19:45:15Z SATA mark=92.0500 {'id': 'LB-SATA-1', 'symbol': 'SATA', 'event': 'WORKING_BUY', 'limit': 92.0}",
+    "2026-11-27T19:45:23Z TEXT cancel LB-SATA-1",
+    "2026-11-27T19:45:23Z TEXT queued BB-SATA-2 BUY_BEST SATA $50000.0",
+    "2026-11-27T19:45:24Z SATA mark=92.0500 {'id': 'BB-SATA-2', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 543.1830526887561, 'price': 92.05, 'cost': 50000.0}"
   ],
   "auto_execute": true,
   "standing_rules": {
