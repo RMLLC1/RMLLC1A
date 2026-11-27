@@ -1,6 +1,6 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-11-27T16:15:36Z  
+**Updated:** 2026-11-27T16:30:22Z  
 **Base currency:** USD  
 **Starting cash:** 200,000.00  
 **Cash:** 0.00  
@@ -21,20 +21,20 @@
 - **Hold for daily dividends — do not sell** income SATA unless Rodney overrides.
 
 **Marks:**
-- BTC-USD: **$59903.2109** (yahoo_v8_chart_1m)
-- GDXU: **$56.3482** (yahoo_v8_chart_1m)
-- MRVL: **$137.8500** (yahoo_v8_chart_1m)
-- NVDA: **$147.9500** (yahoo_v8_chart_1m)
-- SATA: **$91.4515** (yahoo_v8_chart_1m)
-- SOL-USD: **$72.0500** (yahoo_v8_chart_1m)
-- UXRP: **$6.3500** (yahoo_v8_chart_1m)
-- XRP-USD: **$0.9478** (yahoo_v8_chart_1m)
+- BTC-USD: **$59972.8906** (yahoo_v8_chart_1m)
+- GDXU: **$56.8900** (yahoo_v8_chart_1m)
+- MRVL: **$137.8600** (yahoo_v8_chart_1m)
+- NVDA: **$148.7700** (yahoo_v8_chart_1m)
+- SATA: **$91.6200** (yahoo_v8_chart_1m)
+- SOL-USD: **$71.9700** (yahoo_v8_chart_1m)
+- UXRP: **$6.3200** (yahoo_v8_chart_1m)
+- XRP-USD: **$0.9463** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Side | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| GDXU | LONG | 1993.9821 | 48.7700 | 97,246.51 | 56.3482 | 15,110.80 |
+| GDXU | LONG | 1993.9821 | 48.7700 | 97,246.51 | 56.8900 | 16,191.13 |
 
 ## Open orders (PAPER)
 
@@ -44,7 +44,7 @@
 | PB-SATA-4 | SATA | BUY_BEST | **UNWOUND** | Buy $8621.96 SATA (trading profit + any dividend cash). HOLD for daily dividends — do not sell. UNWOUND 2026-11-04T10:31:45Z paper rewind (do not re-fire). |
 | PB-SATA-10 | SATA | BUY_BEST | **UNWOUND** | Reinvest $24.76 SATA dividend cash (daily). HOLD for daily dividends — do not sell. UNWOUND 2026-11-10T00:06:10Z — reverse duplicate/early dividend reinvest (Nov9 already credited; UTC/NY date bug). |
 | PB-SATA-11 | SATA | BUY_BEST | **UNWOUND** | Reinvest $24.77 SATA dividend cash (daily). HOLD for daily dividends — do not sell. UNWOUND 2026-11-10T00:06:10Z — reverse duplicate/early dividend reinvest (Nov9 already credited; UTC/NY date bug). |
-| TS-GDXU-8 | GDXU | TRAILING_STOP_LIMIT_SELL | **ARMED** | Arm → $56.00 (Rodney 2026-11-27: arm at current price; was $70.00). Trail widened 0.5% → 5.0% per Rodney 2026-11-27 (market sell on reverse). (group BB-GDXU-4) |
+| TS-GDXU-8 | GDXU | TRAILING_STOP_LIMIT_SELL | **ARMED** | Arm → $56.00 (Rodney 2026-11-27: arm at current price; was $70.00). Trail set back to 0.5% per Rodney 2026-11-27 (market sell on reverse). (group BB-GDXU-4) |
 
 ## Trade log (buys/sells)
 
@@ -63,11 +63,6 @@
 
 ## Recent events
 
-- 2026-11-27T15:41:00Z GDXU mark=56.3011 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-27T15:45:41Z GDXU mark=56.3050 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-27T15:50:30Z GDXU mark=56.0873 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-27T15:55:37Z GDXU mark=55.8200 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-27T16:00:31Z GDXU mark=56.4855 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T16:00:58Z GDXU mark=56.3600 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T16:05:23Z GDXU mark=56.1900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
 - 2026-11-27T16:05:51Z GDXU mark=56.0000 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
@@ -75,6 +70,11 @@
 - 2026-11-27T16:10:41Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.380001068115234, 'stop': 56.0981}
 - 2026-11-27T16:10:48Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}
 - 2026-11-27T16:15:36Z GDXU mark=56.3482 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}
+- 2026-11-27T16:20:17Z GDXU mark=56.3200 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}
+- 2026-11-27T16:25:23Z GDXU mark=56.4800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.47999954223633, 'stop': 53.656}
+- 2026-11-27T16:25:36Z GDXU mark=56.5750 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.57500076293945, 'stop': 53.7463}
+- 2026-11-27T16:30:15Z GDXU mark=56.8900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.88999938964844, 'stop': 54.0455}
+- 2026-11-27T16:30:22Z GDXU mark=56.8900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 56.6055}
 
 ## Rules
 

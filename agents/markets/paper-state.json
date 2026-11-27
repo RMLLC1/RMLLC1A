@@ -1,7 +1,7 @@
 {
   "starting_cash": 200000.0,
   "cash": 0.0,
-  "updated": "2026-11-27T16:15:36Z",
+  "updated": "2026-11-27T16:30:22Z",
   "positions": [
     {
       "symbol": "UXRP",
@@ -15,7 +15,7 @@
       "qty": 1993.9821424487884,
       "avg_cost": 48.77,
       "cost_basis": 97246.51,
-      "last_upl_pct": 15.54
+      "last_upl_pct": 16.65
     },
     {
       "symbol": "SATA",
@@ -904,13 +904,13 @@
       "type": "TRAILING_STOP_LIMIT_SELL",
       "status": "ARMED",
       "arm_price": 56.0,
-      "trail_pct": 0.05,
+      "trail_pct": 0.005,
       "fill_at_market": true,
       "entry_group": "BB-GDXU-4",
       "entry_price": 48.77000045776367,
-      "params_text": "Arm \u2192 $56.00 (Rodney 2026-11-27: arm at current price; was $70.00). Trail widened 0.5% \u2192 5.0% per Rodney 2026-11-27 (market sell on reverse). (group BB-GDXU-4)",
-      "high_water": 56.380001068115234,
-      "stop": 53.561
+      "params_text": "Arm \u2192 $56.00 (Rodney 2026-11-27: arm at current price; was $70.00). Trail set back to 0.5% per Rodney 2026-11-27 (market sell on reverse). (group BB-GDXU-4)",
+      "high_water": 56.88999938964844,
+      "stop": 56.6055
     }
   ],
   "trade_log": [
@@ -1330,11 +1330,6 @@
     }
   ],
   "events": [
-    "2026-11-27T12:30:45Z GDXU STALE_QUOTE age=127905s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T12:35:42Z GDXU STALE_QUOTE age=128203s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T12:40:26Z GDXU STALE_QUOTE age=128486s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T12:45:21Z GDXU STALE_QUOTE age=128781s mark=50.3 \u2014 order logic skipped",
-    "2026-11-27T12:50:14Z GDXU STALE_QUOTE age=129074s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T12:55:29Z GDXU STALE_QUOTE age=129389s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T13:00:29Z GDXU STALE_QUOTE age=129689s mark=50.3 \u2014 order logic skipped",
     "2026-11-27T13:05:18Z GDXU STALE_QUOTE age=129978s mark=50.3 \u2014 order logic skipped",
@@ -1379,7 +1374,12 @@
     "2026-11-27T16:05:56Z GDXU mark=56.0000 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED', 'high_water': 56.0, 'stop': 55.72}",
     "2026-11-27T16:10:41Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.380001068115234, 'stop': 56.0981}",
     "2026-11-27T16:10:48Z GDXU mark=56.3800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}",
-    "2026-11-27T16:15:36Z GDXU mark=56.3482 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}"
+    "2026-11-27T16:15:36Z GDXU mark=56.3482 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}",
+    "2026-11-27T16:20:17Z GDXU mark=56.3200 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 53.561}",
+    "2026-11-27T16:25:23Z GDXU mark=56.4800 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.47999954223633, 'stop': 53.656}",
+    "2026-11-27T16:25:36Z GDXU mark=56.5750 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.57500076293945, 'stop': 53.7463}",
+    "2026-11-27T16:30:15Z GDXU mark=56.8900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 56.88999938964844, 'stop': 54.0455}",
+    "2026-11-27T16:30:22Z GDXU mark=56.8900 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'ARMED_HOLD', 'stop': 56.6055}"
   ],
   "auto_execute": true,
   "standing_rules": {
