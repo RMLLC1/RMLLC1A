@@ -1,0 +1,18 @@
+{
+  "id": "TO-20261127194026-41dc6a",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-11-27T19:40:26Z",
+  "status": "APPLIED",
+  "action": "LIMIT_BUY",
+  "symbol": "SATA",
+  "notional": 50000.0,
+  "limit_price": 92.0,
+  "attach_exits": true,
+  "raw_text": "BUY SATA $50000 LIMIT 92",
+  "applied_at": "2026-11-27T19:40:28Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "queued LB-SATA-1"
+  }
+}

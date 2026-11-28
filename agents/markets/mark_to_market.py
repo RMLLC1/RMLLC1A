@@ -249,6 +249,44 @@ def queue_sata_profit_buy(state: dict, profit: float, events: list, now: str) ->
     return div_sweep
 
 
+def try_exit_redeploy(
+    state: dict, sym: str, pos: dict, cash: float, events: list, now: str
+) -> bool:
+    """On a full exit of the configured symbol, keep a cash floor and buy SATA with the rest.
+
+    Standing rule (Rodney 2026-11-27): once GDXU closes, keep $50k cash for trading and put
+    the remainder of the proceeds into SATA. Returns True if it queued a SATA buy (the caller
+    then skips the default profit->SATA logic so the same cash is not spent twice).
+    """
+    rule = (state.get("standing_rules") or {}).get("exit_redeploy") or {}
+    if not rule.get("enabled", False):
+        return False
+    if sym != str(rule.get("symbol", "")).upper():
+        return False
+    if float(pos.get("qty") or 0) > 1e-9:
+        return False
+    keep_cash = float(rule.get("keep_cash", 0))
+    remainder = round(float(cash) - keep_cash, 2)
+    if remainder < 1.0:
+        events.append(
+            f"{now} {sym} exit_redeploy: cash ${float(cash):.2f} <= keep ${keep_cash:.2f}; no SATA buy"
+        )
+        return True
+    _queue_sata_buy(
+        state,
+        remainder,
+        "EXIT_REMAINDER_TO_SATA",
+        "Buy ${NOTIONAL} SATA with the exit proceeds above the cash floor "
+        f"(keep ${keep_cash:,.0f} cash). HOLD for daily dividends — do not sell.",
+        events,
+        now,
+    )
+    events.append(
+        f"{now} {sym} exit_redeploy: keep ${keep_cash:,.2f} cash, ${remainder:,.2f} -> SATA"
+    )
+    return True
+
+
 def try_reinvest_dividend_cash(
     state: dict, sata_mark: float | None, events: list, now: str
 ) -> float:
@@ -1963,7 +2001,9 @@ def main() -> None:
                 avg_before = basis_before / qty_before if qty_before else 0
                 realized = round(float(ev["proceeds"]) - avg_before * float(ev["qty"]), 2)
                 ev["realized"] = realized
-                if realized > 0:
+                if try_exit_redeploy(state, sym, pos, cash, events, now):
+                    pass
+                elif realized > 0:
                     cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
                 cancel_entry_group(
                     state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
@@ -2028,7 +2068,9 @@ def main() -> None:
                 avg_before = basis_before / qty_before if qty_before else 0
                 realized = round(float(ev["proceeds"]) - avg_before * float(ev["qty"]), 2)
                 ev["realized"] = realized
-                if realized > 0:
+                if try_exit_redeploy(state, sym, pos, cash, events, now):
+                    pass
+                elif realized > 0:
                     cash = round(cash + queue_sata_profit_buy(state, realized, events, now), 2)
                 cancel_entry_group(
                     state, order.get("entry_group", ""), events, now, except_ids={order["id"]}
@@ -2206,6 +2248,12 @@ def main() -> None:
                     ev["realized"] = realized
                     # Skip profit→SATA on explicit redeploy exits (cash needed for other buys).
                     if (
+                        not order.get("skip_profit_to_sata")
+                        and order.get("purpose") != "OVERNIGHT_REDEPLOY"
+                        and try_exit_redeploy(state, sym, pos, cash, events, now)
+                    ):
+                        pass
+                    elif (
                         realized > 0
                         and not order.get("skip_profit_to_sata")
                         and order.get("purpose") != "OVERNIGHT_REDEPLOY"

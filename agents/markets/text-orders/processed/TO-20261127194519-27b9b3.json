@@ -1,0 +1,15 @@
+{
+  "id": "TO-20261127194519-27b9b3",
+  "source": "imessage",
+  "from": "+18173715555",
+  "created": "2026-11-27T19:45:19Z",
+  "status": "APPLIED",
+  "action": "CANCEL",
+  "cancel_order_id": "LB-SATA-1",
+  "raw_text": "CANCEL LB-SATA-1",
+  "applied_at": "2026-11-27T19:45:23Z",
+  "apply_result": {
+    "ok": true,
+    "detail": "cancelled LB-SATA-1"
+  }
+}

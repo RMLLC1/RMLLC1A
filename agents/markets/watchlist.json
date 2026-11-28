@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-10T23:26:33Z",
+  "updated": "2026-11-28T16:00:45Z",
   "always_include": [
     "GDXU",
     "UXRP",
@@ -11,13 +11,11 @@
     "SATA"
   ],
   "open_position_symbols": [
-    "GDXU",
-    "SATA",
-    "UXRP"
+    "SATA"
   ],
   "monitor": {
     "interval_seconds": 300,
-    "session": "NYSE extended hours Mon\u2013Fri 04:00\u201320:00 America/New_York",
+    "session": "NYSE extended hours Mon\u2013Fri 04:00\u201320:00 America/New_York; crypto orders 24/7",
     "via": "telegram-keepalive-300s + mark_to_market.py"
   }
 }

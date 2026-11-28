@@ -1,11 +1,11 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-11-10T23:26:33Z  
+**Updated:** 2026-11-28T16:00:45Z  
 **Base currency:** USD  
 **Starting cash:** 200,000.00  
-**Cash:** 100,000.00  
+**Cash:** 0.00  
 **Dividend cash (SATA collected):** 0.0000  
-**Dividends earned total (running):** 176.5480  
+**Dividends earned total (running):** 399.2004  
 **Mode:** PAPER only — **auto-execute** open buy/sell orders on each poll  
 **Price feed:** Yahoo Finance v8 1m chart (near-live poll; premarket + regular; may lag)  
 **Notify:** Gmail + Telegram on buy/sell fills (with balances) — never on mark/price updates  
@@ -21,21 +21,20 @@
 - **Hold for daily dividends — do not sell** income SATA unless Rodney overrides.
 
 **Marks:**
-- BTC-USD: **$73613.3984** (yahoo_v8_chart_1m)
-- GDXU: **$88.1588** (yahoo_v8_chart_1m)
-- MRVL: **$156.4872** (yahoo_v8_chart_1m)
-- NVDA: **$169.9000** (yahoo_v8_chart_1m)
-- SATA: **$97.1400** (yahoo_v8_chart_1m)
-- UXRP: **$8.1300** (yahoo_v8_chart_1m)
-- XRP-USD: **$1.0556** (yahoo_v8_chart_1m)
+- BTC-USD: **$59439.9883** (yahoo_v8_chart_1m)
+- GDXU: **$59.1900** (yahoo_v8_chart_1m)
+- MRVL: **$139.9217** (yahoo_v8_chart_1m)
+- NVDA: **$149.8000** (yahoo_v8_chart_1m)
+- SATA: **$92.0000** (yahoo_v8_chart_1m)
+- SOL-USD: **$70.6300** (yahoo_v8_chart_1m)
+- UXRP: **$6.3500** (yahoo_v8_chart_1m)
+- XRP-USD: **$0.9413** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Side | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| UXRP | LONG | 4920.0492 | 8.1300 | 40,000.00 | 8.1300 | 0.00 |
-| GDXU | SHORT | 583.4306 | 85.7000 | 50,000.00 | 88.1588 | -1,434.54 |
-| SATA | LONG | 480.0645 | 97.8466 | 46,972.67 | 97.1400 | -339.21 |
+| SATA | LONG | 1251.0055 | 92.0161 | 115,112.59 | 92.0000 | -20.08 |
 
 ## Open orders (PAPER)
 
@@ -45,38 +44,36 @@
 | PB-SATA-4 | SATA | BUY_BEST | **UNWOUND** | Buy $8621.96 SATA (trading profit + any dividend cash). HOLD for daily dividends — do not sell. UNWOUND 2026-11-04T10:31:45Z paper rewind (do not re-fire). |
 | PB-SATA-10 | SATA | BUY_BEST | **UNWOUND** | Reinvest $24.76 SATA dividend cash (daily). HOLD for daily dividends — do not sell. UNWOUND 2026-11-10T00:06:10Z — reverse duplicate/early dividend reinvest (Nov9 already credited; UTC/NY date bug). |
 | PB-SATA-11 | SATA | BUY_BEST | **UNWOUND** | Reinvest $24.77 SATA dividend cash (daily). HOLD for daily dividends — do not sell. UNWOUND 2026-11-10T00:06:10Z — reverse duplicate/early dividend reinvest (Nov9 already credited; UTC/NY date bug). |
-| TSC-GDXU-1 | GDXU | TRAILING_STOP_LIMIT_COVER | **PENDING_ARM** | Arm −3% → $83.129. Trail 0.5% → market cover on reverse up. (group SHB-GDXU-1) |
-| TS-UXRP-1 | UXRP | TRAILING_STOP_LIMIT_SELL | **PENDING_ARM** | Arm +2% → $8.2926. Trail 0.5% → market sell on reverse. (group BB-UXRP-1) |
 
 ## Trade log (buys/sells)
 
-- 2026-11-04T22:10:07Z **SELL_MARKET** GDXU qty=701.0582339319045 @ $81.5 → cash $207136.25
-- 2026-11-04T22:10:07Z **BUY** SATA qty=73.16979390956628 @ $97.53 → cash $200000.0
-- 2026-11-09T19:00:34Z **BUY** SATA qty=0.7347149352461123 @ $96.98999786376953 → cash $100000.0
-- 2026-11-09T19:16:57Z **BUY** NVDA qty=283.9907002752373 @ $176.06210327148438 → cash $50000.0
-- 2026-11-09T19:16:57Z **BUY** MRVL qty=326.360101840128 @ $153.2050018310547 → cash $0.0
-- 2026-11-09T22:15:21Z **SELL_MARKET** MRVL qty=326.360101840128 @ $156.44 → cash $51055.77
-- 2026-11-09T22:15:21Z **BUY** SATA qty=10.873017507723997 @ $97.1 → cash $50000.0
-- 2026-11-09T23:00:11Z **SELL_MARKET** NVDA qty=283.9907002752373 @ $178.7768 → cash $100770.95
-- 2026-11-09T23:00:11Z **BUY** SATA qty=7.890992835209826 @ $97.7 → cash $100000.0
-- 2026-11-10T09:00:14Z **BUY** SATA qty=0.25324741740820295 @ $97.77 → cash $100000.0
-- 2026-11-10T17:11:03Z **SHORT** GDXU qty=583.4305925377931 @ $85.69999694824219 → cash $150000.0
-- 2026-11-10T23:25:51Z **BUY** UXRP qty=4920.049200492004 @ $8.13 → cash $100000.0
+- 2026-11-16T20:57:55Z **SELL** SATA qty=252.2191680112639 @ $94.87999725341797 → cash $23930.55
+- 2026-11-16T20:58:24Z **BUY** GDXU qty=373.5646411492827 @ $64.05999755859375 → cash $0.0
+- 2026-11-17T15:00:26Z **SELL_MARKET** GDXU qty=373.5646411492827 @ $67.25 → cash $25122.22
+- 2026-11-17T15:00:26Z **BUY** SATA qty=13.488643749548233 @ $95.0999984741211 → cash $23930.55
+- 2026-11-17T15:00:59Z **BUY** SATA qty=251.6356507251896 @ $95.0999984741211 → cash $0.0
+- 2026-11-23T14:10:20Z **SELL_MARKET** SOL qty=667.3785534170665 @ $75.47000122070312 → cash $50367.06
+- 2026-11-23T14:10:20Z **BUY** SATA qty=5.294893284165829 @ $89.49 → cash $50000.0
+- 2026-11-23T16:36:15Z **SELL** SATA qty=522.6383557701675 @ $90.4000015258789 → cash $97246.51
+- 2026-11-23T16:36:23Z **BUY** GDXU qty=1993.9821424487884 @ $48.77000045776367 → cash $0.0
+- 2026-11-27T17:00:56Z **SELL_MARKET** GDXU qty=1993.9821424487884 @ $57.72999954223633 → cash $115112.59
+- 2026-11-27T17:00:56Z **BUY** SATA qty=707.8224971417761 @ $91.98999786376953 → cash $50000.0
+- 2026-11-27T19:45:24Z **BUY** SATA qty=543.1830526887561 @ $92.05 → cash $0.0
 
 ## Recent events
 
-- 2026-11-10T23:10:17Z GDXU mark=87.0000 {'id': 'TSC-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-10T23:15:14Z GDXU mark=87.0000 {'id': 'TSC-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-10T23:20:20Z GDXU mark=87.0000 {'id': 'TSC-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-10T23:25:23Z GDXU mark=87.3575 {'id': 'TSC-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-10T23:25:44Z TEXT queued BB-UXRP-1 BUY_BEST UXRP $40000.0
-- 2026-11-10T23:25:51Z GDXU mark=87.3575 {'id': 'TSC-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-10T23:25:51Z UXRP mark=8.1300 {'id': 'BB-UXRP-1', 'symbol': 'UXRP', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 4920.049200492004, 'price': 8.13, 'cost': 40000.0}
-- 2026-11-10T23:25:51Z UXRP attached TS-UXRP-1 PENDING_ARM arm=8.2926
-- 2026-11-10T23:25:51Z UXRP no hard stop (Rodney DCA / no_hard_stop) group=BB-UXRP-1
-- 2026-11-10T23:25:51Z UXRP STALE_QUOTE age=1296s mark=8.13 — order logic skipped
-- 2026-11-10T23:26:33Z GDXU mark=88.1588 {'id': 'TSC-GDXU-1', 'symbol': 'GDXU', 'event': 'PENDING_ARM'}
-- 2026-11-10T23:26:33Z UXRP STALE_QUOTE age=1337s mark=8.13 — order logic skipped
+- 2026-11-27T16:51:03Z GDXU mark=57.6210 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 57.62099838256836, 'stop': 57.3329}
+- 2026-11-27T16:55:35Z GDXU mark=58.0700 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'TRAILED', 'high_water': 58.06999969482422, 'stop': 57.7796}
+- 2026-11-27T17:00:56Z GDXU mark=57.7300 {'id': 'TS-GDXU-8', 'symbol': 'GDXU', 'event': 'FILLED_MARKET', 'side': 'SELL', 'limit': 57.7796, 'price': 57.72999954223633, 'qty': 1993.9821424487884, 'proceeds': 115112.59}
+- 2026-11-27T17:00:56Z queued PB-SATA-18 $65112.59 (EXIT_REMAINDER_TO_SATA)
+- 2026-11-27T17:00:56Z GDXU exit_redeploy: keep $50,000.00 cash, $65,112.59 -> SATA
+- 2026-11-27T17:00:56Z SATA mark=91.9900 {'id': 'PB-SATA-18', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 707.8224971417761, 'price': 91.98999786376953, 'cost': 65112.59}
+- 2026-11-27T19:40:28Z TEXT queued LB-SATA-1 LIMIT_BUY SATA @92.0 $50000.0
+- 2026-11-27T19:40:30Z SATA mark=92.0500 {'id': 'LB-SATA-1', 'symbol': 'SATA', 'event': 'WORKING_BUY', 'limit': 92.0}
+- 2026-11-27T19:45:15Z SATA mark=92.0500 {'id': 'LB-SATA-1', 'symbol': 'SATA', 'event': 'WORKING_BUY', 'limit': 92.0}
+- 2026-11-27T19:45:23Z TEXT cancel LB-SATA-1
+- 2026-11-27T19:45:23Z TEXT queued BB-SATA-2 BUY_BEST SATA $50000.0
+- 2026-11-27T19:45:24Z SATA mark=92.0500 {'id': 'BB-SATA-2', 'symbol': 'SATA', 'event': 'FILLED_BUY', 'side': 'BUY', 'qty': 543.1830526887561, 'price': 92.05, 'cost': 50000.0}
 
 ## Rules
 
