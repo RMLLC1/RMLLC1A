@@ -1,6 +1,6 @@
 # Paper portfolio (SIMULATED — not real money)
 
-**Updated:** 2026-11-27T19:45:24Z  
+**Updated:** 2026-11-28T16:00:45Z  
 **Base currency:** USD  
 **Starting cash:** 200,000.00  
 **Cash:** 0.00  
@@ -21,20 +21,20 @@
 - **Hold for daily dividends — do not sell** income SATA unless Rodney overrides.
 
 **Marks:**
-- BTC-USD: **$59949.5508** (yahoo_v8_chart_1m)
-- GDXU: **$58.9200** (yahoo_v8_chart_1m)
-- MRVL: **$139.2014** (yahoo_v8_chart_1m)
-- NVDA: **$149.7805** (yahoo_v8_chart_1m)
-- SATA: **$92.0500** (yahoo_v8_chart_1m)
-- SOL-USD: **$72.3200** (yahoo_v8_chart_1m)
-- UXRP: **$6.3600** (yahoo_v8_chart_1m)
-- XRP-USD: **$0.9511** (yahoo_v8_chart_1m)
+- BTC-USD: **$59439.9883** (yahoo_v8_chart_1m)
+- GDXU: **$59.1900** (yahoo_v8_chart_1m)
+- MRVL: **$139.9217** (yahoo_v8_chart_1m)
+- NVDA: **$149.8000** (yahoo_v8_chart_1m)
+- SATA: **$92.0000** (yahoo_v8_chart_1m)
+- SOL-USD: **$70.6300** (yahoo_v8_chart_1m)
+- UXRP: **$6.3500** (yahoo_v8_chart_1m)
+- XRP-USD: **$0.9413** (yahoo_v8_chart_1m)
 
 ## Positions
 
 | Symbol | Side | Qty | Avg cost | Cost basis | Mark | UPL |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| SATA | LONG | 1251.0055 | 92.0161 | 115,112.59 | 92.0500 | 42.47 |
+| SATA | LONG | 1251.0055 | 92.0161 | 115,112.59 | 92.0000 | -20.08 |
 
 ## Open orders (PAPER)
 
